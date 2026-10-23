@@ -1,1 +1,0 @@
-@msb /p:BuildProjectReferences=false /clp:verbosity=minimal /nologo %* 

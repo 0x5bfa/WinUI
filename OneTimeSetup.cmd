@@ -1,1 +1,0 @@
-@%systemroot%\system32\WindowsPowerShell\v1.0\Powershell -NoProfile -ExecutionPolicy Unrestricted -File %~dp0\scripts\dev\OneTimeSetup.ps1 %*

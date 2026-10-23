@@ -1,3 +1,0 @@
-EXPORTS
-    DllGetActivationFactory PRIVATE
-    ProcessEvent            PRIVATE
