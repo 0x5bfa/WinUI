@@ -25,11 +25,14 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CppWinRT" Version="$(CppWinRTVersion)" />
     <ClCompile Include="Runtime.ixx" />
-    <ClCompile Include="object-model\Object.ixx" />
-    <ClCompile Include="object-model\Object.cpp" />
-    <ClCompile Include="object-model\DependencyObject.ixx" />
-    <ClCompile Include="primitives\Elements.ixx" />
-    <ClCompile Include="primitives\Elements.cpp" />
+    <ClCompile Include="primitives\Object\Object.ixx" />
+    <ClCompile Include="primitives\Object\Object.cpp" />
+    <ClCompile Include="primitives\DependencyProperty\DependencyProperty.ixx" />
+    <ClCompile Include="primitives\DependencyObject\DependencyObject.ixx" />
+    <ClCompile Include="primitives\UIElement\UIElement.ixx" />
+    <ClCompile Include="primitives\UIElement\UIElement.cpp" />
+    <ClCompile Include="primitives\FrameworkElement\FrameworkElement.ixx" />
+    <ClCompile Include="primitives\FrameworkElement\FrameworkElement.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

@@ -4,7 +4,7 @@ This is the next implementation slice after `Object`. It implements native behav
 
 ## Ownership and dependencies
 
-`Xaml.Runtime` contains `Object`, `DependencyObject`, `UIElement`, and `FrameworkElement`. Its `:Primitives` partition implements layout and visual-tree participation. `Xaml.Controls` imports Runtime and contains `Control`, `ContentControl`, `ButtonBase`, `Button`, `Panel`, and `StackPanel`. These native implementation types share the same C++/WinRT object identity without Core/DXaml peers. Runtime and Controls currently build as separate static libraries; this does not introduce a runtime DLL or a WinRT peer.
+`Xaml.Runtime` contains `Object`, `DependencyProperty`, `DependencyObject`, `UIElement`, and `FrameworkElement` under `src/runtime/primitives/<Type>/`. Its internal partitions share one named C++ module; `:Primitives` provides UIElement and small geometry types, and `:FrameworkElement` provides its derived type. `Xaml.Controls` imports Runtime and contains `Control`, `ContentControl`, `ButtonBase`, `Button`, `Panel`, and `StackPanel`. These native implementation types share the same C++/WinRT object identity without Core/DXaml peers. Runtime and Controls currently build as separate static libraries; this does not introduce a runtime DLL or a WinRT peer.
 
 Every control has a named source directory in `src/controls`, including foundational types such as `ButtonBase` and `Panel`. Place each control's future XAML resource sources alongside its implementation (for example, `src/controls/Button/Button.xaml`); shared theme services can live in `src/themes`. No XAML resource is functional until markup compilation, resource lookup, templates, and rendering exist. The XAML resource does not own the control's native state. Folder, C++ module, static library, and public WinRT namespace are separate choices.
 
@@ -42,6 +42,8 @@ The reference checkout is `D:\source\mux-main` at `0df0a8869`.
 | `dxaml/xcp/core/core/elements/Button.cpp` | Flyout tree participation is deferred with Flyout itself. |
 
 This is a selective reimplementation, not a claim of behavioral or ABI parity with all of those files. In particular, native release/key-up callbacks observe completed input state, and this native slice does not reproduce all legacy event-timing quirks.
+
+Before implementing rendering, re-investigate the upstream GPU render walk, Composition tree, graphics devices/surfaces, and scheduling, including design notes and history. Document the alternatives, responsibilities, and chosen boundaries first. This review is deferred until rendering implementation begins.
 
 ## Subsequent slices
 

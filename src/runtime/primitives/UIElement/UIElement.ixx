@@ -2,8 +2,8 @@ export module Xaml.Runtime:Primitives;
 
 import std;
 import winrt_base;
-import :ObjectModel;
 import :Properties;
+import :DependencyObject;
 
 export namespace xaml::runtime
 {
@@ -84,20 +84,4 @@ export namespace xaml::runtime
         bool m_arranging{};
     };
 
-    struct FrameworkElement : winrt::implements<FrameworkElement, UIElement>
-    {
-        static DependencyProperty<double> const WidthProperty;
-        static DependencyProperty<double> const HeightProperty;
-
-        [[nodiscard]] double Width() const;
-        void Width(double value);
-        [[nodiscard]] double Height() const;
-        void Height(double value);
-
-    protected:
-        Size MeasureCore(Size available) override;
-        Size ArrangeCore(Size finalSize) override;
-        virtual Size MeasureOverride(Size available);
-        virtual Size ArrangeOverride(Size finalSize);
-    };
 }
