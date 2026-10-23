@@ -213,14 +213,14 @@ The proposed starting compilation graph is intentionally coarser than the source
 ```text
 Xaml.Foundation          standard values, IDs, diagnostics, small utilities
 Xaml.Platform.Contracts narrow platform service contracts
-Xaml.Runtime             objects, properties, tree, lifecycle, execution policy
-Xaml.Controls            control implementations on Xaml.Runtime
+Xaml.Runtime             objects, properties, tree, layout primitives, lifecycle, execution policy
+Xaml.Controls            foundational and composed controls on Xaml.Runtime
 Xaml.Markup              loading/compiled-markup execution on Xaml.Runtime
 Xaml.Platform.Windows    implements Xaml.Platform.Contracts
 Product                  wires services/factories and links Microsoft.UI.Xaml.dll
 ```
 
-`Xaml.Runtime` imports Foundation and Platform.Contracts. Controls and Markup import Runtime; Windows imports Platform.Contracts and Foundation. Product supplies implementation factories and registrations; Runtime does not import Controls, Markup, or Windows. Contract types can use platform projection types where required by the Windows product, but must not import runtime implementation types.
+The first buildable graph is `Xaml.Runtime` (`:ObjectModel`, `:Properties`, `:Primitives`) imported by `Xaml.Controls` in a separate static library. `Xaml.Controls` owns all controls, including `Button` and future `NavigationView`/`TabView`/`ItemsRepeater`. Runtime cannot import Controls. This boundary separates control behavior from object identity and tree ownership without reintroducing a peer model. The eventual Platform.Contracts/Foundation/Markup/Windows/Product modules shown above are planned, not yet implemented. Put control-specific default XAML templates in each control's source folder, with shared theme infrastructure separate from native behavior. Contract types can use platform projection types where required by the Windows product, but must not import runtime implementation types.
 
 Initially keep the strongly connected object/property/tree/lifecycle code in one named module with internal partitions and implementation units. Source directories can separate layout, input, resources, and scheduling without forcing separate modules or projects. Module partitions improve organization but are not an excuse to create cyclic import dependencies; design their interface dependencies as a DAG. Split independent algorithms into modules only when dependencies justify it.
 

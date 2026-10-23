@@ -30,7 +30,7 @@ The layout below is a broad guide, not a fixed directory or project structure. C
 │  ├─ runtime/
 │  │  ├─ foundation/
 │  │  ├─ object-model/
-│  │  ├─ visual-tree/
+│  │  ├─ primitives/               # UIElement, FrameworkElement, layout and visual tree
 │  │  ├─ scheduling/
 │  │  ├─ layout/
 │  │  ├─ resources/
@@ -39,11 +39,14 @@ The layout below is a broad guide, not a fixed directory or project structure. C
 │  │  ├─ automation/
 │  │  └─ rendering/
 │  ├─ controls/
-│  │  ├─ primitives/
-│  │  ├─ panels/
-│  │  ├─ text/
-│  │  ├─ collections/
-│  │  └─ navigation/
+│  │  ├─ Controls.ixx              # Single native control module interface
+│  │  ├─ Control/
+│  │  ├─ ContentControl/
+│  │  ├─ ButtonBase/
+│  │  ├─ Button/                   # Button.cpp; its XAML resources will live here
+│  │  ├─ Panel/
+│  │  └─ StackPanel/
+│  ├─ themes/                      # Shared theme infrastructure (future)
 │  ├─ markup/
 │  │  └─ runtime/                # Load and execute compiled markup
 │  └─ product/
@@ -61,13 +64,13 @@ The layout below is a broad guide, not a fixed directory or project structure. C
 ## Boundaries
 
 - `contracts/` is the source of truth for public APIs and type metadata. `XamlGen` produces generated files in build output; do not check generated files into the source tree.
-- `runtime/` owns the unified object model and runtime services. Organize C++ Modules around stable subsystems, not individual classes. Module boundaries are not DLL boundaries.
+- `runtime/` owns object identity, dependency properties, the native visual tree, layout primitives, and runtime services. `UIElement` and `FrameworkElement` live under `runtime/primitives` in the `Xaml.Runtime:Primitives` partition. Source folders do not prescribe the public WinRT namespace.
 - `platform/contracts/` defines services used by the runtime. `platform/windows/` implements them with Windows APIs.
-- `controls/` and `markup/runtime/` build on the runtime. `product/` assembles the final `Microsoft.UI.Xaml.dll`.
-- Keep project boundaries coarser than source directories. Split projects only when a stable build or deployment boundary requires it.
-- The initial object model builds as `src/runtime/Microsoft.UI.Xaml.Runtime.vcxproj`, a static library for the future product and native tests. A directory does not require its own project or module.
+- `controls/` owns all UI controls, from `ButtonBase` and `Panel` to future `NavigationView` and `ItemsRepeater`. A control with XAML resources owns a named directory for both its native behavior and its XAML sources; shared theme composition can live under `themes/`. Resource loading and template realization will be provided by `markup/` and the final product, not by a second control identity.
+- `Xaml.Controls` depends on `Xaml.Runtime`, which never imports `Xaml.Controls`. All controls compile into one control module and a separate static library. Folder-per-control does not require module-per-control or DLL-per-control.
+- The native implementation currently has two static-library projects: `src/runtime/Microsoft.UI.Xaml.Runtime.vcxproj` and `src/controls/Microsoft.UI.Xaml.Controls.vcxproj`. Their output is linked into native tests, and eventually into the product DLL. Only Runtime builds C++/WinRT projection modules; Controls consumes its compatible IFCs.
 
-The current slice provides `xaml::runtime::Object` in `Xaml.Runtime`: C++/WinRT identity, strong/weak references, and creating-thread access checks. It holds no UI resources. Property storage, managed reference tracking, external composition, session lifetime, and UI-affine reclamation are later slices.
+The current native slice includes object identity, local value properties (including small value structs), an ordered visual tree, basic measure/arrange, `Panel`/`StackPanel` layout, Control padding, and the control hierarchy through Button. See [the native control kernel](architecture/native-control-kernel.md) for its boundaries. Public XAML/WinRT contracts, template loading, managed reference tracking, platform rendering/input, session lifetime, and UI-affine reclamation remain later slices.
 
 ## Build and Documentation
 

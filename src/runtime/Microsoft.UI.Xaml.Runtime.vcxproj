@@ -27,6 +27,9 @@
     <ClCompile Include="Runtime.ixx" />
     <ClCompile Include="object-model\Object.ixx" />
     <ClCompile Include="object-model\Object.cpp" />
+    <ClCompile Include="object-model\DependencyObject.ixx" />
+    <ClCompile Include="primitives\Elements.ixx" />
+    <ClCompile Include="primitives\Elements.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

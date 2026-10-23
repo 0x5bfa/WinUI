@@ -7,6 +7,9 @@
   <Folder Name="/Runtime/">
     <Project Path="src/runtime/Microsoft.UI.Xaml.Runtime.vcxproj" />
   </Folder>
+  <Folder Name="/Controls/">
+    <Project Path="src/controls/Microsoft.UI.Xaml.Controls.vcxproj" />
+  </Folder>
   <Folder Name="/Tests/">
     <Project Path="tests/unit/Microsoft.UI.Xaml.Runtime.Tests.vcxproj" />
   </Folder>

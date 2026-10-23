@@ -3,6 +3,8 @@ import winrt_base;
 import winrt.Windows.Foundation;
 import Xaml.Runtime;
 
+int RunControlTests();
+
 namespace
 {
     using xaml::runtime::Object;
@@ -162,7 +164,9 @@ int main()
         WeakReferencesFollowTheDerivedLifetime();
         CrossThreadNativeAndABICallsAreRejected();
         ResourceNeutralFinalReleaseCanRunOffThread();
+        auto const controlTests = RunControlTests();
         std::cout << "4 object-model tests passed.\n";
+        std::cout << controlTests << " control-kernel tests passed.\n";
         winrt::uninit_apartment();
         return 0;
     }
