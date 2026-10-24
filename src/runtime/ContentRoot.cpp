@@ -46,7 +46,8 @@ namespace xaml::runtime
         {
             if (auto owner = weak.lock()) { owner->UpdateLayout(); }
         });
-        root->m_input = std::make_unique<InputManager>(*root->m_element);
+        root->m_input = std::make_shared<InputManager>(*root->m_element);
+        root->m_element->m_rootInput = root->m_input;
         root->Invalidate();
         return root;
     }
@@ -195,6 +196,7 @@ namespace xaml::runtime
             try
             {
                 m_element->SetRootInvalidationCallback({});
+                m_element->m_rootInput.reset();
                 m_element->SetLayoutScale(1.0);
             }
             catch (...) { if (!failure) { failure = std::current_exception(); } }

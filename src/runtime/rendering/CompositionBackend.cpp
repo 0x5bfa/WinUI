@@ -1,12 +1,17 @@
+#include <windows.h>
 #include <winrt/Microsoft.UI.Content.h>
 #include <winrt/Microsoft.UI.Dispatching.h>
 #include <winrt/Microsoft.UI.Input.h>
+#include <winrt/Microsoft.UI.Interop.h>
 #include <winrt/Windows.Foundation.h>
 #include <winrt/Windows.System.h>
 #include <winrt/Windows.UI.h>
 #include <winrt/Windows.UI.Composition.h>
 
 #include "CompositionBackend.h"
+#include "DrawingBackend.h"
+#include <d2d1.h>
+#include <dxgi.h>
 
 #include <cstdint>
 #include <cmath>
@@ -22,12 +27,23 @@ namespace
     namespace input = winrt::Microsoft::UI::Input;
     namespace platform = xaml::runtime::platform;
 
+    std::uint32_t Modifiers()
+    {
+        return ((GetKeyState(VK_SHIFT) & 0x8000) ? 1u : 0u) |
+            ((GetKeyState(VK_CONTROL) & 0x8000) ? 2u : 0u) |
+            ((GetKeyState(VK_MENU) & 0x8000) ? 4u : 0u) |
+            (((GetKeyState(VK_LWIN) | GetKeyState(VK_RWIN)) & 0x8000) ? 8u : 0u);
+    }
+
     struct Node
     {
         composition::ContainerVisual container{ nullptr };
-        composition::SpriteVisual fill{ nullptr };
+        composition::ContainerVisual fill{ nullptr };
         composition::InsetClip clip{ nullptr };
         std::uint64_t visited{};
+        std::uint64_t contentVersion{}, deviceGeneration{};
+        float contentScale{}, contentWidth{}, contentHeight{};
+        bool contentRTL{};
         std::vector<std::uintptr_t> children;
         std::vector<std::uintptr_t> nextChildren;
     };
@@ -37,7 +53,7 @@ namespace
         std::thread::id thread = std::this_thread::get_id();
         composition::Compositor compositor{ nullptr };
         composition::ContainerVisual root{ nullptr };
-        composition::CompositionColorBrush brush{ nullptr };
+        std::unique_ptr<platform::DrawingBackend> drawing;
         content::ContentIsland island{ nullptr };
         content::DesktopChildSiteBridge bridge{ nullptr };
         input::InputPointerSource pointer{ nullptr };
@@ -56,6 +72,7 @@ namespace
         input::InputKeyboardSource::KeyUp_revoker keyUp;
         input::InputKeyboardSource::SystemKeyDown_revoker systemKeyDown;
         input::InputKeyboardSource::SystemKeyUp_revoker systemKeyUp;
+        input::InputKeyboardSource::CharacterReceived_revoker characterReceived;
         input::InputFocusController::LostFocus_revoker focusLost;
         platform::InputCallback inputCallback;
         bool closed{};
@@ -79,7 +96,7 @@ namespace
             queue.EnsureSystemDispatcherQueue();
             compositor = composition::Compositor{};
             root = compositor.CreateContainerVisual();
-            brush = compositor.CreateColorBrush({ 255, 72, 128, 211 });
+            drawing = std::make_unique<platform::DrawingBackend>(compositor);
             try
             {
                 island = content::ContentIsland::CreateForSystemVisual(queue, root);
@@ -127,7 +144,7 @@ namespace
                             kind == platform::InputKind::Released ?
                             update == input::PointerUpdateKind::LeftButtonReleased : properties.IsLeftButtonPressed());
                         platform::InputPacket packet{ .kind = kind, .x = position.X, .y = position.Y,
-                            .pointerId = point.PointerId(), .timestamp = point.Timestamp(),
+                            .pointerId = point.PointerId(), .modifiers = Modifiers(), .timestamp = point.Timestamp(),
                             .wheelDelta = properties.MouseWheelDelta(),
                             .horizontalWheel = properties.IsHorizontalMouseWheel(),
                             .inContact = point.IsInContact(), .primaryButton = primary };
@@ -155,6 +172,7 @@ namespace
                     {
                         platform::InputPacket packet{ .kind = kind,
                             .virtualKey = static_cast<std::uint32_t>(args.VirtualKey()),
+                            .modifiers = Modifiers(),
                             .timestamp = args.Timestamp(),
                             .repeatedKey = kind == platform::InputKind::KeyDown && args.KeyStatus().WasKeyDown,
                             .systemKey = system };
@@ -167,6 +185,15 @@ namespace
             keyUp = keyboard.KeyUp(winrt::auto_revoke, keyHandler(platform::InputKind::KeyUp, false));
             systemKeyDown = keyboard.SystemKeyDown(winrt::auto_revoke, keyHandler(platform::InputKind::KeyDown, true));
             systemKeyUp = keyboard.SystemKeyUp(winrt::auto_revoke, keyHandler(platform::InputKind::KeyUp, true));
+            characterReceived = keyboard.CharacterReceived(winrt::auto_revoke, [weak](auto const&, input::CharacterReceivedEventArgs const& args)
+            {
+                if (auto owner = weak.lock(); owner && !owner->closed)
+                {
+                    auto callback = owner->inputCallback;
+                    if (callback && callback(platform::InputPacket{ .kind = platform::InputKind::CharacterReceived,
+                        .character = args.KeyCode(), .modifiers = Modifiers() })) { args.Handled(true); }
+                }
+            });
             focusLost = focus.LostFocus(winrt::auto_revoke, [weak](auto const&, auto const&)
             {
                 if (auto owner = weak.lock(); owner && !owner->closed)
@@ -202,13 +229,14 @@ namespace
         void Begin()
         {
             VerifyAccess();
+            drawing->CheckDevice();
             ++generation;
             nextRootChildren.clear();
             for (auto& [_, node] : nodes) { node.nextChildren.clear(); }
         }
 
         void Realize(std::uintptr_t id, std::uintptr_t parent,
-            float x, float y, float width, float height, float opacity, bool drawable, bool flipRTL,
+            float x, float y, float width, float height, float opacity, bool, bool flipRTL,
             bool hasClip, float clipX, float clipY, float clipWidth, float clipHeight)
         {
             VerifyAccess();
@@ -217,8 +245,7 @@ namespace
             if (inserted)
             {
                 node.container = compositor.CreateContainerVisual();
-                node.fill = compositor.CreateSpriteVisual();
-                node.fill.Brush(brush);
+                node.fill = compositor.CreateContainerVisual();
                 node.container.Children().InsertAtBottom(node.fill);
             }
             node.visited = generation;
@@ -229,7 +256,6 @@ namespace
             node.container.Size({ width, height });
             node.container.Opacity(opacity);
             node.fill.Size({ width, height });
-            node.fill.IsVisible(drawable);
             if (hasClip)
             {
                 if (!node.clip)
@@ -259,7 +285,7 @@ namespace
         }
 
         void AttachChangedChildren(composition::ContainerVisual const& container,
-            composition::SpriteVisual const& fill,
+            composition::Visual const& fill,
             std::vector<std::uintptr_t>& existing, std::vector<std::uintptr_t>& next)
         {
             if (existing == next) { return; }
@@ -311,13 +337,14 @@ namespace
             released.revoke(); captureLost.revoke(); wheel.revoke();
             routedAway.revoke(); routedReleased.revoke();
             keyDown.revoke(); keyUp.revoke(); systemKeyDown.revoke(); systemKeyUp.revoke();
+            characterReceived.revoke();
             focusLost.revoke();
             pointer = nullptr; keyboard = nullptr; focus = nullptr;
             nodes.clear();
             try { if (bridge) { bridge.Close(); } } catch (...) {}
             try { if (island) { island.Close(); } } catch (...) {}
             bridge = nullptr; island = nullptr;
-            brush = nullptr; root = nullptr; compositor = nullptr;
+            drawing.reset(); root = nullptr; compositor = nullptr;
         }
 
         ~Backend() { Close(); }
@@ -374,4 +401,40 @@ bool XamlRenderingFocusInput(void* backend)
     auto owner = GetBackend(backend);
     owner->VerifyAccess();
     return owner->focus.TrySetFocus();
+}
+std::uintptr_t XamlRenderingInputWindow(void* backend)
+{
+    auto owner = GetBackend(backend); owner->VerifyAccess();
+    return reinterpret_cast<std::uintptr_t>(winrt::Microsoft::UI::GetWindowFromWindowId(owner->bridge.WindowId()));
+}
+
+void XamlRenderingContent(void* backend, std::uintptr_t element, std::uint64_t version,
+    std::vector<xaml::drawing::Command> const& commands, bool rightToLeft, float width, float height)
+{
+    auto owner = GetBackend(backend);
+    owner->VerifyAccess();
+    auto& node = owner->nodes.at(element);
+    owner->drawing->Draw(node.fill, commands, owner->scale, rightToLeft, width);
+    node.contentVersion = version;
+    node.deviceGeneration = owner->drawing->Generation();
+    node.contentScale = owner->scale; node.contentWidth = width; node.contentHeight = height;
+    node.contentRTL = rightToLeft;
+}
+bool XamlRenderingNeedsContent(void* backend, std::uintptr_t element, std::uint64_t version,
+    bool rightToLeft, float width, float height)
+{
+    auto owner = GetBackend(backend); owner->VerifyAccess();
+    auto const& node = owner->nodes.at(element);
+    return node.contentVersion != version || node.deviceGeneration != owner->drawing->Generation() ||
+        node.contentScale != owner->scale || node.contentWidth != width || node.contentHeight != height || node.contentRTL != rightToLeft;
+}
+
+bool XamlRenderingRecoverDevice(void* backend, std::int32_t error)
+{
+    if (error != DXGI_ERROR_DEVICE_REMOVED && error != DXGI_ERROR_DEVICE_RESET &&
+        error != D2DERR_RECREATE_TARGET) { return false; }
+    auto owner = GetBackend(backend);
+    owner->VerifyAccess();
+    owner->drawing->ResetDevice();
+    return true;
 }

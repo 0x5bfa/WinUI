@@ -33,6 +33,22 @@ export namespace xaml::runtime
         void ClearStyleValue(DependencyPropertyHandle const& property);
         void SetAnimationValue(DependencyPropertyHandle const& property, std::any value);
         void ClearAnimationValue(DependencyPropertyHandle const& property);
+        void SetTemplateValue(DependencyPropertyHandle const& property, std::any value);
+        void ClearTemplateValue(DependencyPropertyHandle const& property);
+        void SetCurrentValue(DependencyPropertyHandle const& property, std::any value);
+        void SetStateValue(DependencyPropertyHandle const& property, std::uint64_t contributor, std::any value);
+        void ClearStateValue(DependencyPropertyHandle const& property, std::uint64_t contributor);
+        void ValidateValue(DependencyPropertyHandle const& property, std::any const& value) const;
+        [[nodiscard]] std::uint64_t AttachExpression(DependencyPropertyHandle const& property,
+            std::function<void()> disconnect, bool templateValue = false);
+        [[nodiscard]] bool IsExpressionCurrent(DependencyPropertyHandle const& property,
+            std::uint64_t token, bool templateValue = false) const;
+        void SetExpressionValue(DependencyPropertyHandle const& property, std::uint64_t token,
+            std::any value, bool templateValue = false);
+        void DetachExpression(DependencyPropertyHandle const& property, std::uint64_t token,
+            bool templateValue = false);
+        void ClearExpressionValue(DependencyPropertyHandle const& property, std::uint64_t token,
+            bool templateValue = false);
         void SetBoxedValue(DependencyPropertyHandle const& property,
             winrt::Windows::Foundation::IInspectable const& value);
         void ClearValue(DependencyPropertyHandle const& property);
@@ -122,6 +138,9 @@ export namespace xaml::runtime
 
     protected:
         virtual void OnPropertyChanged(PropertyChange const&) {}
+        virtual std::optional<std::any> GetInheritedValue(DependencyPropertyHandle const&) const { return {}; }
+        virtual void OnInheritedPropertyChanged(DependencyPropertyHandle const&, std::any const&, std::any const&) {}
+        void NotifyInheritedValueChanged(DependencyPropertyHandle const& property, std::any const& before);
 
     private:
         std::thread::id const m_thread;
@@ -129,7 +148,8 @@ export namespace xaml::runtime
         [[nodiscard]] std::any GetDefaultValue(DependencyPropertyHandle const& property) const;
         [[nodiscard]] std::any EvaluateValue(DependencyPropertyHandle const& property,
             bool includeAnimation) const;
-        enum class ValueLayer { Local, Style, Animation };
+        enum class ValueLayer { Local, Template, Style, Animation };
+        void DropExpression(DependencyPropertyHandle const& property, bool templateValue);
         void SetLayerValue(DependencyPropertyHandle const& property, std::any value, ValueLayer layer);
         void ClearLayerValue(DependencyPropertyHandle const& property, ValueLayer layer);
 
@@ -184,7 +204,9 @@ export namespace xaml::runtime
 
         std::unordered_map<detail::PropertyInfo const*, Entry> m_values;
         std::unordered_map<detail::PropertyInfo const*, Entry> m_styleValues;
+        std::unordered_map<detail::PropertyInfo const*, Entry> m_templateValues;
         std::unordered_map<detail::PropertyInfo const*, Entry> m_animationValues;
+        std::unordered_map<detail::PropertyInfo const*, std::map<std::uint64_t, Entry>> m_stateValues;
         // Retain the descriptor for every cached factory default. Dynamic
         // registrations can otherwise free their metadata and reuse this key.
         mutable std::unordered_map<detail::PropertyInfo const*, Entry> m_createdDefaults;
@@ -200,5 +222,14 @@ export namespace xaml::runtime
 
         std::vector<std::shared_ptr<Subscription>> m_subscriptions;
         std::int64_t m_nextToken{};
+        struct Expression
+        {
+            std::shared_ptr<detail::PropertyInfo const> property;
+            std::uint64_t token;
+            std::function<void()> disconnect;
+        };
+        std::unordered_map<detail::PropertyInfo const*, Expression> m_localExpressions;
+        std::unordered_map<detail::PropertyInfo const*, Expression> m_templateExpressions;
+        std::uint64_t m_nextExpression{};
     };
 }

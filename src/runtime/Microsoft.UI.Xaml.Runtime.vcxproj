@@ -26,6 +26,11 @@
     <PackageReference Include="Microsoft.Windows.CppWinRT" Version="$(CppWinRTVersion)" />
     <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.9" />
     <ClCompile Include="Runtime.ixx" />
+    <ClCompile Include="binding\PropertyBinding.ixx" />
+    <ClCompile Include="binding\PropertyBinding.cpp" />
+    <ClCompile Include="styling\Styling.ixx" />
+    <ClCompile Include="styling\Styling.cpp" />
+    <ClCompile Include="styling\ElementResources.cpp" />
     <ClCompile Include="primitives\DependencyProperty\DependencyProperty.ixx" />
     <ClCompile Include="primitives\DependencyObject\DependencyObject.ixx" />
     <ClCompile Include="primitives\DependencyObject\DependencyObject.cpp" />
@@ -40,7 +45,18 @@
     <ClCompile Include="input\InputManager.ixx" />
     <ClCompile Include="input\InputManager.cpp" />
     <ClCompile Include="input\ElementInput.cpp" />
+    <ClCompile Include="input\Command.ixx" />
+    <ClCompile Include="input\Command.cpp" />
+    <ClCompile Include="input\TextInput.ixx" />
+    <ClCompile Include="input\TextInput.cpp" />
+    <ClCompile Include="input\TextServicesBackend.cpp" />
+    <ClInclude Include="input\TextServicesBackend.h" />
     <ClCompile Include="rendering\CompositionRenderer.ixx" />
+    <ClCompile Include="rendering\Drawing.ixx" />
+    <ClCompile Include="rendering\Drawing.cpp" />
+    <ClCompile Include="rendering\DrawingBackend.cpp" />
+    <ClInclude Include="rendering\DrawingTypes.h" />
+    <ClInclude Include="rendering\DrawingBackend.h" />
     <ClCompile Include="rendering\CompositionRenderer.cpp" />
     <ClCompile Include="rendering\CompositionBackend.cpp" />
     <ClInclude Include="rendering\CompositionBackend.h" />

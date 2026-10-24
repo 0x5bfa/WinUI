@@ -8,13 +8,44 @@ namespace xaml::controls
 {
     winrt::com_ptr<runtime::UIElement> ContentControl::Content() const
     {
-        return VisualChildrenCount() == 0 ? nullptr : VisualChildAt(0);
+        VerifyAccess(); return m_content;
     }
 
-    void ContentControl::Content(runtime::UIElement* content) { SetSingleVisualChild(content); }
+    void ContentControl::Content(runtime::UIElement* content)
+    {
+        VerifyAccess();
+        winrt::com_ptr<runtime::UIElement> next;
+        next.copy_from(content);
+        if (next == m_content) { return; }
+        if (next && next->Parent() && next->Parent().get() != this) { throw winrt::hresult_invalid_argument(); }
+        m_content = std::move(next);
+        if (HasTemplateRoot()) { OnApplyTemplate(); }
+        else { SetSingleVisualChild(content); }
+        InvalidateMeasure();
+    }
+
+    void ContentControl::OnApplyTemplate()
+    {
+        Control::OnApplyTemplate();
+        if (auto part = GetTemplateChild(L"ContentPresenter"))
+        {
+            if (auto presenter = dynamic_cast<ContentPresenter*>(part.get())) { presenter->Content(m_content.get()); }
+        }
+    }
+
+    void ContentControl::OnTemplateClearing()
+    {
+        if (auto part = GetTemplateChild(L"ContentPresenter"))
+        {
+            if (auto presenter = dynamic_cast<ContentPresenter*>(part.get())) { presenter->Content(nullptr); }
+        }
+    }
 
     runtime::Size ContentControl::MeasureOverride(runtime::Size available)
     {
+        (void)ApplyTemplate();
+        if (HasTemplateRoot()) { return Control::MeasureOverride(available); }
+        if (m_content && !m_content->Parent()) { SetSingleVisualChild(m_content.get()); }
         auto const padding = Padding();
         auto const horizontal = padding.left + padding.right;
         auto const vertical = padding.top + padding.bottom;
@@ -28,6 +59,7 @@ namespace xaml::controls
 
     runtime::Size ContentControl::ArrangeOverride(runtime::Size finalSize)
     {
+        if (HasTemplateRoot()) { return Control::ArrangeOverride(finalSize); }
         if (auto content = Content())
         {
             auto const padding = Padding();

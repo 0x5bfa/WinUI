@@ -7,6 +7,7 @@ import std;
 import winrt_base;
 import winrt.Microsoft.UI.Dispatching;
 import Xaml.Runtime;
+import Xaml.Controls;
 
 using namespace xaml::runtime;
 
@@ -45,39 +46,38 @@ namespace
 
         void Initialize()
         {
-            element = winrt::make_self<FrameworkElement>();
-            element->Width(280);
-            element->Height(160);
-            element->Margin({ 32, 32, 32, 32 });
-            element->HorizontalAlignmentState(HorizontalAlignment::Left);
-            element->VerticalAlignmentState(VerticalAlignment::Top);
-            (void)element->AddInputHandler(InputEvent::PointerPressed, [this](UIElement& sender, InputEventArgs& args)
+            using namespace xaml::controls;
+            auto panel = winrt::make_self<StackPanel>();
+            panel->Margin({ 32, 32, 32, 32 });
+            panel->Spacing(16);
+            panel->HorizontalAlignmentState(HorizontalAlignment::Left);
+            panel->VerticalAlignmentState(VerticalAlignment::Top);
+            auto status = winrt::make_self<TextBlock>();
+            status->Text(L"WUC rendering / lifted input / native control templates");
+            panel->Append(status.get());
+            auto label = winrt::make_self<TextBlock>();
+            label->Text(L"Click, Space, or Enter");
+            auto button = winrt::make_self<Button>();
+            button->Content(label.get());
+            button->TabIndex(0);
+            auto weakStatus = static_cast<DependencyObject&>(*status).get_weak();
+            (void)button->AddClick([weakStatus, count = 0u](ButtonBase&) mutable
             {
-                if (!args.primaryButton) { return; }
-                auto owner = host;
-                if (owner->Focus(&sender) && owner->IsActive())
+                if (auto value = weakStatus.get())
                 {
-                    args.handled = owner->Root().Input().CapturePointer(sender, args.pointerId);
-                    sender.Opacity(0.55);
+                    dynamic_cast<TextBlock&>(*value).Text(winrt::hstring(L"Activations: " + std::to_wstring(++count)));
                 }
             });
-            (void)element->AddInputHandler(InputEvent::PointerReleased, [](UIElement& sender, InputEventArgs& args)
+            panel->Append(button.get());
+            auto secondLabel = winrt::make_self<TextBlock>();
+            secondLabel->Text(L"Tab / Shift+Tab moves focus");
+            auto second = winrt::make_self<Button>();
+            second->Content(secondLabel.get());
+            second->TabIndex(1);
+            panel->Append(second.get());
+            element = panel;
+            (void)element->AddInputHandler(InputEvent::KeyDown, [this](UIElement&, InputEventArgs& args)
             {
-                if (!args.primaryButton) { return; }
-                sender.Opacity(1.0);
-                args.handled = true;
-            });
-            (void)element->AddInputHandler(InputEvent::PointerCaptureLost, [](UIElement& sender, InputEventArgs&)
-            {
-                sender.Opacity(1.0);
-            });
-            (void)element->AddInputHandler(InputEvent::KeyDown, [this](UIElement& sender, InputEventArgs& args)
-            {
-                if (args.virtualKey == VK_SPACE && !args.repeatedKey)
-                {
-                    sender.Opacity(sender.Opacity() == 1.0 ? 0.55 : 1.0);
-                    args.handled = true;
-                }
                 if (args.virtualKey == VK_ESCAPE)
                 {
                     PostMessageW(window, WM_CLOSE, 0, 0);
@@ -167,7 +167,7 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
             windowClass.lpszClassName = L"XamlNativeDesktop";
             winrt::check_bool(RegisterClassW(&windowClass));
             winrt::check_bool(CreateWindowExW(0, windowClass.lpszClassName,
-                L"Native runtime: click the rectangle, then press Space or Escape",
+                L"Unified native controls: templates, text, input, and focus",
                 WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, 640, 420,
                 nullptr, nullptr, instance, &app));
             app.Initialize();
@@ -178,6 +178,8 @@ int WINAPI wWinMain(HINSTANCE instance, HINSTANCE, PWSTR, int show)
                 auto const status = GetMessageW(&message, nullptr, 0, 0);
                 if (status == -1) { winrt::throw_last_error(); }
                 if (!status) { result = static_cast<int>(message.wParam); break; }
+                if (app.host && app.host->IsActive() &&
+                    app.host->PreTranslateMessage(message.message, message.wParam, message.lParam)) { continue; }
                 TranslateMessage(&message);
                 DispatchMessageW(&message);
             }

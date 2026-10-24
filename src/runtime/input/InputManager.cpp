@@ -84,11 +84,19 @@ namespace xaml::runtime
     {
         VerifyAccess();
         if (!m_active || m_resetting || (element && !CanReceiveInput(*element))) { return false; }
-        auto previous = Resolve(m_focus);
         winrt::com_ptr<UIElement> next;
         next.copy_from(element);
+        auto request = m_focusRequest;
+        if (next && request && !request()) { return false; }
+        if (!m_active || (next && !CanReceiveInput(*next))) { return false; }
+        auto previous = Resolve(m_focus);
         if (previous == next) { return true; }
         m_focus = next ? static_cast<DependencyObject&>(*next).get_weak() : WeakElement{};
+        for (auto ancestor = next; ancestor; ancestor = ancestor->Parent())
+        {
+            if (ancestor->GetValue(UIElement::TabFocusNavigationProperty) == KeyboardNavigationMode::Once)
+            { ancestor->m_lastTabFocus = m_focus; }
+        }
         if (previous)
         {
             previous->InvalidateRender();
@@ -102,6 +110,8 @@ namespace xaml::runtime
             Raise(*next, args);
         }
         ValidateState();
+        auto observer = m_focusObserver;
+        if (observer) { observer(FocusedElement().get()); }
         return !element || Resolve(m_focus) == next;
     }
 
@@ -110,6 +120,83 @@ namespace xaml::runtime
         VerifyAccess();
         auto element = Resolve(m_focus);
         return element && CanReceiveInput(*element) ? element : nullptr;
+    }
+
+    void InputManager::SetFocusRequest(std::function<bool()> request)
+    {
+        VerifyAccess(); m_focusRequest = std::move(request);
+    }
+    void InputManager::SetFocusObserver(std::function<void(UIElement*)> observer)
+    {
+        VerifyAccess(); m_focusObserver = std::move(observer);
+    }
+
+    bool InputManager::MoveFocus(FocusNavigationDirection direction, bool wrap)
+    {
+        VerifyAccess();
+        if (!m_active || m_resetting) { return false; }
+        auto root = Resolve(m_root);
+        if (!root) { return false; }
+        if (direction < FocusNavigationDirection::Next || direction > FocusNavigationDirection::Last)
+        { throw winrt::hresult_invalid_argument(); }
+        auto focused = FocusedElement();
+        auto scope = root;
+        if (direction == FocusNavigationDirection::Next || direction == FocusNavigationDirection::Previous)
+        {
+            for (auto ancestor = focused; ancestor; ancestor = ancestor->Parent())
+            {
+                if (ancestor->GetValue(UIElement::TabFocusNavigationProperty) == KeyboardNavigationMode::Cycle)
+                { scope = ancestor; wrap = true; break; }
+            }
+        }
+        struct Candidate { winrt::com_ptr<UIElement> target, group; int index; };
+        std::vector<Candidate> candidates;
+        auto inside = [](UIElement const* element, UIElement const* parent)
+        {
+            for (auto current = element ? const_cast<UIElement*>(element)->get_strong() : nullptr; current; current = current->Parent())
+            { if (current.get() == parent) { return true; } }
+            return false;
+        };
+        std::function<void(UIElement&, bool)> visit = [&](UIElement& element, bool groupRoot)
+        {
+            if (!CanReceiveInput(element)) { return; }
+            if (!groupRoot && element.GetValue(UIElement::TabFocusNavigationProperty) == KeyboardNavigationMode::Once)
+            {
+                auto begin = candidates.size();
+                visit(element, true);
+                if (candidates.size() == begin) { return; }
+                std::stable_sort(candidates.begin() + begin, candidates.end(), [](auto const& left, auto const& right)
+                    { return left.index < right.index; });
+                auto selected = candidates[direction == FocusNavigationDirection::Previous || direction == FocusNavigationDirection::Last ? candidates.size() - 1 : begin].target;
+                auto remembered = Resolve(element.m_lastTabFocus);
+                if (remembered && CanReceiveInput(*remembered) && remembered->IsKeyboardFocusable() && inside(remembered.get(), &element))
+                { selected = remembered; }
+                candidates.resize(begin);
+                candidates.push_back({ std::move(selected), element.get_strong(), element.KeyboardTabIndex() });
+                return;
+            }
+            if (element.IsKeyboardFocusable()) { candidates.push_back({ element.get_strong(), {}, element.KeyboardTabIndex() }); }
+            for (std::size_t i = 0; i < element.VisualChildrenCount(); ++i) { visit(*element.VisualChildAt(i), false); }
+        };
+        visit(*scope, true);
+        std::stable_sort(candidates.begin(), candidates.end(), [](auto const& left, auto const& right)
+            { return left.index < right.index; });
+        if (candidates.empty()) { return false; }
+        if (direction == FocusNavigationDirection::First) { return Focus(candidates.front().target.get()); }
+        if (direction == FocusNavigationDirection::Last) { return Focus(candidates.back().target.get()); }
+        auto found = std::ranges::find_if(candidates, [&](auto const& item)
+            { return item.target == focused || (item.group && inside(focused.get(), item.group.get())); });
+        if (found == candidates.end())
+        {
+            return Focus((direction == FocusNavigationDirection::Previous ? candidates.back() : candidates.front()).target.get());
+        }
+        if (direction == FocusNavigationDirection::Previous)
+        {
+            if (found == candidates.begin()) { return wrap && Focus(candidates.back().target.get()); }
+            return Focus(std::prev(found)->target.get());
+        }
+        if (std::next(found) == candidates.end()) { return wrap && Focus(candidates.front().target.get()); }
+        return Focus(std::next(found)->target.get());
     }
 
     bool InputManager::CapturePointer(UIElement& element, std::uint32_t pointerId)
@@ -136,6 +223,12 @@ namespace xaml::runtime
         if (found == m_capture.end()) { return nullptr; }
         auto element = Resolve(found->second);
         return element && CanReceiveInput(*element) && element->IsHitTestVisible() ? element : nullptr;
+    }
+    void InputManager::ReleasePointer(UIElement& element, std::uint32_t pointerId)
+    {
+        VerifyAccess();
+        auto found = m_capture.find(pointerId);
+        if (found != m_capture.end() && Resolve(found->second).get() == &element) { ReleasePointer(pointerId); }
     }
 
     void InputManager::ReleasePointer(std::uint32_t pointerId)
@@ -216,10 +309,15 @@ namespace xaml::runtime
         ValidateState();
         if (!m_active) { return false; }
         if (args.event == InputEvent::HostFocusLost) { CancelInput(); return false; }
-        if (args.event == InputEvent::KeyDown || args.event == InputEvent::KeyUp)
+        if (args.event == InputEvent::KeyDown || args.event == InputEvent::KeyUp || args.event == InputEvent::CharacterReceived)
         {
             auto focused = FocusedElement();
-            return focused && Raise(*focused, args);
+            if (focused && Raise(*focused, args)) { return true; }
+            if (m_active && args.event == InputEvent::KeyDown && args.virtualKey == 9 && (args.modifiers & 6) == 0)
+            {
+                return MoveFocus((args.modifiers & 1) ? FocusNavigationDirection::Previous : FocusNavigationDirection::Next, true);
+            }
+            return false;
         }
         switch (args.event)
         {
@@ -313,6 +411,8 @@ namespace xaml::runtime
             catch (...) { if (!failure) { failure = std::current_exception(); } }
         }
         m_resetting = false;
+        try { auto observer = m_focusObserver; if (observer) { observer(nullptr); } }
+        catch (...) { if (!failure) { failure = std::current_exception(); } }
         if (failure) { std::rethrow_exception(failure); }
     }
 
@@ -321,6 +421,8 @@ namespace xaml::runtime
         VerifyAccess();
         if (!m_active) { return; }
         m_active = false;
+        m_focusRequest = {};
         CancelInput();
+        m_focusObserver = {};
     }
 }

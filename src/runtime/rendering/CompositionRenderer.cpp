@@ -76,7 +76,7 @@ namespace xaml::runtime
     {
         if (element.VisibilityState() == Visibility::Collapsed) { return; }
         auto const bounds = element.LayoutBounds();
-        auto const id = reinterpret_cast<std::uintptr_t>(&element);
+        auto const id = static_cast<std::uintptr_t>(element.RenderIdentity());
         auto const clip = element.ClipBounds();
         auto const ancestor = element.Parent();
         bool const parentRTL = ancestor && ancestor->IsRightToLeft();
@@ -86,10 +86,21 @@ namespace xaml::runtime
             element.VisualChildrenCount() == 0, element.IsRightToLeft() != parentRTL, clip.has_value(),
             static_cast<float>(clip ? clip->x : 0), static_cast<float>(clip ? clip->y : 0),
             static_cast<float>(clip ? clip->width : 0), static_cast<float>(clip ? clip->height : 0));
+        auto const version = element.RenderVersion();
+        bool const rightToLeft = element.IsRightToLeft();
+        if (XamlRenderingNeedsContent(m_backend, id, version, rightToLeft,
+            static_cast<float>(bounds.width), static_cast<float>(bounds.height)))
+        {
+            auto content = element.CollectDrawingContent();
+            if (!m_backend) { return; }
+            XamlRenderingContent(m_backend, id, version, content.Commands(), rightToLeft,
+                static_cast<float>(bounds.width), static_cast<float>(bounds.height));
+        }
         for (std::size_t index = 0; index < element.VisualChildrenCount(); ++index)
         {
             auto child = element.VisualChildAt(index);
             Realize(*child, id);
+            if (!m_backend) { return; }
         }
     }
 
@@ -100,9 +111,21 @@ namespace xaml::runtime
         {
             throw winrt::hresult_illegal_method_call();
         }
-        XamlRenderingBegin(m_backend);
-        Realize(root, 0);
-        XamlRenderingEnd(m_backend);
+        for (int attempt = 0; ; ++attempt)
+        {
+            try
+            {
+                XamlRenderingBegin(m_backend);
+                Realize(root, 0);
+                if (!m_backend) { return; }
+                XamlRenderingEnd(m_backend);
+                return;
+            }
+            catch (winrt::hresult_error const& error)
+            {
+                if (attempt || !XamlRenderingRecoverDevice(m_backend, error.code())) { throw; }
+            }
+        }
     }
 
     void CompositionRenderer::Shutdown()
@@ -130,11 +153,12 @@ namespace xaml::runtime
             case platform::InputKind::Wheel: event = InputEvent::PointerWheelChanged; break;
             case platform::InputKind::KeyDown: event = InputEvent::KeyDown; break;
             case platform::InputKind::KeyUp: event = InputEvent::KeyUp; break;
+            case platform::InputKind::CharacterReceived: event = InputEvent::CharacterReceived; break;
             case platform::InputKind::FocusLost: event = InputEvent::HostFocusLost; break;
             }
             return handler(InputEventArgs{ .event = event,
                 .position = { packet.x, packet.y }, .pointerId = packet.pointerId,
-                .virtualKey = packet.virtualKey, .timestamp = packet.timestamp,
+                .virtualKey = packet.virtualKey, .character = packet.character, .modifiers = packet.modifiers, .timestamp = packet.timestamp,
                 .wheelDelta = packet.wheelDelta, .horizontalWheel = packet.horizontalWheel,
                 .inContact = packet.inContact,
                 .primaryButton = packet.primaryButton, .repeatedKey = packet.repeatedKey,
@@ -147,4 +171,5 @@ namespace xaml::runtime
         VerifyAccess();
         return XamlRenderingFocusInput(m_backend);
     }
+    std::uintptr_t CompositionRenderer::InputWindow() const { VerifyAccess(); return XamlRenderingInputWindow(m_backend); }
 }

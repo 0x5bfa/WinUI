@@ -15,12 +15,16 @@ src/
 │  │  ├─ DependencyObject/
 │  │  ├─ UIElement/
 │  │  └─ FrameworkElement/
-│  ├─ input/                  # Element routing, logical capture and focus
+│  ├─ binding/                # Native property expressions
+│  ├─ styling/                # Resources, styles and namescopes
+│  ├─ input/                  # Routing, focus, commands and desktop TSF
 │  └─ rendering/              # WUC realization and lifted platform input
 └─ controls/
    ├─ Controls.ixx
    ├─ Control/
    ├─ ContentControl/
+   ├─ Border/
+   ├─ TextBlock/
    ├─ ButtonBase/
    ├─ Button/
    ├─ Panel/
@@ -36,7 +40,7 @@ Add runtime directories when their implementations need them. Do not create spec
 - `controls/` owns concrete controls, from `Control`, `ButtonBase`, and `Panel` to future `NavigationView` and `ItemsRepeater`. Each control with XAML resources will store them alongside its native implementation. Shared theme/template infrastructure can be introduced when needed.
 - `Xaml.Runtime` remains a single named C++ module with internal partitions. `Xaml.Controls` imports Runtime; Runtime never imports Controls. Both currently build as separate static libraries. Source folders do not imply new C++ modules, projects, DLLs, or Core/DXaml peers.
 
-The current native slice includes local and attached value properties, per-object property callbacks, size constraints and margins, visual-tree ownership, basic measure/arrange, and the control hierarchy through Button. WUC realization, lifted input adaptation, native event routing, and a desktop consumer are implemented; their runtime behavior still needs validation. Public XAML/WinRT contracts, templates, managed reference tracking, complete rendering content, and complete runtime lifecycle remain pending. The existing control prototypes are not yet wired to the new input manager. See [Native control kernel](architecture/native-control-kernel.md) and [Primitive WinUI API compatibility](architecture/primitives-api-compatibility.md).
+The native slice includes dependency properties and inheritance, layout, property bindings, resources/styles, isolated template namescopes, template/state setters, WUC rectangle/text drawing, lifted routed input, Tab scopes, commands, and a TSF text-store connection. Button/ContentControl/Border/TextBlock use these shared foundations. NativeDesktop consumes projects; PackagedDesktop consumes the native source NuGet. These are native implementations whose runtime behavior still needs validation. Public WinRT contracts, managed composition/reference tracking, automation, and complete rendering/text/control behavior remain pending. See [Control authoring](architecture/control-authoring.md) and [Primitive WinUI API compatibility](architecture/primitives-api-compatibility.md).
 
 ## Build
 

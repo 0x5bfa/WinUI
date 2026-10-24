@@ -5,6 +5,27 @@ import winrt_base;
 
 namespace xaml::runtime
 {
+    std::shared_ptr<InputManager> UIElement::InputContext() const
+    {
+        VerifyAccess();
+        auto root = const_cast<UIElement*>(this)->get_strong();
+        while (auto parent = root->Parent()) { root = std::move(parent); }
+        return root->m_rootInput.lock();
+    }
+    bool UIElement::Focus() { auto input = InputContext(); return input && input->Focus(this); }
+    bool UIElement::CapturePointer(std::uint32_t id)
+    {
+        auto input = InputContext(); return input && input->CapturePointer(*this, id);
+    }
+    void UIElement::ReleasePointerCapture(std::uint32_t id)
+    {
+        if (auto input = InputContext()) { input->ReleasePointer(*this, id); }
+    }
+    bool UIElement::HasFocus() const
+    {
+        auto input = InputContext(); return input && input->FocusedElement().get() == this;
+    }
+
     Point UIElement::PointFromRoot(Point position) const
     {
         VerifyAccess();

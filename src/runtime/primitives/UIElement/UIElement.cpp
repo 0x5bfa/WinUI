@@ -7,6 +7,24 @@ namespace xaml::runtime
 {
     namespace
     {
+        std::atomic<std::uint64_t> nextRenderIdentity{};
+        std::uint64_t AllocateRenderIdentity()
+        {
+            auto current = nextRenderIdentity.load(std::memory_order_relaxed);
+            for (;;)
+            {
+                if (current == std::numeric_limits<std::uint64_t>::max()) { throw winrt::hresult_out_of_bounds(); }
+                if (nextRenderIdentity.compare_exchange_weak(current, current + 1, std::memory_order_relaxed)) { return current + 1; }
+            }
+        }
+    }
+    UIElement::UIElement() : m_renderIdentity(AllocateRenderIdentity()) {}
+    DependencyProperty<KeyboardNavigationMode> const UIElement::TabFocusNavigationProperty =
+        DependencyProperty<KeyboardNavigationMode>::Register<UIElement>("TabFocusNavigation", KeyboardNavigationMode::Local,
+            PropertyEffects::None, +[](KeyboardNavigationMode value)
+            { return value >= KeyboardNavigationMode::Local && value <= KeyboardNavigationMode::Once; });
+    namespace
+    {
         void ValidateSize(Size size, bool allowInfinity)
         {
             auto valid = [allowInfinity](double value)
@@ -63,10 +81,11 @@ namespace xaml::runtime
     bool UIElement::IsEnabled() const
     {
         auto const parent = Parent();
-        return GetValue(IsEnabledProperty) && (!parent || parent->IsEnabled());
+        return GetValue(IsEnabledProperty) && IsEnabledCore() && (!parent || parent->IsEnabled());
     }
 
     void UIElement::IsEnabled(bool value) { SetValue(IsEnabledProperty, value); }
+    void UIElement::InvalidateIsEnabled() { VerifyAccess(); NotifyIsEnabledChanged(); }
 
     bool UIElement::IsHitTestVisible() const
     {
@@ -197,6 +216,40 @@ namespace xaml::runtime
 
         // All fallible preparation precedes changing either side of the edge.
         auto const current = replacement;
+        struct InheritedSnapshot
+        {
+            winrt::com_ptr<UIElement> element;
+            DependencyPropertyHandle property;
+            std::any before;
+        };
+        std::vector<InheritedSnapshot> inherited;
+        auto snapshot = [&](UIElement& branch)
+        {
+            for (auto const& property : DependencyPropertyHandle::InheritableProperties())
+            {
+                std::function<void(UIElement&)> visit = [&](UIElement& node)
+                {
+                    if (property.IsValidFor(node))
+                    {
+                        if (!node.HasValueOverride(property))
+                        {
+                            inherited.push_back({ node.get_strong(), property, node.GetValue(property) });
+                        }
+                        return;
+                    }
+                    for (auto const& child : node.m_children) { visit(*child); }
+                };
+                visit(branch);
+            }
+        };
+        for (auto const& old : m_children)
+        {
+            if (std::ranges::none_of(current, [&](auto const& entry) { return entry == old; })) { snapshot(*old); }
+        }
+        for (auto const& added : current)
+        {
+            if (std::ranges::none_of(m_children, [&](auto const& entry) { return entry == added; })) { snapshot(*added); }
+        }
         auto const parentReference = DependencyObject::get_weak();
         auto previous = std::move(m_children);
         for (auto const& old : previous)
@@ -222,6 +275,8 @@ namespace xaml::runtime
         }
         InvalidateMeasure();
         InvalidateRender();
+
+        for (auto const& entry : inherited) { entry.element->NotifyInheritedValueChanged(entry.property, entry.before); }
 
         for (auto const& old : previous)
         {
@@ -298,6 +353,27 @@ namespace xaml::runtime
             // Layout rounding follows the visual parent unless explicitly overridden.
             // Child arrangements must be revisited even if the root slot is unchanged.
             for (auto const& child : m_children) { child->MarkLayoutRoundingSubtree(); }
+        }
+    }
+
+    std::optional<std::any> UIElement::GetInheritedValue(DependencyPropertyHandle const& property) const
+    {
+        for (auto ancestor = Parent(); ancestor; ancestor = ancestor->Parent())
+        {
+            if (property.IsValidFor(*ancestor)) { return ancestor->GetValue(property); }
+        }
+        return {};
+    }
+
+    void UIElement::OnInheritedPropertyChanged(DependencyPropertyHandle const& property,
+        std::any const& before, std::any const&)
+    {
+        auto children = m_children;
+        for (auto const& child : children)
+        {
+            if (child->Parent().get() != this) { continue; }
+            if (property.IsValidFor(*child)) { child->NotifyInheritedValueChanged(property, before); }
+            else { child->OnInheritedPropertyChanged(property, before, {}); }
         }
     }
 

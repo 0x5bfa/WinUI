@@ -6,6 +6,35 @@ import Xaml.Runtime;
 
 namespace xaml::controls
 {
+    runtime::DependencyProperty<std::shared_ptr<runtime::Command>> const ButtonBase::CommandProperty =
+        runtime::DependencyProperty<std::shared_ptr<runtime::Command>>::Register<ButtonBase>("Command", {});
+    runtime::DependencyProperty<winrt::Windows::Foundation::IInspectable> const ButtonBase::CommandParameterProperty =
+        runtime::DependencyProperty<winrt::Windows::Foundation::IInspectable>::Register<ButtonBase>("CommandParameter", nullptr);
+    ButtonBase::~ButtonBase()
+    {
+        try { if (auto command = m_observedCommand.lock()) { command->Unsubscribe(m_commandToken); } } catch (...) {}
+    }
+    bool ButtonBase::IsEnabledCore() const { return m_commandCanExecute; }
+    void ButtonBase::RefreshCommand()
+    {
+        auto lifetime = get_strong(); auto version = ++m_commandVersion;
+        auto command = GetValue(CommandProperty);
+        if (m_observedCommand.lock() != command)
+        {
+            if (auto previous = m_observedCommand.lock()) { previous->Unsubscribe(m_commandToken); }
+            m_commandToken = 0; m_observedCommand = command;
+            if (command)
+            {
+                auto weak = runtime::DependencyObject::get_weak();
+                m_commandToken = command->Subscribe([weak]
+                { if (auto owner = weak.get()) { dynamic_cast<ButtonBase&>(*owner).RefreshCommand(); } });
+            }
+        }
+        bool const enabled = !command || command->CanExecute(GetValue(CommandParameterProperty));
+        if (version != m_commandVersion || m_commandCanExecute == enabled) { return; }
+        m_commandCanExecute = enabled;
+        InvalidateIsEnabled();
+    }
     runtime::DependencyProperty<controls::ClickMode> const ButtonBase::ClickModeProperty =
         runtime::DependencyProperty<controls::ClickMode>::Register<ButtonBase>("ClickMode", controls::ClickMode::Release,
             runtime::PropertyEffects::Render, +[](controls::ClickMode value)
@@ -62,15 +91,18 @@ namespace xaml::controls
         {
             if (entry->active) { entry->handler(*this); }
         }
+        if (auto command = GetValue(CommandProperty)) { command->Execute(GetValue(CommandParameterProperty)); }
     }
 
     void ButtonBase::CancelInteraction()
     {
         VerifyAccess();
-        m_pointer.reset();
+        auto pointer = std::exchange(m_pointer, {});
         m_key.reset();
         m_pointerOver = false;
+        if (pointer) { ReleasePointerCapture(*pointer); }
         InvalidateRender();
+        UpdateVisualState();
     }
 
     void ButtonBase::OnFocusLost() { CancelInteraction(); }
@@ -95,8 +127,57 @@ namespace xaml::controls
 
     void ButtonBase::OnPropertyChanged(runtime::PropertyChange const& change)
     {
-        runtime::UIElement::OnPropertyChanged(change);
+        Control::OnPropertyChanged(change);
+        if (change.property == CommandProperty.Id() || change.property == CommandParameterProperty.Id()) { RefreshCommand(); }
         if (change.property == ClickModeProperty.Id()) { CancelInteraction(); }
+    }
+
+    void ButtonBase::UpdateVisualState()
+    {
+        Control::UpdateVisualState();
+        (void)GoToState(!IsEnabled() ? L"Disabled" : IsPressed() ? L"Pressed" : IsPointerOver() ? L"PointerOver" : L"Normal");
+    }
+
+    void ButtonBase::OnInputEvent(runtime::InputEventArgs& args)
+    {
+        Control::OnInputEvent(args);
+        auto lifetime = get_strong();
+        if (args.event == runtime::InputEvent::KeyDown || args.event == runtime::InputEvent::KeyUp)
+        {
+            if ((args.modifiers & 6) != 0) { return; }
+            if (args.virtualKey == 32 || args.virtualKey == 13 || args.virtualKey == 195)
+            {
+                args.handled = ProcessKey(args.virtualKey == 13 ? ActivationKey::Enter : ActivationKey::Space,
+                    args.event == runtime::InputEvent::KeyDown) || args.handled;
+                UpdateVisualState();
+            }
+            return;
+        }
+        std::optional<PointerAction> action;
+        switch (args.event)
+        {
+        case runtime::InputEvent::PointerEntered: action = PointerAction::Entered; break;
+        case runtime::InputEvent::PointerExited: action = PointerAction::Exited; break;
+        case runtime::InputEvent::PointerPressed: action = PointerAction::Pressed; break;
+        case runtime::InputEvent::PointerMoved: action = PointerAction::Moved; break;
+        case runtime::InputEvent::PointerReleased: action = PointerAction::Released; break;
+        case runtime::InputEvent::PointerCanceled: action = PointerAction::Cancelled; break;
+        case runtime::InputEvent::PointerCaptureLost: action = PointerAction::CaptureLost; break;
+        default: return;
+        }
+        auto point = PointFromRoot(args.position);
+        auto size = ActualSize();
+        bool const over = point.x >= 0 && point.y >= 0 && point.x < size.width && point.y < size.height &&
+            args.event != runtime::InputEvent::PointerExited;
+        if (*action == PointerAction::Pressed && args.primaryButton && over && IsEnabled() && ClickMode() != controls::ClickMode::Hover)
+        {
+            if (m_pointer || m_key) { return; }
+            (void)Focus();
+            if (!IsEnabled() || !InputContext()) { return; }
+            if (!CapturePointer(args.pointerId)) { return; }
+        }
+        args.handled = ProcessPointer({ *action, args.pointerId, over, args.primaryButton }) || args.handled;
+        UpdateVisualState();
     }
 
     bool ButtonBase::ProcessPointer(PointerInput const& input)
@@ -138,8 +219,9 @@ namespace xaml::controls
         {
             if (!m_pointer || !input.isPrimaryButton) { return false; }
             bool const click = IsPressed() && input.isOver && mode == controls::ClickMode::Release;
-            m_pointer.reset();
+            auto pointer = std::exchange(m_pointer, {});
             m_pointerOver = input.isOver;
+            if (pointer) { ReleasePointerCapture(*pointer); }
             InvalidateRender();
             // Complete the input transition before invoking reentrant app code.
             if (click) { OnClick(); }

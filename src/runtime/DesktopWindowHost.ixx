@@ -5,6 +5,7 @@ import winrt_base;
 import :Primitives;
 import :ContentRoot;
 import :Rendering;
+import :TextInput;
 
 export namespace xaml::runtime
 {
@@ -23,6 +24,8 @@ export namespace xaml::runtime
         void Resize(int widthPixels, int heightPixels, double rasterizationScale);
         [[nodiscard]] ContentRoot& Root();
         bool Focus(UIElement* element);
+        [[nodiscard]] TextInputSession& TextInput();
+        bool PreTranslateMessage(std::uint32_t message, std::uintptr_t wparam, std::intptr_t lparam);
         void Shutdown();
         [[nodiscard]] bool IsActive() const noexcept { return m_active; }
 
@@ -34,6 +37,7 @@ export namespace xaml::runtime
         std::thread::id m_thread;
         std::shared_ptr<ContentRoot> m_root;
         std::shared_ptr<CompositionRenderer> m_renderer;
+        std::shared_ptr<TextInputSession> m_textInput;
         bool m_active{ true };
     };
 }

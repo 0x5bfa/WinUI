@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <PackageId>Unified.WinUI.Native</PackageId>
+    <Version>0.1.0-preview.3</Version>
+    <Authors>Unified WinUI contributors</Authors>
+    <Description>Native C++ module foundations for the unified WinUI implementation. Source package; no public Microsoft.UI.Xaml WinRT ABI.</Description>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <EnableDefaultItems>false</EnableDefaultItems>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <PackageOutputPath>../../artifacts/packages</PackageOutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="build/native/*" Pack="true" PackagePath="build/native/" />
+    <None Include="README.md" Pack="true" PackagePath="/" />
+    <None Include="../../src/runtime/**/*.ixx;../../src/runtime/**/*.cpp;../../src/runtime/**/*.h" Pack="true" PackagePath="src/runtime/%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="../../src/controls/**/*.ixx;../../src/controls/**/*.cpp;../../src/controls/**/*.h" Pack="true" PackagePath="src/controls/%(RecursiveDir)%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,38 @@
+<Project>
+  <PropertyGroup>
+    <_ReimplementedXamlCliProject>$(MSBuildThisFileDirectory)..\..\src\compiler-cli\Microsoft.UI.Xaml.Compiler.Cli.csproj</_ReimplementedXamlCliProject>
+    <_ReimplementedXamlDir>$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\XamlCompiler\</_ReimplementedXamlDir>
+    <_ReimplementedXamlExtension Condition="'$(ReimplementedXamlLanguage)' == 'csharp'">cs</_ReimplementedXamlExtension>
+    <_ReimplementedXamlExtension Condition="'$(ReimplementedXamlLanguage)' == 'cppwinrt'">h</_ReimplementedXamlExtension>
+    <SetModuleDependenciesDependsOn Condition="'$(UseReimplementedXamlCompiler)' == 'true' and '$(ReimplementedXamlLanguage)' == 'cppwinrt'">$(SetModuleDependenciesDependsOn);_ReimplementedXamlCompile</SetModuleDependenciesDependsOn>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(UseReimplementedXamlCompiler)' == 'true' and '$(ReimplementedXamlLanguage)' == 'cppwinrt'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(_ReimplementedXamlDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <Target Name="_ReimplementedXamlCompile"
+          BeforeTargets="CoreCompile;ClCompile"
+          DependsOnTargets="ResolveReferences"
+          Condition="'$(UseReimplementedXamlCompiler)' == 'true' and '@(Page)' != ''">
+    <Error Condition="'$(ReimplementedXamlLanguage)' != 'csharp' and '$(ReimplementedXamlLanguage)' != 'cppwinrt'"
+           Text="Set ReimplementedXamlLanguage to csharp or cppwinrt." />
+    <ItemGroup>
+      <_ReimplementedXamlInput Include="@(Page)">
+        <_Output>$(_ReimplementedXamlDir)%(RelativeDir)%(Filename).xaml.g.$(_ReimplementedXamlExtension)</_Output>
+        <_BinaryOutput>$(_ReimplementedXamlDir)%(RelativeDir)%(Filename).mxbf</_BinaryOutput>
+      </_ReimplementedXamlInput>
+    </ItemGroup>
+    <MakeDir Directories="$(_ReimplementedXamlDir)" />
+    <Exec Command="dotnet run --project &quot;$(_ReimplementedXamlCliProject)&quot; --configuration Release -- --source &quot;%(_ReimplementedXamlInput.FullPath)&quot; --resource &quot;%(_ReimplementedXamlInput.Identity)&quot; --output &quot;%(_ReimplementedXamlInput._Output)&quot; --binary-output &quot;%(_ReimplementedXamlInput._BinaryOutput)&quot; --language &quot;$(ReimplementedXamlLanguage)&quot; @(XamlMetadataReference->'--reference &quot;%(FullPath)&quot;', ' ')" />
+    <ItemGroup>
+      <FileWrites Include="@(_ReimplementedXamlInput->'%(_Output)');@(_ReimplementedXamlInput->'%(_BinaryOutput)')" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(ReimplementedXamlLanguage)' == 'csharp'">
+      <Compile Include="@(_ReimplementedXamlInput->'%(_Output)')" />
+    </ItemGroup>
+    <ItemGroup Condition="'$(ReimplementedXamlLanguage)' == 'cppwinrt'">
+      <ClInclude Include="@(_ReimplementedXamlInput->'%(_Output)')" />
+    </ItemGroup>
+  </Target>
+</Project>

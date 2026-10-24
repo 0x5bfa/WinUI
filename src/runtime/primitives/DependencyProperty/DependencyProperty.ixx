@@ -49,7 +49,13 @@ export namespace xaml::runtime
             std::function<bool(std::any const&, std::any const&)> valuesEqual;
             std::function<winrt::Windows::Foundation::IInspectable(std::any const&)> box;
             std::function<std::any(winrt::Windows::Foundation::IInspectable const&)> unbox;
+            bool inherits{};
         };
+
+        inline std::mutex inheritedPropertyMutex;
+        inline std::vector<std::shared_ptr<PropertyInfo const>> inheritedProperties;
+        template <typename T> inline constexpr bool isNativeSharedPointer = false;
+        template <typename T> inline constexpr bool isNativeSharedPointer<std::shared_ptr<T>> = true;
 
         template <typename T>
         bool EqualValues(T left, T right) noexcept
@@ -71,7 +77,7 @@ export namespace xaml::runtime
     concept PropertyValue = std::is_arithmetic_v<T> || std::is_enum_v<T> ||
         (std::is_class_v<T> && std::is_trivially_copyable_v<T> && std::equality_comparable<T>) ||
         std::same_as<T, winrt::Windows::Foundation::IInspectable> ||
-        std::same_as<T, winrt::hstring>;
+        std::same_as<T, winrt::hstring> || detail::isNativeSharedPointer<T>;
 
     // Native metadata used by the property engine. Public WinRT PropertyMetadata
     // will be projected from the contract and backed by this same state.
@@ -84,6 +90,7 @@ export namespace xaml::runtime
         T defaultValue{};
         DefaultFactory createDefault;
         ChangedHandler onChanged;
+        bool inherits{};
 
         explicit PropertyMetadata(T value, ChangedHandler changed = {})
             : defaultValue(std::move(value)), onChanged(std::move(changed)) {}
@@ -104,6 +111,15 @@ export namespace xaml::runtime
         [[nodiscard]] std::string_view Name() const noexcept { return m_info->name; }
         [[nodiscard]] std::type_index ValueType() const noexcept { return m_info->valueType; }
         [[nodiscard]] void const* Id() const noexcept { return m_info.get(); }
+        [[nodiscard]] bool Inherits() const noexcept { return m_info->inherits; }
+        [[nodiscard]] bool IsValidFor(DependencyObject const& owner) const { return m_info->acceptsOwner(owner); }
+        [[nodiscard]] static std::vector<DependencyPropertyHandle> InheritableProperties()
+        {
+            std::scoped_lock lock(detail::inheritedPropertyMutex);
+            std::vector<DependencyPropertyHandle> result;
+            for (auto const& info : detail::inheritedProperties) { result.push_back(DependencyPropertyHandle(info)); }
+            return result;
+        }
         [[nodiscard]] BoxedPropertyMetadata GetMetadata() const
         {
             BoxedPropertyMetadata metadata;
@@ -160,6 +176,16 @@ export namespace xaml::runtime
         {
             return RegisterAttachedWithMetadata<Owner>(name,
                 PropertyMetadata<T>(defaultValue, std::move(onChanged)), effects, validate);
+        }
+
+        template <typename Owner>
+        static DependencyProperty RegisterInherited(std::string_view name, T defaultValue,
+            PropertyEffects effects = PropertyEffects::None, bool (*validate)(T) = nullptr,
+            ChangedHandler onChanged = {})
+        {
+            PropertyMetadata<T> metadata(defaultValue, std::move(onChanged));
+            metadata.inherits = true;
+            return RegisterWithMetadata<Owner>(name, std::move(metadata), effects, validate);
         }
 
         template <typename Owner>
@@ -272,7 +298,12 @@ export namespace xaml::runtime
                         }
                     }
                     else { throw winrt::hresult_not_implemented(); }
-                });
+                }, metadata.inherits);
+            if (metadata.inherits)
+            {
+                std::scoped_lock lock(detail::inheritedPropertyMutex);
+                detail::inheritedProperties.push_back(info);
+            }
             return DependencyProperty(std::move(info), registeredDefault, validate);
         }
 

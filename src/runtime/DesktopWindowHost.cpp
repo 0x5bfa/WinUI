@@ -31,10 +31,28 @@ namespace xaml::runtime
         auto host = std::shared_ptr<DesktopWindowHost>(new DesktopWindowHost());
         host->m_renderer = CompositionRenderer::CreateForWindow(windowId, widthPixels, heightPixels);
         host->m_renderer->SetRasterizationScale(rasterizationScale);
+        host->m_textInput = std::make_shared<TextInputSession>(host->m_renderer->InputWindow());
+        host->m_textInput->NotifyLayoutChanged(rasterizationScale);
         host->m_root = ContentRoot::CreateOnCurrentDispatcher(std::move(element),
             { widthPixels / rasterizationScale, heightPixels / rasterizationScale },
-            [renderer = host->m_renderer](UIElement& root) { renderer->Render(root); });
+            [renderer = host->m_renderer, text = std::weak_ptr<TextInputSession>(host->m_textInput)](UIElement& root)
+            {
+                renderer->Render(root);
+                if (renderer->IsActive())
+                { if (auto input = text.lock()) { input->NotifyLayoutChanged(renderer->RasterizationScale()); } }
+            });
         host->m_root->SetRasterizationScale(rasterizationScale);
+        std::weak_ptr<TextInputSession> weakText = host->m_textInput;
+        host->m_root->Input().SetFocusObserver([weakText](UIElement* focused)
+        {
+            if (auto text = weakText.lock()) { text->Focus(focused); }
+        });
+        std::weak_ptr<CompositionRenderer> weakRenderer = host->m_renderer;
+        host->m_root->Input().SetFocusRequest([weakRenderer]
+        {
+            auto renderer = weakRenderer.lock();
+            return renderer && renderer->IsActive() && renderer->FocusInput();
+        });
         std::weak_ptr<ContentRoot> weak = host->m_root;
         host->m_renderer->SetInputHandler([weak](InputEventArgs args)
         {
@@ -43,7 +61,7 @@ namespace xaml::runtime
             // Hit testing consumes settled layout, including changes made
             // since the last queued frame.
             if (args.event != InputEvent::HostFocusLost && args.event != InputEvent::KeyDown &&
-                args.event != InputEvent::KeyUp) { root->UpdateLayout(); }
+                args.event != InputEvent::KeyUp && args.event != InputEvent::CharacterReceived) { root->UpdateLayout(); }
             return root->IsActive() && root->Input().Process(args);
         });
         return host;
@@ -69,6 +87,7 @@ namespace xaml::runtime
         if (!root->IsActive()) { return; }
         root->SetRasterizationScale(rasterizationScale);
         root->Resize({ widthPixels / rasterizationScale, heightPixels / rasterizationScale });
+        if (m_textInput) { m_textInput->NotifyLayoutChanged(rasterizationScale); }
     }
 
     ContentRoot& DesktopWindowHost::Root()
@@ -85,6 +104,11 @@ namespace xaml::runtime
         if (element && !renderer->FocusInput()) { return false; }
         return root->IsActive() && root->Input().Focus(element);
     }
+    TextInputSession& DesktopWindowHost::TextInput() { VerifyAccess(); return *m_textInput; }
+    bool DesktopWindowHost::PreTranslateMessage(std::uint32_t message, std::uintptr_t wparam, std::intptr_t lparam)
+    {
+        VerifyAccess(); auto text = m_textInput; return text->PreTranslateMessage(message, wparam, lparam);
+    }
 
     void DesktopWindowHost::Shutdown()
     {
@@ -93,10 +117,13 @@ namespace xaml::runtime
         m_active = false;
         auto root = std::exchange(m_root, {});
         auto renderer = std::exchange(m_renderer, {});
+        auto text = std::exchange(m_textInput, {});
         std::exception_ptr failure;
         if (renderer && renderer->IsActive()) { renderer->SetInputHandler({}); }
         try { if (root) { root->Shutdown(); } }
         catch (...) { failure = std::current_exception(); }
+        try { if (text) { text->Shutdown(); } }
+        catch (...) { if (!failure) { failure = std::current_exception(); } }
         if (renderer && renderer->IsActive()) { renderer->Shutdown(); }
         if (failure) { std::rethrow_exception(failure); }
     }

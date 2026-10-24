@@ -35,8 +35,8 @@
     <PackageReference Include="Microsoft.WindowsAppSDK.Foundation" Version="2.3.12" GeneratePathProperty="true" />
     <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.9" />
     <PackageReference Include="Microsoft.WindowsAppSDK.Runtime" Version="2.5.1" GeneratePathProperty="true" />
-    <ProjectReference Include="..\..\src\runtime\Microsoft.UI.Xaml.Runtime.vcxproj">
-      <Project>{F35AB309-895C-4980-BA33-C04BA086912D}</Project>
+    <ProjectReference Include="..\..\src\controls\Microsoft.UI.Xaml.Controls.vcxproj">
+      <Project>{62AD9CF9-9CE4-45C3-AD63-52136E9853F5}</Project>
     </ProjectReference>
     <ClCompile Include="Main.cpp" />
   </ItemGroup>

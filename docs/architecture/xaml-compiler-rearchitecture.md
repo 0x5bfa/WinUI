@@ -1,6 +1,8 @@
 # XAML compiler rearchitecture
 
-Status: staged design with an implemented XML syntax reader. The new compiler cannot yet generate code or XBF.
+Status: independent compiler in development. XML syntax reading, metadata-based semantic binding,
+code-behind generation, and an opt-in build adapter are implemented for a limited XAML subset.
+The deployed WinUI XBF2 contract and runtime loader are not yet implemented.
 
 ## Existing implementation
 
@@ -47,7 +49,7 @@ The runtime owns type activation, markup loading, resources, event hookups, and 
 ## Compatibility and incremental builds
 
 - Preserve existing XBF2 serialization/index rules for any binary compatibility claimed. Lock the target runtime version and stable type/property index mapping against a chosen SDK baseline; never derive persisted indexes from internal native class IDs.
-- Initially compare output against the upstream compiler and `GenXbf.dll` on a pinned XAML fixture corpus. Evaluate a managed XBF writer, including the existing XbfKit work, only after reader compatibility and licensing/dependency terms are verified. A clean writer must reproduce loader-visible semantics, not necessarily byte-identical files.
+- Compare XBF output against the upstream compiler and `GenXbf.dll` using a pinned XAML fixture corpus. Implement binary writing independently after establishing reader compatibility and serialization rules. A compatible writer must reproduce loader-visible semantics, not necessarily byte-identical files.
 - Treat C# pass 1 (generated source stubs) and pass 2 (resolution after compilation) as an explicit dependency cycle; model generated declarations and resolved symbols separately. Keep C++/WinRT output compatible with its include/module and build ordering requirements.
 - Use per-file source hashes, referenced symbol signatures, compiler/options versions, and target XBF/runtime versions as cache inputs. Cache only immutable syntax/bound artifacts, and invalidate dependent pages when contracts or resource names change. Do not keep static loaded-assembly or native-DLL caches across MSBuild invocations.
 - Emit deterministic artifacts under `artifacts/obj`, with stable diagnostics (code, path, line, column). Design-time compilation should recover and report partial results without writing deployable XBF on erroneous input.
@@ -64,8 +66,10 @@ The runtime owns type activation, markup loading, resources, event hookups, and 
 | 4: C# and bindings | Compile `x:Class`, `x:Bind`, and templates for an external C# app | Pass 1/2, CLR ownership, change propagation, and AOT requirements validated |
 | 5: packaging and migration | Ship compiler targets, XBF/PRI, WinMD and runtime in the NuGet integration | Pinned reference application builds, runs, and deploys independently |
 
-## Implemented slice
+## Current implementation and limits
 
-`src/compiler/Syntax/XamlSyntaxParser.cs` provides a self-contained .NET 10 syntax front end. It resolves XML namespace URIs, records namespace declarations separately from property attributes, retains element/attribute order and text/CDATA, reports XML locations, and rejects DTDs/external entities. `tests/compiler` exercises these guarantees without requiring native XAML components.
-
-This slice does not yet interpret XAML names or markup extensions, validate against WinMD, produce bound IR, generate C++/C# code, or emit XBF. Its scope is deliberately independent of the current native runtime's unfinished public API and hosting work.
+- `src/compiler/Syntax` parses namespace-aware XAML, retains source positions and text, and prohibits DTDs.
+- `src/compiler/Semantics` resolves a subset of presentation/`using:`/`clr-namespace:` types and members from ECMA-335/WinMD metadata, retaining property elements and simple `x:Bind` paths. Namescope boundaries, content-property rules, overloads, and typed binding paths still need work.
+- `src/compiler/Generation` generates C# and C++/WinRT code-behind, element connection IDs, named fields, and basic event and `x:Bind` hookups. The C# OneWay/TwoWay fixture exercises notification and dependency-property callback lifetimes. The C++/WinRT executable fixture exercises source change notifications, TwoWay updates, event hookup, and lifecycle unsubscription with mock WinRT projections. Full projected-ABI and runtime validation are still required.
+- `src/compiler/Binary` writes and reads a deterministic, versioned **MXBF** intermediate representation. `.mxbf` is strictly internal: it is **not** compatible with the platform's XBF2 and must never be packaged as a `.xbf` resource.
+- `src/compiler-cli` and `eng/compiler` provide an explicit opt-in MSBuild integration with per-directory output paths. The managed fixture exercises generated source and intermediate binary output. The native executable fixture builds and runs with MSBuild in Debug and Release x64. Real XBF2 generation, runtime activation, PRI integration, C++/WinRT end-to-end loading, and a production NuGet target remain open.

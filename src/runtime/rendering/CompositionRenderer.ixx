@@ -27,6 +27,7 @@ export namespace xaml::runtime
         using InputHandler = std::function<bool(InputEventArgs)>;
         void SetInputHandler(InputHandler handler);
         bool FocusInput();
+        [[nodiscard]] std::uintptr_t InputWindow() const;
         [[nodiscard]] bool IsActive() const noexcept { return m_backend != nullptr; }
 
     private:

@@ -1,5 +1,7 @@
 # Native control kernel
 
+This document records the initial prototype. For the current native templates, drawing, shared input/focus, commands, and source package, see [Control authoring](control-authoring.md) and [Framework foundations](framework-foundations.md). The original limitations below describe that earlier slice.
+
 This slice implements native behavior on the unified object model; it does not yet expose the public WinUI control contracts.
 
 ## Ownership and dependencies

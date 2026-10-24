@@ -17,9 +17,13 @@ export namespace xaml::runtime
 
         bool Process(InputEventArgs args);
         bool Focus(UIElement* element);
+        bool MoveFocus(FocusNavigationDirection direction, bool wrap = false);
+        void SetFocusRequest(std::function<bool()> request);
+        void SetFocusObserver(std::function<void(UIElement*)> observer);
         [[nodiscard]] winrt::com_ptr<UIElement> FocusedElement() const;
         bool CapturePointer(UIElement& element, std::uint32_t pointerId);
         void ReleasePointer(std::uint32_t pointerId);
+        void ReleasePointer(UIElement& element, std::uint32_t pointerId);
         [[nodiscard]] winrt::com_ptr<UIElement> CapturedElement(std::uint32_t pointerId) const;
         void ValidateState();
         void CancelInput();
@@ -46,5 +50,7 @@ export namespace xaml::runtime
         bool m_resetting{};
         bool m_validating{};
         std::uint64_t m_cancellationVersion{};
+        std::function<bool()> m_focusRequest;
+        std::function<void(UIElement*)> m_focusObserver;
     };
 }

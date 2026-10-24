@@ -30,7 +30,7 @@ Pointer and keyboard events bubble along a retained route. `handled` suppresses 
 
 Pointer capture requires an active press and a visible, enabled, hit-testable element in the same content root. This is logical element capture within the platform input source, not an independent replacement for platform capture. Release, capture loss, host focus loss, and shutdown clear the corresponding state. Cross-island contact routing cancels the current interaction; gesture continuation across islands is pending.
 
-Keyboard events target the root's programmatically focused element. `DesktopWindowHost::Focus` requests platform focus before selecting that element. Disabled, collapsed, or detached targets are invalidated before input dispatch and during the next root update. This does not implement Control's existing prototype focus field or Tab/directional navigation.
+Keyboard and character events target the focused element. `DesktopWindowHost::Focus` requests platform focus before selecting that element. Disabled, collapsed, or detached targets are invalidated before input dispatch and during the next root update. Attached Controls use this same focus owner. Tab/Shift+Tab traverse eligible controls by TabIndex, with Cycle/Once scopes and weak remembered focus; directional navigation and leaving an island through host focus navigation are pending.
 
 Callbacks may change the tree, remove handlers, or shut down a root. Routes retain their targets during synchronous delivery, and platform callbacks retain only a weak backend plus a local strong reference while executing. Shutdown revokes platform subscriptions and clears the input callback before closing the site and island.
 
@@ -38,14 +38,22 @@ Callbacks may change the tree, remove handlers, or shut down a root. Routes reta
 
 The host receives physical client bounds and a rasterization scale, then derives the content root's DIP viewport. It updates both layout scale and the Content bridge's override scale. PointerPoint positions are already DIPs. The renderer applies an explicit visual scale only if the Content site does not apply rasterization scale itself.
 
-The host flushes pending root layout before hit testing. Root updates validate input targets, run layout, and synchronize WUC visuals. The current drawing content remains the existing diagnostic blue leaf rectangle, not a brush, text, or image rendering implementation.
+The host flushes pending root layout before hit testing. Root updates validate input targets, run layout, and synchronize WUC visuals. Elements record rectangle/text commands through `OnRender`. WUC realizes rounded rectangles; DirectWrite and Direct2D provide text content through WUC drawing surfaces. Content caches include element identity, render version, geometry, RTL, DPI, and device generation. Surface device loss causes one device reset and full realization retry. Images, transforms, effects, and compositor animation APIs are pending.
 
 Host shutdown disconnects platform input delivery, cancels element input state, detaches the content root, and closes Composition resources. Only the thread/message-loop owner shuts down the platform queue. Public UI-affine final release and managed/native cycle tracking are still separate pending work.
 
 ## Native desktop consumer
 
-[NativeDesktop](../../samples/NativeDesktop/README.md) is a small integration application using FrameworkElement directly. It wires client resize and DPI messages to the host and uses routed input to change the diagnostic rectangle's opacity. It does not require Button or the Controls library.
+[NativeDesktop](../../samples/NativeDesktop/README.md) displays TextBlock and templated Button controls. It wires client resize and DPI messages to the host and demonstrates input activation and Tab navigation. [Control authoring](control-authoring.md) describes styles, property expressions, resources, templates, and state setters.
 
-The sample currently references the runtime project. NuGet-only consumption, public activation and metadata, XAML, C#, and deployment milestone completion remain pending. Compilation and execution must be recorded separately; no existing rendering-smoke result establishes correctness of this new WUC/input path.
+The sample references the native projects. [PackagedDesktop](../../samples/PackagedDesktop/README.md) and `eng/packaging` provide a separate source-NuGet consumption path with no repository project references. Public activation and metadata, XAML, C#, and deployment milestone completion remain pending. Compilation and execution must be recorded separately; no existing rendering-smoke result establishes correctness of the new path.
 
-Build evidence (2026-10-24): the runtime and NativeDesktop application compile and link in Debug and Release x64 with the pinned toolchain. The application was not launched and tests were not added or run for this change. Runtime feature availability, visual output, input behavior, and DPI behavior remain unverified.
+## Text input
+
+`TextInputClient` is an optional interface implemented on the element itself. It supplies UTF-16 text, selection, replacement, composition ranges, root-DIP text geometry, and point-to-text mapping. `TextInputSession` connects the focused client to a desktop TSF `ITextStoreACP`, without duplicating its text or element state. TSF owns IME services; the framework supplies the document lock protocol, notifications, focus association, and geometry conversion to screen pixels.
+
+The host's message loop calls `PreTranslateMessage` before `TranslateMessage`/`DispatchMessage`. A control calls `TextInput().NotifyTextChanged` and `NotifySelectionChanged` for application-originated edits. Changes made in response to TSF are not echoed back. Layout frames and DPI changes update candidate-window geometry. Host shutdown terminates composition, disconnects the text store, removes focus association, and releases its document. A thread-shared manager balances activation/deactivation across hosts.
+
+This is a plain text-store foundation, not a TextBox/RichEdit replacement. Attribute-rich composition rendering, input scopes, reconversion features, screen keyboard integration, and actual Japanese IME validation remain pending.
+
+Builds establish compilation/linking only. Applications have not been launched and tests were not added or run for this change. Runtime feature availability, visual output, input/IME behavior, device recovery, and DPI behavior remain unverified.

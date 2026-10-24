@@ -17,17 +17,60 @@ public sealed class XamlTypeCatalog
     public bool HasMember(string typeName, string memberName)
     {
         var visited = new HashSet<string>(StringComparer.Ordinal);
-        while (visited.Add(typeName) && Find(typeName) is { } type)
+        var pending = new Stack<string>();
+        pending.Push(typeName);
+        while (pending.Count > 0)
         {
-            if (type.Members.Contains(memberName))
+            typeName = pending.Pop();
+            if (!visited.Add(typeName) || Find(typeName) is not { } type)
+                continue;
+
+            if (type.Members.Contains(memberName) ||
+                type.Members.Contains("Get" + memberName) ||
+                type.Members.Contains("Set" + memberName))
             {
                 return true;
             }
 
-            typeName = type.BaseType ?? string.Empty;
+            if (type.BaseType is not null) pending.Push(type.BaseType);
+            foreach (var iface in type.Interfaces ?? []) pending.Push(iface);
         }
 
         return false;
+    }
+
+    public bool HasEvent(string typeName, string eventName)
+    {
+        var pending = new Stack<string>();
+        var visited = new HashSet<string>(StringComparer.Ordinal);
+        pending.Push(typeName);
+        while (pending.Count > 0)
+        {
+            var name = pending.Pop();
+            if (!visited.Add(name) || Find(name) is not { } type) continue;
+            if (type.Events?.Contains(eventName) == true) return true;
+            if (type.BaseType is not null) pending.Push(type.BaseType);
+            foreach (var iface in type.Interfaces ?? []) pending.Push(iface);
+        }
+
+        return false;
+    }
+
+    public string? ResolvePresentationType(string localName)
+    {
+        // XAML's presentation namespace spans multiple WinRT namespaces.
+        // Prefer commonly declared visual types, and only use a unique fallback.
+        string[] namespaces = ["Microsoft.UI.Xaml.Controls", "Microsoft.UI.Xaml.Controls.Primitives",
+            "Microsoft.UI.Xaml", "Microsoft.UI.Xaml.Shapes", "Microsoft.UI.Xaml.Media",
+            "Microsoft.UI.Xaml.Media.Animation", "Microsoft.UI.Xaml.Documents",
+            "Microsoft.UI.Xaml.Data", "Microsoft.UI.Xaml.Input"];
+        foreach (var ns in namespaces)
+            if (_types.ContainsKey(ns + "." + localName)) return ns + "." + localName;
+
+        const string prefix = "Microsoft.UI.Xaml.";
+        var matches = _types.Keys.Where(name => name.StartsWith(prefix, StringComparison.Ordinal) &&
+            name.EndsWith("." + localName, StringComparison.Ordinal)).Take(2).ToArray();
+        return matches.Length == 1 ? matches[0] : null;
     }
 
     public void AddMetadataFile(string path)
@@ -46,6 +89,7 @@ public sealed class XamlTypeCatalog
             }
 
             var members = new HashSet<string>(StringComparer.Ordinal);
+            var events = new HashSet<string>(StringComparer.Ordinal);
             foreach (var property in definition.GetProperties())
             {
                 members.Add(reader.GetString(reader.GetPropertyDefinition(property).Name));
@@ -53,7 +97,9 @@ public sealed class XamlTypeCatalog
 
             foreach (var evt in definition.GetEvents())
             {
-                members.Add(reader.GetString(reader.GetEventDefinition(evt).Name));
+                var eventName = reader.GetString(reader.GetEventDefinition(evt).Name);
+                members.Add(eventName);
+                events.Add(eventName);
             }
 
             foreach (var method in definition.GetMethods())
@@ -65,7 +111,7 @@ public sealed class XamlTypeCatalog
                 {
                     members.Add(methodName[4..]);
                 }
-                else if (!methodName.StartsWith('.', StringComparison.Ordinal))
+                else if (!methodName.StartsWith('.'))
                 {
                     members.Add(methodName);
                 }
@@ -77,17 +123,23 @@ public sealed class XamlTypeCatalog
             }
 
             var baseType = ResolveName(reader, definition.BaseType);
-            Add(new XamlTypeDescription(fullName, baseType, members));
+            var interfaces = definition.GetInterfaceImplementations()
+                .Select(i => ResolveName(reader, reader.GetInterfaceImplementation(i).Interface))
+                .OfType<string>().ToArray();
+            Add(new XamlTypeDescription(fullName, baseType, members, interfaces, events));
         }
     }
 
-    private static string? ResolveName(MetadataReader reader, System.Reflection.Metadata.EntityHandle handle) =>
-        handle.Kind switch
+    private static string? ResolveName(MetadataReader reader, System.Reflection.Metadata.EntityHandle handle)
+    {
+        if (handle.IsNil) return null;
+        return handle.Kind switch
         {
             HandleKind.TypeReference => GetReferenceName(reader, (TypeReferenceHandle)handle),
             HandleKind.TypeDefinition => GetDefinitionName(reader, (TypeDefinitionHandle)handle),
             _ => null,
         };
+    }
 
     private static string GetReferenceName(MetadataReader reader, TypeReferenceHandle handle)
     {
@@ -105,4 +157,5 @@ public sealed class XamlTypeCatalog
         ns.Length == 0 ? name : $"{ns}.{name}";
 }
 
-public sealed record XamlTypeDescription(string FullName, string? BaseType, IReadOnlySet<string> Members);
+public sealed record XamlTypeDescription(string FullName, string? BaseType, IReadOnlySet<string> Members,
+    IReadOnlyList<string>? Interfaces = null, IReadOnlySet<string>? Events = null);

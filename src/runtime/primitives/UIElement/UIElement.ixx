@@ -4,6 +4,7 @@ import std;
 import winrt_base;
 import :Properties;
 import :DependencyObject;
+import :Drawing;
 
 export namespace xaml::runtime
 {
@@ -62,12 +63,33 @@ export namespace xaml::runtime
     };
 
     struct UIElement;
+    struct TextSelection
+    {
+        std::uint32_t start{}, end{};
+        bool activeAtStart{};
+    };
+    // Optional contract on the element itself; UTF-16 offsets, root-DIP geometry.
+    struct TextInputClient
+    {
+        virtual ~TextInputClient() = default;
+        virtual std::wstring TextContent() const = 0;
+        virtual TextSelection Selection() const = 0;
+        virtual void Selection(TextSelection value) = 0;
+        virtual void ReplaceText(std::uint32_t start, std::uint32_t end, std::wstring_view text) = 0;
+        virtual Rect TextBounds(std::uint32_t start, std::uint32_t end) const = 0;
+        virtual std::uint32_t TextPosition(Point rootPosition) const = 0;
+        virtual bool IsReadOnly() const { return false; }
+        virtual void CompositionChanged(std::uint32_t start, std::uint32_t end, bool active) = 0;
+    };
+    class InputManager;
+    enum class FocusNavigationDirection { Next, Previous, First, Last };
+    enum class KeyboardNavigationMode { Local, Cycle, Once };
 
     enum class InputEvent
     {
         PointerEntered, PointerExited, PointerPressed, PointerMoved, PointerReleased,
         PointerCanceled, PointerCaptureLost, PointerWheelChanged,
-        KeyDown, KeyUp, GotFocus, LostFocus, HostFocusLost
+        KeyDown, KeyUp, CharacterReceived, GotFocus, LostFocus, HostFocusLost
     };
 
     // Native input contract. Positions are root-relative DIPs. The original
@@ -79,6 +101,8 @@ export namespace xaml::runtime
         Point position{};
         std::uint32_t pointerId{};
         std::uint32_t virtualKey{};
+        std::uint32_t character{};
+        std::uint32_t modifiers{}; // Shift=1, Control=2, Alt=4, Windows=8.
         std::uint64_t timestamp{};
         int wheelDelta{};
         bool horizontalWheel{};
@@ -91,6 +115,7 @@ export namespace xaml::runtime
 
     struct UIElement : winrt::implements<UIElement, DependencyObject>
     {
+        UIElement();
         friend class ContentRoot;
         friend class InputManager;
         static DependencyProperty<bool> const IsEnabledProperty;
@@ -98,6 +123,7 @@ export namespace xaml::runtime
         static DependencyProperty<Visibility> const VisibilityProperty;
         static DependencyProperty<double> const OpacityProperty;
         static DependencyProperty<bool> const UseLayoutRoundingProperty;
+        static DependencyProperty<KeyboardNavigationMode> const TabFocusNavigationProperty;
 
         [[nodiscard]] bool IsEnabled() const;
         void IsEnabled(bool value);
@@ -133,9 +159,18 @@ export namespace xaml::runtime
         [[nodiscard]] std::int64_t AddInputHandler(InputEvent event, InputHandler handler,
             bool handledEventsToo = false);
         void RemoveInputHandler(std::int64_t token);
+        [[nodiscard]] std::shared_ptr<InputManager> InputContext() const;
+        bool Focus();
+        bool CapturePointer(std::uint32_t pointerId);
+        void ReleasePointerCapture(std::uint32_t pointerId);
+        [[nodiscard]] bool HasFocus() const;
+        [[nodiscard]] virtual bool IsKeyboardFocusable() const { return false; }
+        [[nodiscard]] virtual int KeyboardTabIndex() const { return 0; }
         [[nodiscard]] bool IsMeasureValid() const;
         [[nodiscard]] bool IsArrangeValid() const;
         [[nodiscard]] std::uint64_t RenderVersion() const;
+        [[nodiscard]] std::uint64_t RenderIdentity() const noexcept { return m_renderIdentity; }
+        [[nodiscard]] DrawingContext CollectDrawingContent() const;
         [[nodiscard]] bool IsConnectedToRoot() const;
         [[nodiscard]] bool IsLoaded() const;
         using LifecycleHandler = std::function<void(UIElement&)>;
@@ -153,7 +188,12 @@ export namespace xaml::runtime
         void SetSingleVisualChild(UIElement* child);
         void ReplaceVisualChildren(std::span<UIElement* const> children);
         void OnPropertyChanged(PropertyChange const& change) override;
+        std::optional<std::any> GetInheritedValue(DependencyPropertyHandle const& property) const override;
+        void OnInheritedPropertyChanged(DependencyPropertyHandle const& property,
+            std::any const& before, std::any const& after) override;
         virtual void OnIsEnabledChanged() {}
+        virtual bool IsEnabledCore() const { return true; }
+        void InvalidateIsEnabled();
         virtual void OnVisualParentChanged() {}
         virtual void OnVisualAncestryChanged() {}
         virtual void OnLoading() {}
@@ -161,6 +201,7 @@ export namespace xaml::runtime
         virtual void OnUnloaded() {}
         virtual void OnInputEvent(InputEventArgs&) {}
         virtual void OnActualSizeChanged(Size, Size) {}
+        virtual void OnRender(DrawingContext&) const {}
         virtual Size MeasureCore(Size available);
         virtual Size ArrangeCore(Size finalSize);
         void SetLayoutOffset(double x, double y);
@@ -216,6 +257,7 @@ export namespace xaml::runtime
         bool m_measureDirty{ true };
         bool m_arrangeDirty{ true };
         std::uint64_t m_renderVersion{ 1 };
+        std::uint64_t const m_renderIdentity;
         bool m_measuring{};
         bool m_arranging{};
         bool m_connected{};
@@ -228,6 +270,8 @@ export namespace xaml::runtime
         DeferredEnqueue m_deferredEnqueue;
         std::int64_t m_nextInputToken{};
         std::vector<std::shared_ptr<InputSubscription>> m_inputSubscriptions;
+        std::weak_ptr<InputManager> m_rootInput;
+        winrt::weak_ref<DependencyObject> m_lastTabFocus;
     };
 
 }

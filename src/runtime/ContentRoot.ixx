@@ -53,6 +53,6 @@ export namespace xaml::runtime
         bool m_processing{};
         std::uint64_t m_frames{};
         std::uint64_t m_invalidationVersion{};
-        std::unique_ptr<InputManager> m_input;
+        std::shared_ptr<InputManager> m_input;
     };
 }

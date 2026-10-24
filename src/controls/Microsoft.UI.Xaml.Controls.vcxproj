@@ -27,7 +27,11 @@
     </ProjectReference>
     <ClCompile Include="Controls.ixx" />
     <ClCompile Include="Control\Control.cpp" />
+    <ClCompile Include="Control\ControlTemplate.cpp" />
     <ClCompile Include="ContentControl\ContentControl.cpp" />
+    <ClCompile Include="ContentControl\ContentPresenter.cpp" />
+    <ClCompile Include="Border\Border.cpp" />
+    <ClCompile Include="TextBlock\TextBlock.cpp" />
     <ClCompile Include="ButtonBase\ButtonBase.cpp" />
     <ClCompile Include="Button\Button.cpp" />
     <ClCompile Include="Panel\Panel.cpp" />

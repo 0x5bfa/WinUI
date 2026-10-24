@@ -4,6 +4,8 @@
 
 The agreed platform choice is WUC with lifted input. The native backend now constructs a `Windows.UI.Composition.Compositor`, connects its visual through `ContentIsland.CreateForSystemVisual`, and receives lifted pointer/keyboard input. See [Framework foundations](framework-foundations.md) for ownership, hosting, scale, and remaining work. The investigation and earlier smoke observations below describe their original implementation state; they do not validate the new backend at runtime.
 
+The diagnostic blue-leaf content described in the historical observations below has been replaced by native drawing commands, WUC rectangle shapes, and DirectWrite/Direct2D text surfaces. See [Control authoring](control-authoring.md) for the source review and surface lifetime rules. This adds drawing content, not a compositor implementation. No pixel or device-loss validation has been performed for this change.
+
 ## Upstream investigation (2026-10-24)
 
 Reference checkout: `D:/source/mux-main`, revision `0df0a8869`. This document precedes any new rendering implementation. The legacy implementation uses Windows Composition visuals backed by DirectComposition, with Direct2D/Direct3D for drawing content.

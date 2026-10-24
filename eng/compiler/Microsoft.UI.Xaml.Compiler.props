@@ -1,0 +1,8 @@
+<Project>
+  <!-- Imported explicitly by projects opting into the replacement XAML compiler. -->
+  <PropertyGroup>
+    <UseReimplementedXamlCompiler Condition="'$(UseReimplementedXamlCompiler)' == ''">false</UseReimplementedXamlCompiler>
+    <ReimplementedXamlLanguage Condition="'$(ReimplementedXamlLanguage)' == '' and '$(MSBuildProjectExtension)' == '.csproj'">csharp</ReimplementedXamlLanguage>
+    <ReimplementedXamlLanguage Condition="'$(ReimplementedXamlLanguage)' == '' and '$(MSBuildProjectExtension)' == '.vcxproj'">cppwinrt</ReimplementedXamlLanguage>
+  </PropertyGroup>
+</Project>

@@ -39,6 +39,8 @@ public static partial class XamlSemanticBinder
 
         public BoundElement BindElement(XamlElementSyntax element, bool root = false)
         {
+            // Connection IDs follow document order, including property-element values.
+            var connectionId = ++_nextConnectionId;
             var typeName = ResolveTypeName(element.Name);
             if (catalog.Find(typeName) is null)
             {
@@ -68,14 +70,20 @@ public static partial class XamlSemanticBinder
                     {
                         Report("XMC1005", "x:Class is valid only on the root element.", attribute.Location);
                     }
+                    else if (attribute.Name.LocalName is not ("Class" or "Key" or "Uid" or "FieldModifier" or "DataType" or "DeferLoadStrategy" or "Load" or "Phase" or "DefaultBindMode"))
+                    {
+                        Report("XMC1011", $"Unsupported XAML directive '{attribute.Name.LocalName}'.", attribute.Location);
+                    }
 
                     continue;
                 }
 
-                BindMember(typeName, attribute.Name, attribute.Value, attribute.Location, members);
+                BindMember(typeName, element.Name.NamespaceUri, attribute.Name, attribute.Value,
+                    attribute.Location, members);
             }
 
             var children = new List<BoundElement>();
+            var properties = new List<BoundPropertyElement>();
             foreach (var child in element.Children.OfType<XamlElementSyntax>())
             {
                 if (child.Name.LocalName.Contains('.', StringComparison.Ordinal))
@@ -84,10 +92,10 @@ public static partial class XamlSemanticBinder
                     var owner = ResolveTypeName(new(child.Name.NamespaceUri, child.Name.LocalName[..dot]));
                     var member = child.Name.LocalName[(dot + 1)..];
                     ValidateMember(owner, member, child.Location);
-                    foreach (var value in child.Children.OfType<XamlElementSyntax>())
-                    {
-                        children.Add(BindElement(value));
-                    }
+                    var values = child.Children.OfType<XamlElementSyntax>().Select(value => BindElement(value)).ToImmutableArray();
+                    var propertyText = string.Concat(child.Children.OfType<XamlTextSyntax>().Select(t => t.Value));
+                    properties.Add(new(owner, member, values,
+                        string.IsNullOrWhiteSpace(propertyText) ? null : propertyText, child.Location));
                 }
                 else
                 {
@@ -95,18 +103,22 @@ public static partial class XamlSemanticBinder
                 }
             }
 
-            return new(typeName, name, ++_nextConnectionId, [.. members], [.. children], element.Location);
+            return new(typeName, name, connectionId, [.. members], [.. children], [.. properties], element.Location);
         }
 
-        private void BindMember(string elementType, XamlName name, string value, XamlSourceLocation location,
+        private void BindMember(string elementType, string elementNamespace, XamlName name, string value,
+            XamlSourceLocation location,
             List<BoundMember> members)
         {
             var dot = name.LocalName.LastIndexOf('.');
             var owner = dot >= 0
-                ? ResolveTypeName(new(name.NamespaceUri, name.LocalName[..dot]))
+                ? ResolveTypeName(new(name.NamespaceUri.Length == 0 ? elementNamespace : name.NamespaceUri,
+                    name.LocalName[..dot]))
                 : elementType;
             var member = dot >= 0 ? name.LocalName[(dot + 1)..] : name.LocalName;
             ValidateMember(owner, member, location);
+            if (catalog.HasEvent(owner, member) && !IdentifierPath().IsMatch(value))
+                Report("XMC1012", $"Event handler '{value}' must be a qualified identifier.", location);
 
             BoundBinding? binding = null;
             if (value.StartsWith("{x:Bind", StringComparison.Ordinal) && value.EndsWith('}'))
@@ -162,16 +174,16 @@ public static partial class XamlSemanticBinder
 
             return new(path, mode, location);
         }
-    }
 
-    private static string ResolveTypeName(XamlName name)
-    {
-        if (name.NamespaceUri.StartsWith("using:", StringComparison.Ordinal))
-            return $"{name.NamespaceUri[6..]}.{name.LocalName}";
-        if (name.NamespaceUri.StartsWith("clr-namespace:", StringComparison.Ordinal))
-            return $"{name.NamespaceUri[14..].Split(';')[0]}.{name.LocalName}";
-        if (name.NamespaceUri == PresentationNamespace)
-            return $"Microsoft.UI.Xaml.Controls.{name.LocalName}";
-        return $"{name.NamespaceUri}.{name.LocalName}";
+        private string ResolveTypeName(XamlName name)
+        {
+            if (name.NamespaceUri.StartsWith("using:", StringComparison.Ordinal))
+                return $"{name.NamespaceUri[6..]}.{name.LocalName}";
+            if (name.NamespaceUri.StartsWith("clr-namespace:", StringComparison.Ordinal))
+                return $"{name.NamespaceUri[14..].Split(';')[0]}.{name.LocalName}";
+            if (name.NamespaceUri == PresentationNamespace)
+                return catalog.ResolvePresentationType(name.LocalName) ?? $"Microsoft.UI.Xaml.{name.LocalName}";
+            return $"{name.NamespaceUri}.{name.LocalName}";
+        }
     }
 }

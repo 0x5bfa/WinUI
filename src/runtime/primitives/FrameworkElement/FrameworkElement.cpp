@@ -151,6 +151,7 @@ namespace xaml::runtime
         {
             InvalidateInheritedFlowDirection();
         }
+        if (change.property == RequestedThemeProperty.Id()) { RefreshResources(); }
     }
 
     std::int64_t FrameworkElement::AddSizeChangedHandler(SizeChangedHandler handler)

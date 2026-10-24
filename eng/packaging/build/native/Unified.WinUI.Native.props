@@ -1,0 +1,8 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <UnifiedWinUISourceRoot>$(MSBuildThisFileDirectory)..\..\src\</UnifiedWinUISourceRoot>
+    <CppWinRTBuildModule>true</CppWinRTBuildModule>
+    <CppWinRTModuleInclude>Windows.Foundation;Microsoft.UI.Dispatching;$(CppWinRTModuleInclude)</CppWinRTModuleInclude>
+    <CppWinRTModuleExclude>Windows.Foundation.Diagnostics;Windows.Foundation.Metadata;Windows.Foundation.Numerics;$(CppWinRTModuleExclude)</CppWinRTModuleExclude>
+  </PropertyGroup>
+</Project>
