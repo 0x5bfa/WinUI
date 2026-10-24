@@ -1,16 +1,22 @@
 <Solution>
   <Configurations>
-    <BuildType Name="Debug" />
-    <BuildType Name="Release" />
     <Platform Name="x64" />
   </Configurations>
   <Folder Name="/Runtime/">
-    <Project Path="src/runtime/Microsoft.UI.Xaml.Runtime.vcxproj" />
+    <Project Path="src/runtime/Microsoft.UI.Xaml.Runtime.vcxproj" Id="f35ab309-895c-4980-ba33-c04ba086912d" />
   </Folder>
   <Folder Name="/Controls/">
-    <Project Path="src/controls/Microsoft.UI.Xaml.Controls.vcxproj" />
+    <Project Path="src/controls/Microsoft.UI.Xaml.Controls.vcxproj" Id="62ad9cf9-9ce4-45c3-ad63-52136e9853f5" />
+  </Folder>
+  <Folder Name="/Compiler/">
+    <Project Path="src/compiler/Microsoft.UI.Xaml.Compiler.csproj" />
   </Folder>
   <Folder Name="/Tests/">
-    <Project Path="tests/unit/Microsoft.UI.Xaml.Runtime.Tests.vcxproj" />
+    <Project Path="tests/unit/Microsoft.UI.Xaml.Runtime.Tests.vcxproj" Id="a9e96859-7b31-43a0-a9c1-98569074d19e" />
+    <Project Path="tests/rendering/Microsoft.UI.Xaml.Rendering.Smoke.vcxproj" Id="d78da622-a935-4218-b0bc-654c58d7055a" />
+    <Project Path="tests/compiler/Microsoft.UI.Xaml.Compiler.Smoke.csproj" />
+  </Folder>
+  <Folder Name="/Samples/">
+    <Project Path="samples/NativeDesktop/NativeDesktop.vcxproj" Id="a8131d75-4479-4820-b5e5-c8843e1e40c6" />
   </Folder>
 </Solution>

@@ -1,0 +1,1599 @@
+WinMD: Microsoft.UI.Xaml.winmd
+Assembly: Microsoft.UI.Xaml
+Assembly version: 255.255.255.255
+
+TYPE Microsoft.UI.Xaml.DependencyObject [Public, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.MarshalingBehaviorAttribute 0100020000000000
+  ATTRIBUTE Windows.Foundation.Metadata.ComposableAttribute 01002A4D6963726F736F66742E55492E58616D6C2E49446570656E64656E63794F626A656374466163746F727901000000000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ThreadingAttribute 0100030000000000
+  IMPLEMENTS Microsoft.UI.Xaml.IDependencyObject
+  METHOD [Family] Void .ctor()
+  METHOD [Public] Object GetValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Void SetValue(Microsoft.UI.Xaml.DependencyProperty, Object)
+  METHOD [Public] Void ClearValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Object ReadLocalValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Object GetAnimationBaseValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Int64 RegisterPropertyChangedCallback(Microsoft.UI.Xaml.DependencyProperty, Microsoft.UI.Xaml.DependencyPropertyChangedCallback)
+  METHOD [Public] Void UnregisterPropertyChangedCallback(Microsoft.UI.Xaml.DependencyProperty, Int64)
+  METHOD [Public] Windows.UI.Core.CoreDispatcher get_Dispatcher()
+    METHOD_ATTRIBUTE get_Dispatcher Windows.Foundation.Metadata.DeprecatedAttribute 0100809A54686520446973706174636865722070726F706572747920697320646570726563617465642C205573652044697370617463686572517565756520616E6420547279456E717565756520666F722055492074687265616420776F726B2E20466F72206D6F726520696E666F2C2076697369742068747470733A2F2F616B612E6D732F4469737061746368657251756575652E50726F706572747900000000000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  METHOD [Public] Microsoft.UI.Dispatching.DispatcherQueue get_DispatcherQueue()
+  PROPERTY Windows.UI.Core.CoreDispatcher Dispatcher
+  PROPERTY Microsoft.UI.Dispatching.DispatcherQueue DispatcherQueue
+
+TYPE Microsoft.UI.Xaml.UIElement [Public, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.ThreadingAttribute 0100030000000000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ComposableAttribute 0100234D6963726F736F66742E55492E58616D6C2E495549456C656D656E74466163746F727902000000000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  ATTRIBUTE Windows.Foundation.Metadata.MarshalingBehaviorAttribute 0100020000000000
+  ATTRIBUTE Windows.Foundation.Metadata.StaticAttribute 0100234D6963726F736F66742E55492E58616D6C2E495549456C656D656E7453746174696373000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  IMPLEMENTS Microsoft.UI.Xaml.IUIElement
+  IMPLEMENTS Microsoft.UI.Xaml.IUIElementProtected
+  IMPLEMENTS Microsoft.UI.Xaml.IUIElementOverrides
+  IMPLEMENTS Microsoft.UI.Composition.IAnimationObject
+  IMPLEMENTS Microsoft.UI.Composition.IVisualElement
+  IMPLEMENTS Microsoft.UI.Composition.IVisualElement2
+  METHOD [Public] Windows.Foundation.Size get_DesiredSize()
+  METHOD [Public] Boolean get_AllowDrop()
+  METHOD [Public] Void put_AllowDrop(Boolean)
+  METHOD [Public] Double get_Opacity()
+  METHOD [Public] Void put_Opacity(Double)
+  METHOD [Public] Microsoft.UI.Xaml.Media.RectangleGeometry get_Clip()
+  METHOD [Public] Void put_Clip(Microsoft.UI.Xaml.Media.RectangleGeometry)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Transform get_RenderTransform()
+  METHOD [Public] Void put_RenderTransform(Microsoft.UI.Xaml.Media.Transform)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Projection get_Projection()
+  METHOD [Public] Void put_Projection(Microsoft.UI.Xaml.Media.Projection)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Media3D.Transform3D get_Transform3D()
+  METHOD [Public] Void put_Transform3D(Microsoft.UI.Xaml.Media.Media3D.Transform3D)
+  METHOD [Public] Windows.Foundation.Point get_RenderTransformOrigin()
+  METHOD [Public] Void put_RenderTransformOrigin(Windows.Foundation.Point)
+  METHOD [Public] Boolean get_IsHitTestVisible()
+  METHOD [Public] Void put_IsHitTestVisible(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Visibility get_Visibility()
+  METHOD [Public] Void put_Visibility(Microsoft.UI.Xaml.Visibility)
+  METHOD [Public] Windows.Foundation.Size get_RenderSize()
+  METHOD [Public] Boolean get_UseLayoutRounding()
+  METHOD [Public] Void put_UseLayoutRounding(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Animation.TransitionCollection get_Transitions()
+  METHOD [Public] Void put_Transitions(Microsoft.UI.Xaml.Media.Animation.TransitionCollection)
+  METHOD [Public] Microsoft.UI.Xaml.Media.CacheMode get_CacheMode()
+  METHOD [Public] Void put_CacheMode(Microsoft.UI.Xaml.Media.CacheMode)
+  METHOD [Public] Boolean get_IsTapEnabled()
+  METHOD [Public] Void put_IsTapEnabled(Boolean)
+  METHOD [Public] Boolean get_IsDoubleTapEnabled()
+  METHOD [Public] Void put_IsDoubleTapEnabled(Boolean)
+  METHOD [Public] Boolean get_CanDrag()
+  METHOD [Public] Void put_CanDrag(Boolean)
+  METHOD [Public] Boolean get_IsRightTapEnabled()
+  METHOD [Public] Void put_IsRightTapEnabled(Boolean)
+  METHOD [Public] Boolean get_IsHoldingEnabled()
+  METHOD [Public] Void put_IsHoldingEnabled(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Input.ManipulationModes get_ManipulationMode()
+  METHOD [Public] Void put_ManipulationMode(Microsoft.UI.Xaml.Input.ManipulationModes)
+  METHOD [Public] System.Collections.Generic.IReadOnlyList`1<Microsoft.UI.Xaml.Input.Pointer> get_PointerCaptures()
+  METHOD [Public] Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase get_ContextFlyout()
+  METHOD [Public] Void put_ContextFlyout(Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase)
+  METHOD [Public] Microsoft.UI.Xaml.Media.ElementCompositeMode get_CompositeMode()
+  METHOD [Public] Void put_CompositeMode(Microsoft.UI.Xaml.Media.ElementCompositeMode)
+  METHOD [Public] System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Media.XamlLight> get_Lights()
+  METHOD [Public] Boolean get_CanBeScrollAnchor()
+  METHOD [Public] Void put_CanBeScrollAnchor(Boolean)
+  METHOD [Public] Boolean get_ExitDisplayModeOnAccessKeyInvoked()
+  METHOD [Public] Void put_ExitDisplayModeOnAccessKeyInvoked(Boolean)
+  METHOD [Public] Boolean get_IsAccessKeyScope()
+  METHOD [Public] Void put_IsAccessKeyScope(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_AccessKeyScopeOwner()
+  METHOD [Public] Void put_AccessKeyScopeOwner(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] String get_AccessKey()
+  METHOD [Public] Void put_AccessKey(String)
+  METHOD [Public] Microsoft.UI.Xaml.Input.KeyTipPlacementMode get_KeyTipPlacementMode()
+  METHOD [Public] Void put_KeyTipPlacementMode(Microsoft.UI.Xaml.Input.KeyTipPlacementMode)
+  METHOD [Public] Double get_KeyTipHorizontalOffset()
+  METHOD [Public] Void put_KeyTipHorizontalOffset(Double)
+  METHOD [Public] Double get_KeyTipVerticalOffset()
+  METHOD [Public] Void put_KeyTipVerticalOffset(Double)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_KeyTipTarget()
+  METHOD [Public] Void put_KeyTipTarget(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusKeyboardNavigationMode get_XYFocusKeyboardNavigation()
+  METHOD [Public] Void put_XYFocusKeyboardNavigation(Microsoft.UI.Xaml.Input.XYFocusKeyboardNavigationMode)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusUpNavigationStrategy()
+  METHOD [Public] Void put_XYFocusUpNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusDownNavigationStrategy()
+  METHOD [Public] Void put_XYFocusDownNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusLeftNavigationStrategy()
+  METHOD [Public] Void put_XYFocusLeftNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusRightNavigationStrategy()
+  METHOD [Public] Void put_XYFocusRightNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Input.KeyboardAccelerator> get_KeyboardAccelerators()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_KeyboardAcceleratorPlacementTarget()
+  METHOD [Public] Void put_KeyboardAcceleratorPlacementTarget(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.Input.KeyboardAcceleratorPlacementMode get_KeyboardAcceleratorPlacementMode()
+  METHOD [Public] Void put_KeyboardAcceleratorPlacementMode(Microsoft.UI.Xaml.Input.KeyboardAcceleratorPlacementMode)
+  METHOD [Public] Microsoft.UI.Xaml.ElementHighContrastAdjustment get_HighContrastAdjustment()
+  METHOD [Public] Void put_HighContrastAdjustment(Microsoft.UI.Xaml.ElementHighContrastAdjustment)
+  METHOD [Public] Microsoft.UI.Xaml.Input.KeyboardNavigationMode get_TabFocusNavigation()
+  METHOD [Public] Void put_TabFocusNavigation(Microsoft.UI.Xaml.Input.KeyboardNavigationMode)
+  METHOD [Public] Microsoft.UI.Xaml.ScalarTransition get_OpacityTransition()
+  METHOD [Public] Void put_OpacityTransition(Microsoft.UI.Xaml.ScalarTransition)
+  METHOD [Public] System.Numerics.Vector3 get_Translation()
+  METHOD [Public] Void put_Translation(System.Numerics.Vector3)
+  METHOD [Public] Microsoft.UI.Xaml.Vector3Transition get_TranslationTransition()
+  METHOD [Public] Void put_TranslationTransition(Microsoft.UI.Xaml.Vector3Transition)
+  METHOD [Public] Single get_Rotation()
+  METHOD [Public] Void put_Rotation(Single)
+  METHOD [Public] Microsoft.UI.Xaml.ScalarTransition get_RotationTransition()
+  METHOD [Public] Void put_RotationTransition(Microsoft.UI.Xaml.ScalarTransition)
+  METHOD [Public] System.Numerics.Vector3 get_Scale()
+  METHOD [Public] Void put_Scale(System.Numerics.Vector3)
+  METHOD [Public] Microsoft.UI.Xaml.Vector3Transition get_ScaleTransition()
+  METHOD [Public] Void put_ScaleTransition(Microsoft.UI.Xaml.Vector3Transition)
+  METHOD [Public] System.Numerics.Matrix4x4 get_TransformMatrix()
+  METHOD [Public] Void put_TransformMatrix(System.Numerics.Matrix4x4)
+  METHOD [Public] System.Numerics.Vector3 get_CenterPoint()
+  METHOD [Public] Void put_CenterPoint(System.Numerics.Vector3)
+  METHOD [Public] System.Numerics.Vector3 get_RotationAxis()
+  METHOD [Public] Void put_RotationAxis(System.Numerics.Vector3)
+  METHOD [Public] System.Numerics.Vector3 get_ActualOffset()
+  METHOD [Public] System.Numerics.Vector2 get_ActualSize()
+  METHOD [Public] Microsoft.UI.Xaml.XamlRoot get_XamlRoot()
+  METHOD [Public] Void put_XamlRoot(Microsoft.UI.Xaml.XamlRoot)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Shadow get_Shadow()
+  METHOD [Public] Void put_Shadow(Microsoft.UI.Xaml.Media.Shadow)
+  METHOD [Public] Double get_RasterizationScale()
+  METHOD [Public] Void put_RasterizationScale(Double)
+  METHOD [Public] Microsoft.UI.Xaml.FocusState get_FocusState()
+  METHOD [Public] Boolean get_UseSystemFocusVisuals()
+  METHOD [Public] Void put_UseSystemFocusVisuals(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusLeft()
+  METHOD [Public] Void put_XYFocusLeft(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusRight()
+  METHOD [Public] Void put_XYFocusRight(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusUp()
+  METHOD [Public] Void put_XYFocusUp(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusDown()
+  METHOD [Public] Void put_XYFocusDown(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Boolean get_IsTabStop()
+  METHOD [Public] Void put_IsTabStop(Boolean)
+  METHOD [Public] Int32 get_TabIndex()
+  METHOD [Public] Void put_TabIndex(Int32)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_KeyUp(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_KeyUp(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_KeyDown(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_KeyDown(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_GotFocus(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_GotFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_LostFocus(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_LostFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragStarting(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DragStartingEventArgs>)
+  METHOD [Public] Void remove_DragStarting(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DropCompleted(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DropCompletedEventArgs>)
+  METHOD [Public] Void remove_DropCompleted(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_CharacterReceived(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.CharacterReceivedRoutedEventArgs>)
+  METHOD [Public] Void remove_CharacterReceived(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragEnter(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_DragEnter(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragLeave(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_DragLeave(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragOver(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_DragOver(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Drop(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_Drop(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerPressed(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerPressed(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerMoved(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerMoved(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerReleased(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerReleased(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerEntered(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerEntered(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerExited(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerExited(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerCaptureLost(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerCaptureLost(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerCanceled(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerCanceled(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerWheelChanged(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerWheelChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Tapped(Microsoft.UI.Xaml.Input.TappedEventHandler)
+  METHOD [Public] Void remove_Tapped(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DoubleTapped(Microsoft.UI.Xaml.Input.DoubleTappedEventHandler)
+  METHOD [Public] Void remove_DoubleTapped(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Holding(Microsoft.UI.Xaml.Input.HoldingEventHandler)
+  METHOD [Public] Void remove_Holding(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ContextRequested(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs>)
+  METHOD [Public] Void remove_ContextRequested(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ContextCanceled(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.RoutedEventArgs>)
+  METHOD [Public] Void remove_ContextCanceled(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_RightTapped(Microsoft.UI.Xaml.Input.RightTappedEventHandler)
+  METHOD [Public] Void remove_RightTapped(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationStarting(Microsoft.UI.Xaml.Input.ManipulationStartingEventHandler)
+  METHOD [Public] Void remove_ManipulationStarting(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationInertiaStarting(Microsoft.UI.Xaml.Input.ManipulationInertiaStartingEventHandler)
+  METHOD [Public] Void remove_ManipulationInertiaStarting(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationStarted(Microsoft.UI.Xaml.Input.ManipulationStartedEventHandler)
+  METHOD [Public] Void remove_ManipulationStarted(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationDelta(Microsoft.UI.Xaml.Input.ManipulationDeltaEventHandler)
+  METHOD [Public] Void remove_ManipulationDelta(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationCompleted(Microsoft.UI.Xaml.Input.ManipulationCompletedEventHandler)
+  METHOD [Public] Void remove_ManipulationCompleted(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_AccessKeyDisplayRequested(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayRequestedEventArgs>)
+  METHOD [Public] Void remove_AccessKeyDisplayRequested(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_AccessKeyDisplayDismissed(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayDismissedEventArgs>)
+  METHOD [Public] Void remove_AccessKeyDisplayDismissed(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_AccessKeyInvoked(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyInvokedEventArgs>)
+  METHOD [Public] Void remove_AccessKeyInvoked(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ProcessKeyboardAccelerators(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs>)
+  METHOD [Public] Void remove_ProcessKeyboardAccelerators(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_GettingFocus(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.GettingFocusEventArgs>)
+  METHOD [Public] Void remove_GettingFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_LosingFocus(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.LosingFocusEventArgs>)
+  METHOD [Public] Void remove_LosingFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_NoFocusCandidateFound(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.NoFocusCandidateFoundEventArgs>)
+  METHOD [Public] Void remove_NoFocusCandidateFound(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PreviewKeyDown(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_PreviewKeyDown(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PreviewKeyUp(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_PreviewKeyUp(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_BringIntoViewRequested(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.BringIntoViewRequestedEventArgs>)
+  METHOD [Public] Void remove_BringIntoViewRequested(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] Void Measure(Windows.Foundation.Size)
+  METHOD [Public] Void Arrange(Windows.Foundation.Rect)
+  METHOD [Public] Boolean CapturePointer(Microsoft.UI.Xaml.Input.Pointer)
+  METHOD [Public] Void ReleasePointerCapture(Microsoft.UI.Xaml.Input.Pointer)
+  METHOD [Public] Void ReleasePointerCaptures()
+  METHOD [Public] Void AddHandler(Microsoft.UI.Xaml.RoutedEvent, Object, Boolean)
+  METHOD [Public] Void RemoveHandler(Microsoft.UI.Xaml.RoutedEvent, Object)
+  METHOD [Public] Microsoft.UI.Xaml.Media.GeneralTransform TransformToVisual(Microsoft.UI.Xaml.UIElement)
+  METHOD [Public] Void InvalidateMeasure()
+  METHOD [Public] Void InvalidateArrange()
+  METHOD [Public] Void UpdateLayout()
+  METHOD [Public] Boolean CancelDirectManipulations()
+  METHOD [Public] Windows.Foundation.IAsyncOperation`1<Windows.ApplicationModel.DataTransfer.DataPackageOperation> StartDragAsync(Microsoft.UI.Input.PointerPoint)
+    METHOD_ATTRIBUTE StartDragAsync Windows.Foundation.Metadata.RemoteAsyncAttribute 01000000
+  METHOD [Public] Void StartBringIntoView()
+    METHOD_ATTRIBUTE StartBringIntoView Windows.Foundation.Metadata.OverloadAttribute 01001253746172744272696E67496E746F566965770000
+  METHOD [Public] Void StartBringIntoView(Microsoft.UI.Xaml.BringIntoViewOptions)
+    METHOD_ATTRIBUTE StartBringIntoView Windows.Foundation.Metadata.OverloadAttribute 01001D53746172744272696E67496E746F56696577576974684F7074696F6E730000
+  METHOD [Public] Void TryInvokeKeyboardAccelerator(Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs)
+  METHOD [Public] Boolean Focus(Microsoft.UI.Xaml.FocusState)
+  METHOD [Public] Void StartAnimation(Microsoft.UI.Composition.ICompositionAnimationBase)
+  METHOD [Public] Void StopAnimation(Microsoft.UI.Composition.ICompositionAnimationBase)
+  METHOD [Family] Microsoft.UI.Input.InputCursor get_ProtectedCursor()
+  METHOD [Family] Void put_ProtectedCursor(Microsoft.UI.Input.InputCursor)
+  METHOD [Family] Microsoft.UI.Xaml.Automation.Peers.AutomationPeer OnCreateAutomationPeer()
+  METHOD [Family] Void OnDisconnectVisualChildren()
+  METHOD [Family] System.Collections.Generic.IEnumerable`1<System.Collections.Generic.IEnumerable`1<Windows.Foundation.Point>> FindSubElementsForTouchTargeting(Windows.Foundation.Point, Windows.Foundation.Rect)
+  METHOD [Family] System.Collections.Generic.IEnumerable`1<Microsoft.UI.Xaml.DependencyObject> GetChildrenInTabFocusOrder()
+  METHOD [Family] Void OnKeyboardAcceleratorInvoked(Microsoft.UI.Xaml.Input.KeyboardAcceleratorInvokedEventArgs)
+  METHOD [Family] Void OnProcessKeyboardAccelerators(Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs)
+  METHOD [Family] Void OnBringIntoViewRequested(Microsoft.UI.Xaml.BringIntoViewRequestedEventArgs)
+  METHOD [Family] Void PopulatePropertyInfoOverride(String, Microsoft.UI.Composition.AnimationPropertyInfo)
+  METHOD [Public] Void PopulatePropertyInfo(String, Microsoft.UI.Composition.AnimationPropertyInfo)
+  METHOD [Public] Microsoft.UI.Composition.Visual GetVisualInternal()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_KeyDownEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_KeyUpEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerEnteredEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerPressedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerMovedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerReleasedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerExitedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerCaptureLostEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerCanceledEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerWheelChangedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_TappedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DoubleTappedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_HoldingEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_RightTappedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationStartingEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationInertiaStartingEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationStartedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationDeltaEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationCompletedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DragEnterEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DragLeaveEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DragOverEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DropEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_GettingFocusEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_LosingFocusEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_NoFocusCandidateFoundEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PreviewKeyDownEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_CharacterReceivedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PreviewKeyUpEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_BringIntoViewRequestedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ContextRequestedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AllowDropProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_OpacityProperty()
+    METHOD_ATTRIBUTE get_OpacityProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ClipProperty()
+    METHOD_ATTRIBUTE get_ClipProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_RenderTransformProperty()
+    METHOD_ATTRIBUTE get_RenderTransformProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ProjectionProperty()
+    METHOD_ATTRIBUTE get_ProjectionProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_Transform3DProperty()
+    METHOD_ATTRIBUTE get_Transform3DProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_RenderTransformOriginProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsHitTestVisibleProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_VisibilityProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_UseLayoutRoundingProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TransitionsProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CacheModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsTapEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsDoubleTapEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CanDragProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsRightTapEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsHoldingEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ManipulationModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_PointerCapturesProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ContextFlyoutProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CompositeModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_LightsProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CanBeScrollAnchorProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ExitDisplayModeOnAccessKeyInvokedProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsAccessKeyScopeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AccessKeyScopeOwnerProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AccessKeyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipPlacementModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipHorizontalOffsetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipVerticalOffsetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipTargetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusKeyboardNavigationProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusUpNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusDownNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusLeftNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusRightNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyboardAcceleratorPlacementTargetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyboardAcceleratorPlacementModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_HighContrastAdjustmentProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TabFocusNavigationProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ShadowProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusStateProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_UseSystemFocusVisualsProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusLeftProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusRightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusUpProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusDownProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsTabStopProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TabIndexProperty()
+  METHOD [Public] Boolean TryStartDirectManipulation(Microsoft.UI.Xaml.Input.Pointer)
+  METHOD [Public] Void RegisterAsScrollPort(Microsoft.UI.Xaml.UIElement)
+  PROPERTY Microsoft.UI.Xaml.Input.KeyboardAcceleratorPlacementMode KeyboardAcceleratorPlacementMode
+  PROPERTY Microsoft.UI.Xaml.ScalarTransition RotationTransition
+  PROPERTY Microsoft.UI.Xaml.DependencyObject KeyTipTarget
+  PROPERTY Microsoft.UI.Xaml.Input.KeyTipPlacementMode KeyTipPlacementMode
+  PROPERTY Double KeyTipHorizontalOffset
+  PROPERTY Boolean IsTapEnabled
+  PROPERTY Boolean IsTabStop
+  PROPERTY Boolean IsRightTapEnabled
+  PROPERTY Boolean IsHoldingEnabled
+  PROPERTY Boolean IsHitTestVisible
+  PROPERTY Boolean IsDoubleTapEnabled
+  PROPERTY String AccessKey
+  PROPERTY Microsoft.UI.Xaml.ElementHighContrastAdjustment HighContrastAdjustment
+  PROPERTY Microsoft.UI.Xaml.Input.ManipulationModes ManipulationMode
+  PROPERTY Boolean ExitDisplayModeOnAccessKeyInvoked
+  PROPERTY Microsoft.UI.Xaml.ScalarTransition OpacityTransition
+  PROPERTY Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase ContextFlyout
+  PROPERTY Microsoft.UI.Xaml.Media.ElementCompositeMode CompositeMode
+  PROPERTY Microsoft.UI.Xaml.Media.RectangleGeometry Clip
+  PROPERTY System.Numerics.Vector3 Translation
+  PROPERTY Boolean CanDrag
+  PROPERTY Boolean CanBeScrollAnchor
+  PROPERTY Microsoft.UI.Xaml.Media.CacheMode CacheMode
+  PROPERTY Boolean AllowDrop
+  PROPERTY Double Opacity
+  PROPERTY Microsoft.UI.Xaml.DependencyObject KeyboardAcceleratorPlacementTarget
+  PROPERTY Microsoft.UI.Xaml.DependencyObject AccessKeyScopeOwner
+  PROPERTY Boolean IsAccessKeyScope
+  PROPERTY Double KeyTipVerticalOffset
+  PROPERTY Microsoft.UI.Xaml.XamlRoot XamlRoot
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusUpNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusUp
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusRightNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusRight
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusLeftNavigationStrategy
+  PROPERTY System.Numerics.Vector3 CenterPoint
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusKeyboardNavigationMode XYFocusKeyboardNavigation
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusDownNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusDown
+  PROPERTY Microsoft.UI.Xaml.Visibility Visibility
+  PROPERTY Boolean UseSystemFocusVisuals
+  PROPERTY Boolean UseLayoutRounding
+  PROPERTY Microsoft.UI.Xaml.Vector3Transition TranslationTransition
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusLeft
+  PROPERTY Microsoft.UI.Xaml.Media.Animation.TransitionCollection Transitions
+  PROPERTY System.Numerics.Matrix4x4 TransformMatrix
+  PROPERTY Single Rotation
+  PROPERTY Windows.Foundation.Point RenderTransformOrigin
+  PROPERTY Microsoft.UI.Xaml.Media.Transform RenderTransform
+  PROPERTY Microsoft.UI.Xaml.Input.KeyboardNavigationMode TabFocusNavigation
+  PROPERTY Double RasterizationScale
+  PROPERTY Microsoft.UI.Xaml.Media.Projection Projection
+  PROPERTY Microsoft.UI.Xaml.Media.Shadow Shadow
+  PROPERTY Microsoft.UI.Xaml.Vector3Transition ScaleTransition
+  PROPERTY System.Numerics.Vector3 Scale
+  PROPERTY Int32 TabIndex
+  PROPERTY System.Numerics.Vector3 RotationAxis
+  PROPERTY Microsoft.UI.Xaml.Media.Media3D.Transform3D Transform3D
+  PROPERTY Windows.Foundation.Size DesiredSize
+  PROPERTY Microsoft.UI.Xaml.FocusState FocusState
+  PROPERTY System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Input.KeyboardAccelerator> KeyboardAccelerators
+  PROPERTY System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Media.XamlLight> Lights
+  PROPERTY Windows.Foundation.Size RenderSize
+  PROPERTY System.Collections.Generic.IReadOnlyList`1<Microsoft.UI.Xaml.Input.Pointer> PointerCaptures
+  PROPERTY System.Numerics.Vector3 ActualOffset
+  PROPERTY System.Numerics.Vector2 ActualSize
+  PROPERTY Microsoft.UI.Input.InputCursor ProtectedCursor
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AccessKeyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AccessKeyScopeOwnerProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AllowDropProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent BringIntoViewRequestedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CacheModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CanBeScrollAnchorProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CanDragProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent CharacterReceivedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ClipProperty
+    PROPERTY_ATTRIBUTE ClipProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CompositeModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ContextFlyoutProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ContextRequestedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DoubleTappedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DragEnterEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DragLeaveEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DragOverEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DropEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ExitDisplayModeOnAccessKeyInvokedProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusStateProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent GettingFocusEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty HighContrastAdjustmentProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent HoldingEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsAccessKeyScopeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsDoubleTapEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsHitTestVisibleProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsHoldingEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsRightTapEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsTabStopProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsTapEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent KeyDownEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipHorizontalOffsetProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipPlacementModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipTargetProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipVerticalOffsetProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent KeyUpEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyboardAcceleratorPlacementModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyboardAcceleratorPlacementTargetProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty LightsProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent LosingFocusEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationCompletedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationDeltaEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationInertiaStartingEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ManipulationModeProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationStartedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationStartingEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent NoFocusCandidateFoundEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty OpacityProperty
+    PROPERTY_ATTRIBUTE OpacityProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerCanceledEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerCaptureLostEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty PointerCapturesProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerEnteredEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerExitedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerMovedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerPressedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerReleasedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerWheelChangedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PreviewKeyDownEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PreviewKeyUpEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ProjectionProperty
+    PROPERTY_ATTRIBUTE ProjectionProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty RenderTransformOriginProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty RenderTransformProperty
+    PROPERTY_ATTRIBUTE RenderTransformProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent RightTappedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ShadowProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TabFocusNavigationProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TabIndexProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent TappedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty Transform3DProperty
+    PROPERTY_ATTRIBUTE Transform3DProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TransitionsProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty UseLayoutRoundingProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty UseSystemFocusVisualsProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty VisibilityProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusDownNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusDownProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusKeyboardNavigationProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusLeftNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusLeftProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusRightNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusRightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusUpNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusUpProperty
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayDismissedEventArgs> AccessKeyDisplayDismissed
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayRequestedEventArgs> AccessKeyDisplayRequested
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyInvokedEventArgs> AccessKeyInvoked
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.BringIntoViewRequestedEventArgs> BringIntoViewRequested
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.CharacterReceivedRoutedEventArgs> CharacterReceived
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.RoutedEventArgs> ContextCanceled
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs> ContextRequested
+  EVENT Microsoft.UI.Xaml.Input.DoubleTappedEventHandler DoubleTapped
+  EVENT Microsoft.UI.Xaml.DragEventHandler DragEnter
+  EVENT Microsoft.UI.Xaml.DragEventHandler DragLeave
+  EVENT Microsoft.UI.Xaml.DragEventHandler DragOver
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DragStartingEventArgs> DragStarting
+  EVENT Microsoft.UI.Xaml.DragEventHandler Drop
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DropCompletedEventArgs> DropCompleted
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.GettingFocusEventArgs> GettingFocus
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler GotFocus
+  EVENT Microsoft.UI.Xaml.Input.HoldingEventHandler Holding
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler KeyDown
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler KeyUp
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.LosingFocusEventArgs> LosingFocus
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler LostFocus
+  EVENT Microsoft.UI.Xaml.Input.ManipulationCompletedEventHandler ManipulationCompleted
+  EVENT Microsoft.UI.Xaml.Input.ManipulationDeltaEventHandler ManipulationDelta
+  EVENT Microsoft.UI.Xaml.Input.ManipulationInertiaStartingEventHandler ManipulationInertiaStarting
+  EVENT Microsoft.UI.Xaml.Input.ManipulationStartedEventHandler ManipulationStarted
+  EVENT Microsoft.UI.Xaml.Input.ManipulationStartingEventHandler ManipulationStarting
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.NoFocusCandidateFoundEventArgs> NoFocusCandidateFound
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerCanceled
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerCaptureLost
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerEntered
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerExited
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerMoved
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerPressed
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerReleased
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerWheelChanged
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler PreviewKeyDown
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler PreviewKeyUp
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs> ProcessKeyboardAccelerators
+  EVENT Microsoft.UI.Xaml.Input.RightTappedEventHandler RightTapped
+  EVENT Microsoft.UI.Xaml.Input.TappedEventHandler Tapped
+
+TYPE Microsoft.UI.Xaml.FrameworkElement [Public, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.MarshalingBehaviorAttribute 0100020000000000
+  ATTRIBUTE Windows.Foundation.Metadata.ThreadingAttribute 0100030000000000
+  ATTRIBUTE Windows.Foundation.Metadata.StaticAttribute 01002A4D6963726F736F66742E55492E58616D6C2E494672616D65776F726B456C656D656E7453746174696373000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ComposableAttribute 01002A4D6963726F736F66742E55492E58616D6C2E494672616D65776F726B456C656D656E74466163746F727901000000000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  IMPLEMENTS Microsoft.UI.Xaml.IFrameworkElement
+  IMPLEMENTS Microsoft.UI.Xaml.IFrameworkElementProtected
+  IMPLEMENTS Microsoft.UI.Xaml.IFrameworkElementOverrides
+  METHOD [Family] Void .ctor()
+  METHOD [Public] Microsoft.UI.Xaml.TriggerCollection get_Triggers()
+  METHOD [Public] Microsoft.UI.Xaml.ResourceDictionary get_Resources()
+  METHOD [Public] Void put_Resources(Microsoft.UI.Xaml.ResourceDictionary)
+  METHOD [Public] Object get_Tag()
+  METHOD [Public] Void put_Tag(Object)
+  METHOD [Public] String get_Language()
+  METHOD [Public] Void put_Language(String)
+  METHOD [Public] Double get_ActualWidth()
+  METHOD [Public] Double get_ActualHeight()
+  METHOD [Public] Double get_Width()
+  METHOD [Public] Void put_Width(Double)
+  METHOD [Public] Double get_Height()
+  METHOD [Public] Void put_Height(Double)
+  METHOD [Public] Double get_MinWidth()
+  METHOD [Public] Void put_MinWidth(Double)
+  METHOD [Public] Double get_MaxWidth()
+  METHOD [Public] Void put_MaxWidth(Double)
+  METHOD [Public] Double get_MinHeight()
+  METHOD [Public] Void put_MinHeight(Double)
+  METHOD [Public] Double get_MaxHeight()
+  METHOD [Public] Void put_MaxHeight(Double)
+  METHOD [Public] Microsoft.UI.Xaml.HorizontalAlignment get_HorizontalAlignment()
+  METHOD [Public] Void put_HorizontalAlignment(Microsoft.UI.Xaml.HorizontalAlignment)
+  METHOD [Public] Microsoft.UI.Xaml.VerticalAlignment get_VerticalAlignment()
+  METHOD [Public] Void put_VerticalAlignment(Microsoft.UI.Xaml.VerticalAlignment)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_Margin()
+  METHOD [Public] Void put_Margin(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] String get_Name()
+  METHOD [Public] Void put_Name(String)
+  METHOD [Public] System.Uri get_BaseUri()
+  METHOD [Public] Object get_DataContext()
+  METHOD [Public] Void put_DataContext(Object)
+  METHOD [Public] Boolean get_AllowFocusOnInteraction()
+  METHOD [Public] Void put_AllowFocusOnInteraction(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_FocusVisualMargin()
+  METHOD [Public] Void put_FocusVisualMargin(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_FocusVisualSecondaryThickness()
+  METHOD [Public] Void put_FocusVisualSecondaryThickness(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_FocusVisualPrimaryThickness()
+  METHOD [Public] Void put_FocusVisualPrimaryThickness(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Brush get_FocusVisualSecondaryBrush()
+  METHOD [Public] Void put_FocusVisualSecondaryBrush(Microsoft.UI.Xaml.Media.Brush)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Brush get_FocusVisualPrimaryBrush()
+  METHOD [Public] Void put_FocusVisualPrimaryBrush(Microsoft.UI.Xaml.Media.Brush)
+  METHOD [Public] Boolean get_AllowFocusWhenDisabled()
+  METHOD [Public] Void put_AllowFocusWhenDisabled(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Style get_Style()
+  METHOD [Public] Void put_Style(Microsoft.UI.Xaml.Style)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_Parent()
+  METHOD [Public] Microsoft.UI.Xaml.FlowDirection get_FlowDirection()
+  METHOD [Public] Void put_FlowDirection(Microsoft.UI.Xaml.FlowDirection)
+  METHOD [Public] Microsoft.UI.Xaml.ElementTheme get_RequestedTheme()
+  METHOD [Public] Void put_RequestedTheme(Microsoft.UI.Xaml.ElementTheme)
+  METHOD [Public] Boolean get_IsLoaded()
+  METHOD [Public] Microsoft.UI.Xaml.ElementTheme get_ActualTheme()
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Loaded(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_Loaded(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Unloaded(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_Unloaded(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DataContextChanged(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.DataContextChangedEventArgs>)
+  METHOD [Public] Void remove_DataContextChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_SizeChanged(Microsoft.UI.Xaml.SizeChangedEventHandler)
+  METHOD [Public] Void remove_SizeChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_LayoutUpdated(System.EventHandler`1<Object>)
+  METHOD [Public] Void remove_LayoutUpdated(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Loading(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object>)
+  METHOD [Public] Void remove_Loading(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ActualThemeChanged(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object>)
+  METHOD [Public] Void remove_ActualThemeChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_EffectiveViewportChanged(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.EffectiveViewportChangedEventArgs>)
+  METHOD [Public] Void remove_EffectiveViewportChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] Object FindName(String)
+  METHOD [Public] Void SetBinding(Microsoft.UI.Xaml.DependencyProperty, Microsoft.UI.Xaml.Data.BindingBase)
+  METHOD [Public] Microsoft.UI.Xaml.Data.BindingExpression GetBindingExpression(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Family] Void InvalidateViewport()
+  METHOD [Family] Windows.Foundation.Size MeasureOverride(Windows.Foundation.Size)
+  METHOD [Family] Windows.Foundation.Size ArrangeOverride(Windows.Foundation.Size)
+  METHOD [Family] Void OnApplyTemplate()
+  METHOD [Family] Boolean GoToElementStateCore(String, Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TagProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_LanguageProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ActualWidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ActualHeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_WidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_HeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MinWidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MaxWidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MinHeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MaxHeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_HorizontalAlignmentProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_VerticalAlignmentProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MarginProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_NameProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_DataContextProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AllowFocusOnInteractionProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualMarginProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualSecondaryThicknessProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualPrimaryThicknessProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualSecondaryBrushProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualPrimaryBrushProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AllowFocusWhenDisabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_StyleProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FlowDirectionProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_RequestedThemeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ActualThemeProperty()
+  METHOD [Public] Void DeferTree(Microsoft.UI.Xaml.DependencyObject)
+  PROPERTY Double Width
+  PROPERTY Microsoft.UI.Xaml.VerticalAlignment VerticalAlignment
+  PROPERTY Object Tag
+  PROPERTY Microsoft.UI.Xaml.Style Style
+  PROPERTY Microsoft.UI.Xaml.ResourceDictionary Resources
+  PROPERTY Microsoft.UI.Xaml.ElementTheme RequestedTheme
+  PROPERTY String Name
+  PROPERTY Double MinWidth
+  PROPERTY Double MinHeight
+  PROPERTY Double MaxWidth
+  PROPERTY Double MaxHeight
+  PROPERTY Microsoft.UI.Xaml.Thickness Margin
+  PROPERTY String Language
+  PROPERTY Microsoft.UI.Xaml.HorizontalAlignment HorizontalAlignment
+  PROPERTY Double Height
+  PROPERTY Microsoft.UI.Xaml.Thickness FocusVisualSecondaryThickness
+  PROPERTY Microsoft.UI.Xaml.Media.Brush FocusVisualSecondaryBrush
+  PROPERTY Microsoft.UI.Xaml.Thickness FocusVisualPrimaryThickness
+  PROPERTY Microsoft.UI.Xaml.Media.Brush FocusVisualPrimaryBrush
+  PROPERTY Microsoft.UI.Xaml.Thickness FocusVisualMargin
+  PROPERTY Microsoft.UI.Xaml.FlowDirection FlowDirection
+  PROPERTY Object DataContext
+  PROPERTY Boolean AllowFocusWhenDisabled
+  PROPERTY Boolean AllowFocusOnInteraction
+  PROPERTY Double ActualHeight
+  PROPERTY Microsoft.UI.Xaml.ElementTheme ActualTheme
+  PROPERTY Double ActualWidth
+  PROPERTY System.Uri BaseUri
+  PROPERTY Boolean IsLoaded
+  PROPERTY Microsoft.UI.Xaml.DependencyObject Parent
+  PROPERTY Microsoft.UI.Xaml.TriggerCollection Triggers
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ActualHeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ActualThemeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ActualWidthProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AllowFocusOnInteractionProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AllowFocusWhenDisabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty DataContextProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FlowDirectionProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualMarginProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualPrimaryBrushProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualPrimaryThicknessProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualSecondaryBrushProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualSecondaryThicknessProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty HeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty HorizontalAlignmentProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty LanguageProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MarginProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MaxHeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MaxWidthProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MinHeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MinWidthProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty NameProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty RequestedThemeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty StyleProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TagProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty VerticalAlignmentProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty WidthProperty
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object> ActualThemeChanged
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.DataContextChangedEventArgs> DataContextChanged
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.EffectiveViewportChangedEventArgs> EffectiveViewportChanged
+  EVENT System.EventHandler`1<Object> LayoutUpdated
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler Loaded
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object> Loading
+  EVENT Microsoft.UI.Xaml.SizeChangedEventHandler SizeChanged
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler Unloaded
+
+TYPE Microsoft.UI.Xaml.DependencyProperty [Public, Sealed, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.StaticAttribute 01002C4D6963726F736F66742E55492E58616D6C2E49446570656E64656E637950726F706572747953746174696373000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  ATTRIBUTE Windows.Foundation.Metadata.ThreadingAttribute 0100030000000000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.MarshalingBehaviorAttribute 0100020000000000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  IMPLEMENTS Microsoft.UI.Xaml.IDependencyProperty
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata GetMetadata(System.Type)
+  METHOD [Public] Object get_UnsetValue()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty Register(String, System.Type, System.Type, Microsoft.UI.Xaml.PropertyMetadata)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty RegisterAttached(String, System.Type, System.Type, Microsoft.UI.Xaml.PropertyMetadata)
+  PROPERTY Object UnsetValue
+
+TYPE Microsoft.UI.Xaml.IDependencyObject [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 0100E7AEBEE70E16F7508789D63463F979FA0000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E446570656E64656E63794F626A6563740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  METHOD [Public] Object GetValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Void SetValue(Microsoft.UI.Xaml.DependencyProperty, Object)
+  METHOD [Public] Void ClearValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Object ReadLocalValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Object GetAnimationBaseValue(Microsoft.UI.Xaml.DependencyProperty)
+  METHOD [Public] Int64 RegisterPropertyChangedCallback(Microsoft.UI.Xaml.DependencyProperty, Microsoft.UI.Xaml.DependencyPropertyChangedCallback)
+  METHOD [Public] Void UnregisterPropertyChangedCallback(Microsoft.UI.Xaml.DependencyProperty, Int64)
+  METHOD [Public] Windows.UI.Core.CoreDispatcher get_Dispatcher()
+    METHOD_ATTRIBUTE get_Dispatcher Windows.Foundation.Metadata.DeprecatedAttribute 0100809A54686520446973706174636865722070726F706572747920697320646570726563617465642C205573652044697370617463686572517565756520616E6420547279456E717565756520666F722055492074687265616420776F726B2E20466F72206D6F726520696E666F2C2076697369742068747470733A2F2F616B612E6D732F4469737061746368657251756575652E50726F706572747900000000000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  METHOD [Public] Microsoft.UI.Dispatching.DispatcherQueue get_DispatcherQueue()
+  PROPERTY Windows.UI.Core.CoreDispatcher Dispatcher
+  PROPERTY Microsoft.UI.Dispatching.DispatcherQueue DispatcherQueue
+
+TYPE Microsoft.UI.Xaml.IDependencyObjectFactory [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E446570656E64656E63794F626A6563740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 01004C616B935F477D5DB3F7BF1FBEA281260000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject CreateInstance(Object, ref Object)
+
+TYPE Microsoft.UI.Xaml.IDependencyProperty [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 010049AB0E967296A058995B3A42E5EA62780000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100244D6963726F736F66742E55492E58616D6C2E446570656E64656E637950726F70657274790000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata GetMetadata(System.Type)
+
+TYPE Microsoft.UI.Xaml.IDependencyPropertyStatics [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100244D6963726F736F66742E55492E58616D6C2E446570656E64656E637950726F70657274790000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 010051C6DD6183036F5D98CE5C046AAAAA8F0000
+  METHOD [Public] Object get_UnsetValue()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty Register(String, System.Type, System.Type, Microsoft.UI.Xaml.PropertyMetadata)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty RegisterAttached(String, System.Type, System.Type, Microsoft.UI.Xaml.PropertyMetadata)
+  PROPERTY Object UnsetValue
+
+TYPE Microsoft.UI.Xaml.IFrameworkElement [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E4672616D65776F726B456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 01003DF108FE6ADC9554AD44C2D8D21863B00000
+  METHOD [Public] Microsoft.UI.Xaml.TriggerCollection get_Triggers()
+  METHOD [Public] Microsoft.UI.Xaml.ResourceDictionary get_Resources()
+  METHOD [Public] Void put_Resources(Microsoft.UI.Xaml.ResourceDictionary)
+  METHOD [Public] Object get_Tag()
+  METHOD [Public] Void put_Tag(Object)
+  METHOD [Public] String get_Language()
+  METHOD [Public] Void put_Language(String)
+  METHOD [Public] Double get_ActualWidth()
+  METHOD [Public] Double get_ActualHeight()
+  METHOD [Public] Double get_Width()
+  METHOD [Public] Void put_Width(Double)
+  METHOD [Public] Double get_Height()
+  METHOD [Public] Void put_Height(Double)
+  METHOD [Public] Double get_MinWidth()
+  METHOD [Public] Void put_MinWidth(Double)
+  METHOD [Public] Double get_MaxWidth()
+  METHOD [Public] Void put_MaxWidth(Double)
+  METHOD [Public] Double get_MinHeight()
+  METHOD [Public] Void put_MinHeight(Double)
+  METHOD [Public] Double get_MaxHeight()
+  METHOD [Public] Void put_MaxHeight(Double)
+  METHOD [Public] Microsoft.UI.Xaml.HorizontalAlignment get_HorizontalAlignment()
+  METHOD [Public] Void put_HorizontalAlignment(Microsoft.UI.Xaml.HorizontalAlignment)
+  METHOD [Public] Microsoft.UI.Xaml.VerticalAlignment get_VerticalAlignment()
+  METHOD [Public] Void put_VerticalAlignment(Microsoft.UI.Xaml.VerticalAlignment)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_Margin()
+  METHOD [Public] Void put_Margin(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] String get_Name()
+  METHOD [Public] Void put_Name(String)
+  METHOD [Public] System.Uri get_BaseUri()
+  METHOD [Public] Object get_DataContext()
+  METHOD [Public] Void put_DataContext(Object)
+  METHOD [Public] Boolean get_AllowFocusOnInteraction()
+  METHOD [Public] Void put_AllowFocusOnInteraction(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_FocusVisualMargin()
+  METHOD [Public] Void put_FocusVisualMargin(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_FocusVisualSecondaryThickness()
+  METHOD [Public] Void put_FocusVisualSecondaryThickness(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] Microsoft.UI.Xaml.Thickness get_FocusVisualPrimaryThickness()
+  METHOD [Public] Void put_FocusVisualPrimaryThickness(Microsoft.UI.Xaml.Thickness)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Brush get_FocusVisualSecondaryBrush()
+  METHOD [Public] Void put_FocusVisualSecondaryBrush(Microsoft.UI.Xaml.Media.Brush)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Brush get_FocusVisualPrimaryBrush()
+  METHOD [Public] Void put_FocusVisualPrimaryBrush(Microsoft.UI.Xaml.Media.Brush)
+  METHOD [Public] Boolean get_AllowFocusWhenDisabled()
+  METHOD [Public] Void put_AllowFocusWhenDisabled(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Style get_Style()
+  METHOD [Public] Void put_Style(Microsoft.UI.Xaml.Style)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_Parent()
+  METHOD [Public] Microsoft.UI.Xaml.FlowDirection get_FlowDirection()
+  METHOD [Public] Void put_FlowDirection(Microsoft.UI.Xaml.FlowDirection)
+  METHOD [Public] Microsoft.UI.Xaml.ElementTheme get_RequestedTheme()
+  METHOD [Public] Void put_RequestedTheme(Microsoft.UI.Xaml.ElementTheme)
+  METHOD [Public] Boolean get_IsLoaded()
+  METHOD [Public] Microsoft.UI.Xaml.ElementTheme get_ActualTheme()
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Loaded(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_Loaded(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Unloaded(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_Unloaded(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DataContextChanged(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.DataContextChangedEventArgs>)
+  METHOD [Public] Void remove_DataContextChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_SizeChanged(Microsoft.UI.Xaml.SizeChangedEventHandler)
+  METHOD [Public] Void remove_SizeChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_LayoutUpdated(System.EventHandler`1<Object>)
+  METHOD [Public] Void remove_LayoutUpdated(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Loading(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object>)
+  METHOD [Public] Void remove_Loading(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ActualThemeChanged(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object>)
+  METHOD [Public] Void remove_ActualThemeChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_EffectiveViewportChanged(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.EffectiveViewportChangedEventArgs>)
+  METHOD [Public] Void remove_EffectiveViewportChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] Object FindName(String)
+  METHOD [Public] Void SetBinding(Microsoft.UI.Xaml.DependencyProperty, Microsoft.UI.Xaml.Data.BindingBase)
+  METHOD [Public] Microsoft.UI.Xaml.Data.BindingExpression GetBindingExpression(Microsoft.UI.Xaml.DependencyProperty)
+  PROPERTY Double ActualHeight
+  PROPERTY Microsoft.UI.Xaml.ElementTheme ActualTheme
+  PROPERTY Double ActualWidth
+  PROPERTY Boolean AllowFocusOnInteraction
+  PROPERTY Boolean AllowFocusWhenDisabled
+  PROPERTY System.Uri BaseUri
+  PROPERTY Object DataContext
+  PROPERTY Microsoft.UI.Xaml.FlowDirection FlowDirection
+  PROPERTY Microsoft.UI.Xaml.Thickness FocusVisualMargin
+  PROPERTY Microsoft.UI.Xaml.Media.Brush FocusVisualPrimaryBrush
+  PROPERTY Microsoft.UI.Xaml.Thickness FocusVisualPrimaryThickness
+  PROPERTY Microsoft.UI.Xaml.Media.Brush FocusVisualSecondaryBrush
+  PROPERTY Microsoft.UI.Xaml.Thickness FocusVisualSecondaryThickness
+  PROPERTY Double Height
+  PROPERTY Microsoft.UI.Xaml.HorizontalAlignment HorizontalAlignment
+  PROPERTY Boolean IsLoaded
+  PROPERTY String Language
+  PROPERTY Microsoft.UI.Xaml.Thickness Margin
+  PROPERTY Double MaxHeight
+  PROPERTY Double MaxWidth
+  PROPERTY Double MinHeight
+  PROPERTY Double MinWidth
+  PROPERTY String Name
+  PROPERTY Microsoft.UI.Xaml.DependencyObject Parent
+  PROPERTY Microsoft.UI.Xaml.ElementTheme RequestedTheme
+  PROPERTY Microsoft.UI.Xaml.ResourceDictionary Resources
+  PROPERTY Microsoft.UI.Xaml.Style Style
+  PROPERTY Object Tag
+  PROPERTY Microsoft.UI.Xaml.TriggerCollection Triggers
+  PROPERTY Microsoft.UI.Xaml.VerticalAlignment VerticalAlignment
+  PROPERTY Double Width
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object> ActualThemeChanged
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.DataContextChangedEventArgs> DataContextChanged
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Microsoft.UI.Xaml.EffectiveViewportChangedEventArgs> EffectiveViewportChanged
+  EVENT System.EventHandler`1<Object> LayoutUpdated
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler Loaded
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.FrameworkElement, Object> Loading
+  EVENT Microsoft.UI.Xaml.SizeChangedEventHandler SizeChanged
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler Unloaded
+
+TYPE Microsoft.UI.Xaml.IFrameworkElementFactory [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 010072223FBDFA3E925FB75990B1CC3E784C0000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E4672616D65776F726B456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  METHOD [Public] Microsoft.UI.Xaml.FrameworkElement CreateInstance(Object, ref Object)
+
+TYPE Microsoft.UI.Xaml.IFrameworkElementOverrides [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E4672616D65776F726B456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 010098FDC6FF8CF304599CE497A3427CF4BA0000
+  METHOD [Public] Windows.Foundation.Size MeasureOverride(Windows.Foundation.Size)
+  METHOD [Public] Windows.Foundation.Size ArrangeOverride(Windows.Foundation.Size)
+  METHOD [Public] Void OnApplyTemplate()
+  METHOD [Public] Boolean GoToElementStateCore(String, Boolean)
+
+TYPE Microsoft.UI.Xaml.IFrameworkElementProtected [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E4672616D65776F726B456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 0100B03D9AE5E59103599CAFD1BB9F458BF20000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  METHOD [Public] Void InvalidateViewport()
+
+TYPE Microsoft.UI.Xaml.IFrameworkElementStatics [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E4672616D65776F726B456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 010004274E89E7149A56B21EAFC7DF7145A10000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TagProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_LanguageProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ActualWidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ActualHeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_WidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_HeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MinWidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MaxWidthProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MinHeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MaxHeightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_HorizontalAlignmentProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_VerticalAlignmentProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_MarginProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_NameProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_DataContextProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AllowFocusOnInteractionProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualMarginProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualSecondaryThicknessProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualPrimaryThicknessProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualSecondaryBrushProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusVisualPrimaryBrushProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AllowFocusWhenDisabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_StyleProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FlowDirectionProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_RequestedThemeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ActualThemeProperty()
+  METHOD [Public] Void DeferTree(Microsoft.UI.Xaml.DependencyObject)
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ActualHeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ActualThemeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ActualWidthProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AllowFocusOnInteractionProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AllowFocusWhenDisabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty DataContextProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FlowDirectionProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualMarginProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualPrimaryBrushProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualPrimaryThicknessProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualSecondaryBrushProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusVisualSecondaryThicknessProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty HeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty HorizontalAlignmentProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty LanguageProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MarginProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MaxHeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MaxWidthProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MinHeightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty MinWidthProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty NameProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty RequestedThemeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty StyleProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TagProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty VerticalAlignmentProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty WidthProperty
+
+TYPE Microsoft.UI.Xaml.IPropertyMetadata [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 0100254464B364943454B0AEAFF8D3159FE10000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E50726F70657274794D657461646174610000
+  METHOD [Public] Object get_DefaultValue()
+  METHOD [Public] Microsoft.UI.Xaml.CreateDefaultValueCallback get_CreateDefaultValueCallback()
+  PROPERTY Microsoft.UI.Xaml.CreateDefaultValueCallback CreateDefaultValueCallback
+  PROPERTY Object DefaultValue
+
+TYPE Microsoft.UI.Xaml.IPropertyMetadataFactory [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E50726F70657274794D657461646174610000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 01000609429F1A11655491EEBED14B3E7FEC0000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata CreateInstanceWithDefaultValue(Object, Object, ref Object)
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata CreateInstanceWithDefaultValueAndCallback(Object, Microsoft.UI.Xaml.PropertyChangedCallback, Object, ref Object)
+
+TYPE Microsoft.UI.Xaml.IPropertyMetadataStatics [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 0100224D6963726F736F66742E55492E58616D6C2E50726F70657274794D657461646174610000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 0100D4ADB8374A7AF75CA174235182CD082E0000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Object)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 0100164372656174655769746844656661756C7456616C75650000
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.DefaultOverloadAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Object, Microsoft.UI.Xaml.PropertyChangedCallback)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.DefaultOverloadAttribute 01000000
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 0100214372656174655769746844656661756C7456616C7565416E6443616C6C6261636B0000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Microsoft.UI.Xaml.CreateDefaultValueCallback)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 01001143726561746557697468466163746F72790000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Microsoft.UI.Xaml.CreateDefaultValueCallback, Microsoft.UI.Xaml.PropertyChangedCallback)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 01001C43726561746557697468466163746F7279416E6443616C6C6261636B0000
+
+TYPE Microsoft.UI.Xaml.IUIElement [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 01001B4D6963726F736F66742E55492E58616D6C2E5549456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 01002010C0C30C32F65C9D24D396BBFA4D8B0000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  METHOD [Public] Windows.Foundation.Size get_DesiredSize()
+  METHOD [Public] Boolean get_AllowDrop()
+  METHOD [Public] Void put_AllowDrop(Boolean)
+  METHOD [Public] Double get_Opacity()
+  METHOD [Public] Void put_Opacity(Double)
+  METHOD [Public] Microsoft.UI.Xaml.Media.RectangleGeometry get_Clip()
+  METHOD [Public] Void put_Clip(Microsoft.UI.Xaml.Media.RectangleGeometry)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Transform get_RenderTransform()
+  METHOD [Public] Void put_RenderTransform(Microsoft.UI.Xaml.Media.Transform)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Projection get_Projection()
+  METHOD [Public] Void put_Projection(Microsoft.UI.Xaml.Media.Projection)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Media3D.Transform3D get_Transform3D()
+  METHOD [Public] Void put_Transform3D(Microsoft.UI.Xaml.Media.Media3D.Transform3D)
+  METHOD [Public] Windows.Foundation.Point get_RenderTransformOrigin()
+  METHOD [Public] Void put_RenderTransformOrigin(Windows.Foundation.Point)
+  METHOD [Public] Boolean get_IsHitTestVisible()
+  METHOD [Public] Void put_IsHitTestVisible(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Visibility get_Visibility()
+  METHOD [Public] Void put_Visibility(Microsoft.UI.Xaml.Visibility)
+  METHOD [Public] Windows.Foundation.Size get_RenderSize()
+  METHOD [Public] Boolean get_UseLayoutRounding()
+  METHOD [Public] Void put_UseLayoutRounding(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Animation.TransitionCollection get_Transitions()
+  METHOD [Public] Void put_Transitions(Microsoft.UI.Xaml.Media.Animation.TransitionCollection)
+  METHOD [Public] Microsoft.UI.Xaml.Media.CacheMode get_CacheMode()
+  METHOD [Public] Void put_CacheMode(Microsoft.UI.Xaml.Media.CacheMode)
+  METHOD [Public] Boolean get_IsTapEnabled()
+  METHOD [Public] Void put_IsTapEnabled(Boolean)
+  METHOD [Public] Boolean get_IsDoubleTapEnabled()
+  METHOD [Public] Void put_IsDoubleTapEnabled(Boolean)
+  METHOD [Public] Boolean get_CanDrag()
+  METHOD [Public] Void put_CanDrag(Boolean)
+  METHOD [Public] Boolean get_IsRightTapEnabled()
+  METHOD [Public] Void put_IsRightTapEnabled(Boolean)
+  METHOD [Public] Boolean get_IsHoldingEnabled()
+  METHOD [Public] Void put_IsHoldingEnabled(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.Input.ManipulationModes get_ManipulationMode()
+  METHOD [Public] Void put_ManipulationMode(Microsoft.UI.Xaml.Input.ManipulationModes)
+  METHOD [Public] System.Collections.Generic.IReadOnlyList`1<Microsoft.UI.Xaml.Input.Pointer> get_PointerCaptures()
+  METHOD [Public] Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase get_ContextFlyout()
+  METHOD [Public] Void put_ContextFlyout(Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase)
+  METHOD [Public] Microsoft.UI.Xaml.Media.ElementCompositeMode get_CompositeMode()
+  METHOD [Public] Void put_CompositeMode(Microsoft.UI.Xaml.Media.ElementCompositeMode)
+  METHOD [Public] System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Media.XamlLight> get_Lights()
+  METHOD [Public] Boolean get_CanBeScrollAnchor()
+  METHOD [Public] Void put_CanBeScrollAnchor(Boolean)
+  METHOD [Public] Boolean get_ExitDisplayModeOnAccessKeyInvoked()
+  METHOD [Public] Void put_ExitDisplayModeOnAccessKeyInvoked(Boolean)
+  METHOD [Public] Boolean get_IsAccessKeyScope()
+  METHOD [Public] Void put_IsAccessKeyScope(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_AccessKeyScopeOwner()
+  METHOD [Public] Void put_AccessKeyScopeOwner(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] String get_AccessKey()
+  METHOD [Public] Void put_AccessKey(String)
+  METHOD [Public] Microsoft.UI.Xaml.Input.KeyTipPlacementMode get_KeyTipPlacementMode()
+  METHOD [Public] Void put_KeyTipPlacementMode(Microsoft.UI.Xaml.Input.KeyTipPlacementMode)
+  METHOD [Public] Double get_KeyTipHorizontalOffset()
+  METHOD [Public] Void put_KeyTipHorizontalOffset(Double)
+  METHOD [Public] Double get_KeyTipVerticalOffset()
+  METHOD [Public] Void put_KeyTipVerticalOffset(Double)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_KeyTipTarget()
+  METHOD [Public] Void put_KeyTipTarget(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusKeyboardNavigationMode get_XYFocusKeyboardNavigation()
+  METHOD [Public] Void put_XYFocusKeyboardNavigation(Microsoft.UI.Xaml.Input.XYFocusKeyboardNavigationMode)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusUpNavigationStrategy()
+  METHOD [Public] Void put_XYFocusUpNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusDownNavigationStrategy()
+  METHOD [Public] Void put_XYFocusDownNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusLeftNavigationStrategy()
+  METHOD [Public] Void put_XYFocusLeftNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy get_XYFocusRightNavigationStrategy()
+  METHOD [Public] Void put_XYFocusRightNavigationStrategy(Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy)
+  METHOD [Public] System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Input.KeyboardAccelerator> get_KeyboardAccelerators()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_KeyboardAcceleratorPlacementTarget()
+  METHOD [Public] Void put_KeyboardAcceleratorPlacementTarget(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.Input.KeyboardAcceleratorPlacementMode get_KeyboardAcceleratorPlacementMode()
+  METHOD [Public] Void put_KeyboardAcceleratorPlacementMode(Microsoft.UI.Xaml.Input.KeyboardAcceleratorPlacementMode)
+  METHOD [Public] Microsoft.UI.Xaml.ElementHighContrastAdjustment get_HighContrastAdjustment()
+  METHOD [Public] Void put_HighContrastAdjustment(Microsoft.UI.Xaml.ElementHighContrastAdjustment)
+  METHOD [Public] Microsoft.UI.Xaml.Input.KeyboardNavigationMode get_TabFocusNavigation()
+  METHOD [Public] Void put_TabFocusNavigation(Microsoft.UI.Xaml.Input.KeyboardNavigationMode)
+  METHOD [Public] Microsoft.UI.Xaml.ScalarTransition get_OpacityTransition()
+  METHOD [Public] Void put_OpacityTransition(Microsoft.UI.Xaml.ScalarTransition)
+  METHOD [Public] System.Numerics.Vector3 get_Translation()
+  METHOD [Public] Void put_Translation(System.Numerics.Vector3)
+  METHOD [Public] Microsoft.UI.Xaml.Vector3Transition get_TranslationTransition()
+  METHOD [Public] Void put_TranslationTransition(Microsoft.UI.Xaml.Vector3Transition)
+  METHOD [Public] Single get_Rotation()
+  METHOD [Public] Void put_Rotation(Single)
+  METHOD [Public] Microsoft.UI.Xaml.ScalarTransition get_RotationTransition()
+  METHOD [Public] Void put_RotationTransition(Microsoft.UI.Xaml.ScalarTransition)
+  METHOD [Public] System.Numerics.Vector3 get_Scale()
+  METHOD [Public] Void put_Scale(System.Numerics.Vector3)
+  METHOD [Public] Microsoft.UI.Xaml.Vector3Transition get_ScaleTransition()
+  METHOD [Public] Void put_ScaleTransition(Microsoft.UI.Xaml.Vector3Transition)
+  METHOD [Public] System.Numerics.Matrix4x4 get_TransformMatrix()
+  METHOD [Public] Void put_TransformMatrix(System.Numerics.Matrix4x4)
+  METHOD [Public] System.Numerics.Vector3 get_CenterPoint()
+  METHOD [Public] Void put_CenterPoint(System.Numerics.Vector3)
+  METHOD [Public] System.Numerics.Vector3 get_RotationAxis()
+  METHOD [Public] Void put_RotationAxis(System.Numerics.Vector3)
+  METHOD [Public] System.Numerics.Vector3 get_ActualOffset()
+  METHOD [Public] System.Numerics.Vector2 get_ActualSize()
+  METHOD [Public] Microsoft.UI.Xaml.XamlRoot get_XamlRoot()
+  METHOD [Public] Void put_XamlRoot(Microsoft.UI.Xaml.XamlRoot)
+  METHOD [Public] Microsoft.UI.Xaml.Media.Shadow get_Shadow()
+  METHOD [Public] Void put_Shadow(Microsoft.UI.Xaml.Media.Shadow)
+  METHOD [Public] Double get_RasterizationScale()
+  METHOD [Public] Void put_RasterizationScale(Double)
+  METHOD [Public] Microsoft.UI.Xaml.FocusState get_FocusState()
+  METHOD [Public] Boolean get_UseSystemFocusVisuals()
+  METHOD [Public] Void put_UseSystemFocusVisuals(Boolean)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusLeft()
+  METHOD [Public] Void put_XYFocusLeft(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusRight()
+  METHOD [Public] Void put_XYFocusRight(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusUp()
+  METHOD [Public] Void put_XYFocusUp(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Microsoft.UI.Xaml.DependencyObject get_XYFocusDown()
+  METHOD [Public] Void put_XYFocusDown(Microsoft.UI.Xaml.DependencyObject)
+  METHOD [Public] Boolean get_IsTabStop()
+  METHOD [Public] Void put_IsTabStop(Boolean)
+  METHOD [Public] Int32 get_TabIndex()
+  METHOD [Public] Void put_TabIndex(Int32)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_KeyUp(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_KeyUp(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_KeyDown(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_KeyDown(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_GotFocus(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_GotFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_LostFocus(Microsoft.UI.Xaml.RoutedEventHandler)
+  METHOD [Public] Void remove_LostFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragStarting(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DragStartingEventArgs>)
+  METHOD [Public] Void remove_DragStarting(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DropCompleted(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DropCompletedEventArgs>)
+  METHOD [Public] Void remove_DropCompleted(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_CharacterReceived(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.CharacterReceivedRoutedEventArgs>)
+  METHOD [Public] Void remove_CharacterReceived(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragEnter(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_DragEnter(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragLeave(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_DragLeave(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DragOver(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_DragOver(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Drop(Microsoft.UI.Xaml.DragEventHandler)
+  METHOD [Public] Void remove_Drop(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerPressed(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerPressed(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerMoved(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerMoved(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerReleased(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerReleased(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerEntered(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerEntered(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerExited(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerExited(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerCaptureLost(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerCaptureLost(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerCanceled(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerCanceled(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PointerWheelChanged(Microsoft.UI.Xaml.Input.PointerEventHandler)
+  METHOD [Public] Void remove_PointerWheelChanged(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Tapped(Microsoft.UI.Xaml.Input.TappedEventHandler)
+  METHOD [Public] Void remove_Tapped(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_DoubleTapped(Microsoft.UI.Xaml.Input.DoubleTappedEventHandler)
+  METHOD [Public] Void remove_DoubleTapped(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_Holding(Microsoft.UI.Xaml.Input.HoldingEventHandler)
+  METHOD [Public] Void remove_Holding(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ContextRequested(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs>)
+  METHOD [Public] Void remove_ContextRequested(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ContextCanceled(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.RoutedEventArgs>)
+  METHOD [Public] Void remove_ContextCanceled(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_RightTapped(Microsoft.UI.Xaml.Input.RightTappedEventHandler)
+  METHOD [Public] Void remove_RightTapped(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationStarting(Microsoft.UI.Xaml.Input.ManipulationStartingEventHandler)
+  METHOD [Public] Void remove_ManipulationStarting(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationInertiaStarting(Microsoft.UI.Xaml.Input.ManipulationInertiaStartingEventHandler)
+  METHOD [Public] Void remove_ManipulationInertiaStarting(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationStarted(Microsoft.UI.Xaml.Input.ManipulationStartedEventHandler)
+  METHOD [Public] Void remove_ManipulationStarted(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationDelta(Microsoft.UI.Xaml.Input.ManipulationDeltaEventHandler)
+  METHOD [Public] Void remove_ManipulationDelta(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ManipulationCompleted(Microsoft.UI.Xaml.Input.ManipulationCompletedEventHandler)
+  METHOD [Public] Void remove_ManipulationCompleted(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_AccessKeyDisplayRequested(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayRequestedEventArgs>)
+  METHOD [Public] Void remove_AccessKeyDisplayRequested(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_AccessKeyDisplayDismissed(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayDismissedEventArgs>)
+  METHOD [Public] Void remove_AccessKeyDisplayDismissed(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_AccessKeyInvoked(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyInvokedEventArgs>)
+  METHOD [Public] Void remove_AccessKeyInvoked(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_ProcessKeyboardAccelerators(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs>)
+  METHOD [Public] Void remove_ProcessKeyboardAccelerators(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_GettingFocus(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.GettingFocusEventArgs>)
+  METHOD [Public] Void remove_GettingFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_LosingFocus(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.LosingFocusEventArgs>)
+  METHOD [Public] Void remove_LosingFocus(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_NoFocusCandidateFound(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.NoFocusCandidateFoundEventArgs>)
+  METHOD [Public] Void remove_NoFocusCandidateFound(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PreviewKeyDown(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_PreviewKeyDown(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_PreviewKeyUp(Microsoft.UI.Xaml.Input.KeyEventHandler)
+  METHOD [Public] Void remove_PreviewKeyUp(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken add_BringIntoViewRequested(Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.BringIntoViewRequestedEventArgs>)
+  METHOD [Public] Void remove_BringIntoViewRequested(System.Runtime.InteropServices.WindowsRuntime.EventRegistrationToken)
+  METHOD [Public] Void Measure(Windows.Foundation.Size)
+  METHOD [Public] Void Arrange(Windows.Foundation.Rect)
+  METHOD [Public] Boolean CapturePointer(Microsoft.UI.Xaml.Input.Pointer)
+  METHOD [Public] Void ReleasePointerCapture(Microsoft.UI.Xaml.Input.Pointer)
+  METHOD [Public] Void ReleasePointerCaptures()
+  METHOD [Public] Void AddHandler(Microsoft.UI.Xaml.RoutedEvent, Object, Boolean)
+  METHOD [Public] Void RemoveHandler(Microsoft.UI.Xaml.RoutedEvent, Object)
+  METHOD [Public] Microsoft.UI.Xaml.Media.GeneralTransform TransformToVisual(Microsoft.UI.Xaml.UIElement)
+  METHOD [Public] Void InvalidateMeasure()
+  METHOD [Public] Void InvalidateArrange()
+  METHOD [Public] Void UpdateLayout()
+  METHOD [Public] Boolean CancelDirectManipulations()
+  METHOD [Public] Windows.Foundation.IAsyncOperation`1<Windows.ApplicationModel.DataTransfer.DataPackageOperation> StartDragAsync(Microsoft.UI.Input.PointerPoint)
+    METHOD_ATTRIBUTE StartDragAsync Windows.Foundation.Metadata.RemoteAsyncAttribute 01000000
+  METHOD [Public] Void StartBringIntoView()
+    METHOD_ATTRIBUTE StartBringIntoView Windows.Foundation.Metadata.OverloadAttribute 01001253746172744272696E67496E746F566965770000
+  METHOD [Public] Void StartBringIntoView(Microsoft.UI.Xaml.BringIntoViewOptions)
+    METHOD_ATTRIBUTE StartBringIntoView Windows.Foundation.Metadata.OverloadAttribute 01001D53746172744272696E67496E746F56696577576974684F7074696F6E730000
+  METHOD [Public] Void TryInvokeKeyboardAccelerator(Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs)
+  METHOD [Public] Boolean Focus(Microsoft.UI.Xaml.FocusState)
+  METHOD [Public] Void StartAnimation(Microsoft.UI.Composition.ICompositionAnimationBase)
+  METHOD [Public] Void StopAnimation(Microsoft.UI.Composition.ICompositionAnimationBase)
+  PROPERTY String AccessKey
+  PROPERTY Microsoft.UI.Xaml.DependencyObject AccessKeyScopeOwner
+  PROPERTY System.Numerics.Vector3 ActualOffset
+  PROPERTY System.Numerics.Vector2 ActualSize
+  PROPERTY Boolean AllowDrop
+  PROPERTY Microsoft.UI.Xaml.Media.CacheMode CacheMode
+  PROPERTY Boolean CanBeScrollAnchor
+  PROPERTY Boolean CanDrag
+  PROPERTY System.Numerics.Vector3 CenterPoint
+  PROPERTY Microsoft.UI.Xaml.Media.RectangleGeometry Clip
+  PROPERTY Microsoft.UI.Xaml.Media.ElementCompositeMode CompositeMode
+  PROPERTY Microsoft.UI.Xaml.Controls.Primitives.FlyoutBase ContextFlyout
+  PROPERTY Windows.Foundation.Size DesiredSize
+  PROPERTY Boolean ExitDisplayModeOnAccessKeyInvoked
+  PROPERTY Microsoft.UI.Xaml.FocusState FocusState
+  PROPERTY Microsoft.UI.Xaml.ElementHighContrastAdjustment HighContrastAdjustment
+  PROPERTY Boolean IsAccessKeyScope
+  PROPERTY Boolean IsDoubleTapEnabled
+  PROPERTY Boolean IsHitTestVisible
+  PROPERTY Boolean IsHoldingEnabled
+  PROPERTY Boolean IsRightTapEnabled
+  PROPERTY Boolean IsTabStop
+  PROPERTY Boolean IsTapEnabled
+  PROPERTY Double KeyTipHorizontalOffset
+  PROPERTY Microsoft.UI.Xaml.Input.KeyTipPlacementMode KeyTipPlacementMode
+  PROPERTY Microsoft.UI.Xaml.DependencyObject KeyTipTarget
+  PROPERTY Double KeyTipVerticalOffset
+  PROPERTY Microsoft.UI.Xaml.Input.KeyboardAcceleratorPlacementMode KeyboardAcceleratorPlacementMode
+  PROPERTY Microsoft.UI.Xaml.DependencyObject KeyboardAcceleratorPlacementTarget
+  PROPERTY System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Input.KeyboardAccelerator> KeyboardAccelerators
+  PROPERTY System.Collections.Generic.IList`1<Microsoft.UI.Xaml.Media.XamlLight> Lights
+  PROPERTY Microsoft.UI.Xaml.Input.ManipulationModes ManipulationMode
+  PROPERTY Double Opacity
+  PROPERTY Microsoft.UI.Xaml.ScalarTransition OpacityTransition
+  PROPERTY System.Collections.Generic.IReadOnlyList`1<Microsoft.UI.Xaml.Input.Pointer> PointerCaptures
+  PROPERTY Microsoft.UI.Xaml.Media.Projection Projection
+  PROPERTY Double RasterizationScale
+  PROPERTY Windows.Foundation.Size RenderSize
+  PROPERTY Microsoft.UI.Xaml.Media.Transform RenderTransform
+  PROPERTY Windows.Foundation.Point RenderTransformOrigin
+  PROPERTY Single Rotation
+  PROPERTY System.Numerics.Vector3 RotationAxis
+  PROPERTY Microsoft.UI.Xaml.ScalarTransition RotationTransition
+  PROPERTY System.Numerics.Vector3 Scale
+  PROPERTY Microsoft.UI.Xaml.Vector3Transition ScaleTransition
+  PROPERTY Microsoft.UI.Xaml.Media.Shadow Shadow
+  PROPERTY Microsoft.UI.Xaml.Input.KeyboardNavigationMode TabFocusNavigation
+  PROPERTY Int32 TabIndex
+  PROPERTY Microsoft.UI.Xaml.Media.Media3D.Transform3D Transform3D
+  PROPERTY System.Numerics.Matrix4x4 TransformMatrix
+  PROPERTY Microsoft.UI.Xaml.Media.Animation.TransitionCollection Transitions
+  PROPERTY System.Numerics.Vector3 Translation
+  PROPERTY Microsoft.UI.Xaml.Vector3Transition TranslationTransition
+  PROPERTY Boolean UseLayoutRounding
+  PROPERTY Boolean UseSystemFocusVisuals
+  PROPERTY Microsoft.UI.Xaml.Visibility Visibility
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusDown
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusDownNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusKeyboardNavigationMode XYFocusKeyboardNavigation
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusLeft
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusLeftNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusRight
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusRightNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.DependencyObject XYFocusUp
+  PROPERTY Microsoft.UI.Xaml.Input.XYFocusNavigationStrategy XYFocusUpNavigationStrategy
+  PROPERTY Microsoft.UI.Xaml.XamlRoot XamlRoot
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayDismissedEventArgs> AccessKeyDisplayDismissed
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyDisplayRequestedEventArgs> AccessKeyDisplayRequested
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.AccessKeyInvokedEventArgs> AccessKeyInvoked
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.BringIntoViewRequestedEventArgs> BringIntoViewRequested
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.CharacterReceivedRoutedEventArgs> CharacterReceived
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.RoutedEventArgs> ContextCanceled
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ContextRequestedEventArgs> ContextRequested
+  EVENT Microsoft.UI.Xaml.Input.DoubleTappedEventHandler DoubleTapped
+  EVENT Microsoft.UI.Xaml.DragEventHandler DragEnter
+  EVENT Microsoft.UI.Xaml.DragEventHandler DragLeave
+  EVENT Microsoft.UI.Xaml.DragEventHandler DragOver
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DragStartingEventArgs> DragStarting
+  EVENT Microsoft.UI.Xaml.DragEventHandler Drop
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.DropCompletedEventArgs> DropCompleted
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.GettingFocusEventArgs> GettingFocus
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler GotFocus
+  EVENT Microsoft.UI.Xaml.Input.HoldingEventHandler Holding
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler KeyDown
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler KeyUp
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.LosingFocusEventArgs> LosingFocus
+  EVENT Microsoft.UI.Xaml.RoutedEventHandler LostFocus
+  EVENT Microsoft.UI.Xaml.Input.ManipulationCompletedEventHandler ManipulationCompleted
+  EVENT Microsoft.UI.Xaml.Input.ManipulationDeltaEventHandler ManipulationDelta
+  EVENT Microsoft.UI.Xaml.Input.ManipulationInertiaStartingEventHandler ManipulationInertiaStarting
+  EVENT Microsoft.UI.Xaml.Input.ManipulationStartedEventHandler ManipulationStarted
+  EVENT Microsoft.UI.Xaml.Input.ManipulationStartingEventHandler ManipulationStarting
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.NoFocusCandidateFoundEventArgs> NoFocusCandidateFound
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerCanceled
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerCaptureLost
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerEntered
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerExited
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerMoved
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerPressed
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerReleased
+  EVENT Microsoft.UI.Xaml.Input.PointerEventHandler PointerWheelChanged
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler PreviewKeyDown
+  EVENT Microsoft.UI.Xaml.Input.KeyEventHandler PreviewKeyUp
+  EVENT Windows.Foundation.TypedEventHandler`2<Microsoft.UI.Xaml.UIElement, Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs> ProcessKeyboardAccelerators
+  EVENT Microsoft.UI.Xaml.Input.RightTappedEventHandler RightTapped
+  EVENT Microsoft.UI.Xaml.Input.TappedEventHandler Tapped
+
+TYPE Microsoft.UI.Xaml.IUIElementFactory [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 01001B4D6963726F736F66742E55492E58616D6C2E5549456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 010009D3D114D0ADCB5CB94677488CD70F870000
+
+TYPE Microsoft.UI.Xaml.IUIElementOverrides [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 01001B4D6963726F736F66742E55492E58616D6C2E5549456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 01001EF434907BABE759816850DE6B689DDE0000
+  METHOD [Public] Microsoft.UI.Xaml.Automation.Peers.AutomationPeer OnCreateAutomationPeer()
+  METHOD [Public] Void OnDisconnectVisualChildren()
+  METHOD [Public] System.Collections.Generic.IEnumerable`1<System.Collections.Generic.IEnumerable`1<Windows.Foundation.Point>> FindSubElementsForTouchTargeting(Windows.Foundation.Point, Windows.Foundation.Rect)
+  METHOD [Public] System.Collections.Generic.IEnumerable`1<Microsoft.UI.Xaml.DependencyObject> GetChildrenInTabFocusOrder()
+  METHOD [Public] Void OnKeyboardAcceleratorInvoked(Microsoft.UI.Xaml.Input.KeyboardAcceleratorInvokedEventArgs)
+  METHOD [Public] Void OnProcessKeyboardAccelerators(Microsoft.UI.Xaml.Input.ProcessKeyboardAcceleratorEventArgs)
+  METHOD [Public] Void OnBringIntoViewRequested(Microsoft.UI.Xaml.BringIntoViewRequestedEventArgs)
+  METHOD [Public] Void PopulatePropertyInfoOverride(String, Microsoft.UI.Composition.AnimationPropertyInfo)
+
+TYPE Microsoft.UI.Xaml.IUIElementProtected [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 0100E9B9698F001F34589BF1A9257BED39F00000
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 01001B4D6963726F736F66742E55492E58616D6C2E5549456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  METHOD [Public] Microsoft.UI.Input.InputCursor get_ProtectedCursor()
+  METHOD [Public] Void put_ProtectedCursor(Microsoft.UI.Input.InputCursor)
+  PROPERTY Microsoft.UI.Input.InputCursor ProtectedCursor
+
+TYPE Microsoft.UI.Xaml.IUIElementStatics [ClassSemanticsMask, Abstract, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.ExclusiveToAttribute 01001B4D6963726F736F66742E55492E58616D6C2E5549456C656D656E740000
+  ATTRIBUTE Windows.Foundation.Metadata.GuidAttribute 0100871D92D28435225E8A3AC2C78DAB4F6E0000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_KeyDownEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_KeyUpEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerEnteredEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerPressedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerMovedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerReleasedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerExitedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerCaptureLostEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerCanceledEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PointerWheelChangedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_TappedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DoubleTappedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_HoldingEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_RightTappedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationStartingEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationInertiaStartingEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationStartedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationDeltaEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ManipulationCompletedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DragEnterEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DragLeaveEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DragOverEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_DropEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_GettingFocusEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_LosingFocusEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_NoFocusCandidateFoundEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PreviewKeyDownEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_CharacterReceivedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_PreviewKeyUpEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_BringIntoViewRequestedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.RoutedEvent get_ContextRequestedEvent()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AllowDropProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_OpacityProperty()
+    METHOD_ATTRIBUTE get_OpacityProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ClipProperty()
+    METHOD_ATTRIBUTE get_ClipProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_RenderTransformProperty()
+    METHOD_ATTRIBUTE get_RenderTransformProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ProjectionProperty()
+    METHOD_ATTRIBUTE get_ProjectionProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_Transform3DProperty()
+    METHOD_ATTRIBUTE get_Transform3DProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_RenderTransformOriginProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsHitTestVisibleProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_VisibilityProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_UseLayoutRoundingProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TransitionsProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CacheModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsTapEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsDoubleTapEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CanDragProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsRightTapEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsHoldingEnabledProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ManipulationModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_PointerCapturesProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ContextFlyoutProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CompositeModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_LightsProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_CanBeScrollAnchorProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ExitDisplayModeOnAccessKeyInvokedProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsAccessKeyScopeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AccessKeyScopeOwnerProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_AccessKeyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipPlacementModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipHorizontalOffsetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipVerticalOffsetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyTipTargetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusKeyboardNavigationProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusUpNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusDownNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusLeftNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusRightNavigationStrategyProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyboardAcceleratorPlacementTargetProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_KeyboardAcceleratorPlacementModeProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_HighContrastAdjustmentProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TabFocusNavigationProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_ShadowProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_FocusStateProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_UseSystemFocusVisualsProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusLeftProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusRightProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusUpProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_XYFocusDownProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_IsTabStopProperty()
+  METHOD [Public] Microsoft.UI.Xaml.DependencyProperty get_TabIndexProperty()
+  METHOD [Public] Boolean TryStartDirectManipulation(Microsoft.UI.Xaml.Input.Pointer)
+  METHOD [Public] Void RegisterAsScrollPort(Microsoft.UI.Xaml.UIElement)
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AccessKeyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AccessKeyScopeOwnerProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty AllowDropProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent BringIntoViewRequestedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CacheModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CanBeScrollAnchorProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CanDragProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent CharacterReceivedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ClipProperty
+    PROPERTY_ATTRIBUTE ClipProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty CompositeModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ContextFlyoutProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ContextRequestedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DoubleTappedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DragEnterEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DragLeaveEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DragOverEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent DropEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ExitDisplayModeOnAccessKeyInvokedProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty FocusStateProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent GettingFocusEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty HighContrastAdjustmentProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent HoldingEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsAccessKeyScopeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsDoubleTapEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsHitTestVisibleProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsHoldingEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsRightTapEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsTabStopProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty IsTapEnabledProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent KeyDownEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipHorizontalOffsetProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipPlacementModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipTargetProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyTipVerticalOffsetProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent KeyUpEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyboardAcceleratorPlacementModeProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty KeyboardAcceleratorPlacementTargetProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty LightsProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent LosingFocusEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationCompletedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationDeltaEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationInertiaStartingEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ManipulationModeProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationStartedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent ManipulationStartingEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent NoFocusCandidateFoundEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty OpacityProperty
+    PROPERTY_ATTRIBUTE OpacityProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerCanceledEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerCaptureLostEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty PointerCapturesProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerEnteredEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerExitedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerMovedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerPressedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerReleasedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PointerWheelChangedEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PreviewKeyDownEvent
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent PreviewKeyUpEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ProjectionProperty
+    PROPERTY_ATTRIBUTE ProjectionProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty RenderTransformOriginProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty RenderTransformProperty
+    PROPERTY_ATTRIBUTE RenderTransformProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent RightTappedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty ShadowProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TabFocusNavigationProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TabIndexProperty
+  PROPERTY Microsoft.UI.Xaml.RoutedEvent TappedEvent
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty Transform3DProperty
+    PROPERTY_ATTRIBUTE Transform3DProperty Microsoft.UI.Xaml.Media.Animation.IndependentlyAnimatableAttribute 01000000
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty TransitionsProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty UseLayoutRoundingProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty UseSystemFocusVisualsProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty VisibilityProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusDownNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusDownProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusKeyboardNavigationProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusLeftNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusLeftProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusRightNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusRightProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusUpNavigationStrategyProperty
+  PROPERTY Microsoft.UI.Xaml.DependencyProperty XYFocusUpProperty
+
+TYPE Microsoft.UI.Xaml.PropertyMetadata [Public, Import, WindowsRuntime]
+  ATTRIBUTE Windows.Foundation.Metadata.MarshalingBehaviorAttribute 0100020000000000
+  ATTRIBUTE Windows.Foundation.Metadata.ThreadingAttribute 0100030000000000
+  ATTRIBUTE Windows.Foundation.Metadata.StaticAttribute 01002A4D6963726F736F66742E55492E58616D6C2E4950726F70657274794D6574616461746153746174696373000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  ATTRIBUTE Windows.Foundation.Metadata.WebHostHiddenAttribute 01000000
+  ATTRIBUTE Windows.Foundation.Metadata.ComposableAttribute 01002A4D6963726F736F66742E55492E58616D6C2E4950726F70657274794D65746164617461466163746F727902000000000001001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E74726163740000
+  ATTRIBUTE Windows.Foundation.Metadata.ContractVersionAttribute 01001F4D6963726F736F66742E55492E58616D6C2E57696E5549436F6E7472616374000001000000
+  IMPLEMENTS Microsoft.UI.Xaml.IPropertyMetadata
+  METHOD [Public] Void .ctor(Object)
+  METHOD [Public] Void .ctor(Object, Microsoft.UI.Xaml.PropertyChangedCallback)
+  METHOD [Public] Object get_DefaultValue()
+  METHOD [Public] Microsoft.UI.Xaml.CreateDefaultValueCallback get_CreateDefaultValueCallback()
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Object)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 0100164372656174655769746844656661756C7456616C75650000
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.DefaultOverloadAttribute 01000000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Object, Microsoft.UI.Xaml.PropertyChangedCallback)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.DefaultOverloadAttribute 01000000
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 0100214372656174655769746844656661756C7456616C7565416E6443616C6C6261636B0000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Microsoft.UI.Xaml.CreateDefaultValueCallback)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 01001143726561746557697468466163746F72790000
+  METHOD [Public] Microsoft.UI.Xaml.PropertyMetadata Create(Microsoft.UI.Xaml.CreateDefaultValueCallback, Microsoft.UI.Xaml.PropertyChangedCallback)
+    METHOD_ATTRIBUTE Create Windows.Foundation.Metadata.OverloadAttribute 01001C43726561746557697468466163746F7279416E6443616C6C6261636B0000
+  PROPERTY Microsoft.UI.Xaml.CreateDefaultValueCallback CreateDefaultValueCallback
+  PROPERTY Object DefaultValue

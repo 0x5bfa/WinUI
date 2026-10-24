@@ -1,0 +1,45 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D78DA622-A935-4218-B0BC-654C58D7055A}</ProjectGuid>
+    <RootNamespace>Microsoft.UI.Xaml.Rendering.Smoke</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKBootstrapInitialize>false</WindowsAppSDKBootstrapInitialize>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(RepositoryRoot)artifacts\obj\Microsoft.UI.Xaml.Runtime\$(Platform)\$(Configuration)\Generated Files;$(USERPROFILE)\.nuget\packages\microsoft.windowsappsdk.interactiveexperiences\2.1.9\include;$(USERPROFILE)\.nuget\packages\microsoft.windowsappsdk.foundation\2.3.12\include;$(USERPROFILE)\.nuget\packages\microsoft.windowsappsdk.runtime\2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <AdditionalDependencies>$(USERPROFILE)\.nuget\packages\microsoft.windowsappsdk.foundation\2.3.12\lib\native\x64\Microsoft.WindowsAppRuntime.Bootstrap.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.5.1" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.9" />
+    <ProjectReference Include="..\..\src\runtime\Microsoft.UI.Xaml.Runtime.vcxproj">
+      <Project>{F35AB309-895C-4980-BA33-C04BA086912D}</Project>
+    </ProjectReference>
+    <ClCompile Include="RenderingSmoke.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <Target Name="CopyRenderingSmokeBootstrap" AfterTargets="Build">
+    <Copy SourceFiles="$(USERPROFILE)\.nuget\packages\microsoft.windowsappsdk.foundation\2.3.12\runtimes\win-x64\native\Microsoft.WindowsAppRuntime.Bootstrap.dll" DestinationFolder="$(OutDir)" SkipUnchangedFiles="true" />
+  </Target>
+</Project>

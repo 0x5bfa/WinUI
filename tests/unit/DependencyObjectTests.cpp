@@ -7,12 +7,12 @@ int RunControlTests();
 
 namespace
 {
-    using xaml::runtime::Object;
+    using xaml::runtime::DependencyObject;
     using winrt::Windows::Foundation::IInspectable;
     using winrt::Windows::Foundation::IStringable;
 
-    static_assert(!std::is_copy_constructible_v<Object>);
-    static_assert(!std::is_move_constructible_v<Object>);
+    static_assert(!std::is_copy_constructible_v<DependencyObject>);
+    static_assert(!std::is_move_constructible_v<DependencyObject>);
 
     void Require(bool condition, std::string_view message)
     {
@@ -22,7 +22,7 @@ namespace
         }
     }
 
-    struct Counter : winrt::implements<Counter, Object, IStringable>
+    struct Counter : winrt::implements<Counter, DependencyObject, IStringable>
     {
         explicit Counter(std::atomic_int& destroyed) noexcept : m_destroyed(destroyed)
         {
@@ -53,16 +53,17 @@ namespace
     {
         std::atomic_int destroyed{};
         auto object = winrt::make_self<Counter>(destroyed);
-        auto base = object.as<Object>();
+        auto base = object.as<DependencyObject>();
         auto inspectable = object.as<IInspectable>();
         auto stringable = object.as<IStringable>();
 
-        Require(base.get() == static_cast<Object*>(object.get()), "Native base must be the same implementation.");
+        Require(base.get() == static_cast<DependencyObject*>(object.get()), "Native base must be the same implementation.");
         Require(inspectable == stringable.as<IInspectable>(), "Interfaces must have one controlling identity.");
         constexpr winrt::guid agileObjectId{ "94ea2b94-e9cc-49e0-c0ff-ee64ca8f5b90" };
         winrt::Windows::Foundation::IUnknown agile{ nullptr };
         auto const agileResult = object->QueryInterface(agileObjectId, winrt::put_abi(agile));
-        Require(agileResult < 0 && !agile, "Thread-bound objects must not advertise agility.");
+        Require(agileResult >= 0 && agile, "WinUI runtime objects must advertise WinMD-mandated COM agility.");
+        agile = nullptr;
         object->Increment();
         Require(stringable.ToString() == L"1", "ABI calls must observe native state.");
 
@@ -165,7 +166,7 @@ int main()
         CrossThreadNativeAndABICallsAreRejected();
         ResourceNeutralFinalReleaseCanRunOffThread();
         auto const controlTests = RunControlTests();
-        std::cout << "4 object-model tests passed.\n";
+        std::cout << "4 DependencyObject ABI tests passed.\n";
         std::cout << controlTests << " control-kernel tests passed.\n";
         winrt::uninit_apartment();
         return 0;

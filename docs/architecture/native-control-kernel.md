@@ -1,19 +1,19 @@
 # Native control kernel
 
-This is the next implementation slice after `Object`. It implements native behavior on the unified object model; it does not yet expose the public WinUI control contracts.
+This slice implements native behavior on the unified object model; it does not yet expose the public WinUI control contracts.
 
 ## Ownership and dependencies
 
-`Xaml.Runtime` contains `Object`, `DependencyProperty`, `DependencyObject`, `UIElement`, and `FrameworkElement` under `src/runtime/primitives/<Type>/`. Its internal partitions share one named C++ module; `:Primitives` provides UIElement and small geometry types, and `:FrameworkElement` provides its derived type. `Xaml.Controls` imports Runtime and contains `Control`, `ContentControl`, `ButtonBase`, `Button`, `Panel`, and `StackPanel`. These native implementation types share the same C++/WinRT object identity without Core/DXaml peers. Runtime and Controls currently build as separate static libraries; this does not introduce a runtime DLL or a WinRT peer.
+`Xaml.Runtime` contains `DependencyProperty`, `DependencyObject`, `UIElement`, and `FrameworkElement` under `src/runtime/primitives/<Type>/`. Its internal partitions share one named C++ module; `:Primitives` provides UIElement and small geometry types, and `:FrameworkElement` provides its derived type. `Xaml.Controls` imports Runtime and contains `Control`, `ContentControl`, `ButtonBase`, `Button`, `Panel`, and `StackPanel`. These native implementation types share the same C++/WinRT object identity without Core/DXaml peers. Runtime and Controls currently build as separate static libraries; this does not introduce a runtime DLL or a WinRT peer.
 
 Every control has a named source directory in `src/controls`, including foundational types such as `ButtonBase` and `Panel`. Place each control's future XAML resource sources alongside its implementation (for example, `src/controls/Button/Button.xaml`); shared theme services can live in `src/themes`. No XAML resource is functional until markup compilation, resource lookup, templates, and rendering exist. The XAML resource does not own the control's native state. Folder, C++ module, static library, and public WinRT namespace are separate choices.
 
 ## Supported behavior
 
-- Typed arithmetic/enum and small trivially-copyable value properties with owner checks, validation, default/local storage, clear, and committed-state notifications. Reference properties still need tracked ownership. A local entry retains its metadata. Equal effective values do not produce notifications; NaN equals NaN for automatic lengths.
+- Typed arithmetic/enum and small trivially-copyable value properties with owner checks, attached registration, validation, default/local storage, local-value reads, clear, and committed-state notifications. Registration metadata can call a typed old/new-value callback. Per-object property callbacks support token-based removal and reentrant changes. Reference properties still need tracked ownership. A local entry retains its metadata. Equal effective values do not produce notifications; NaN equals NaN for automatic lengths.
 - Strong owning visual-child edges and weak parent backlinks. `ContentControl` accepts one UIElement; `Panel` holds ordered children. Duplicate parenting, null children, and cycles fail before changing the tree. Moves retain parent associations. Tree mutations retain participants across reentrant notifications.
 - Basic native measure/arrange overrides, finite-result validation, cached layout, and ancestor invalidation. An invalidation during a pass survives its completion. Render versions expose changes to a future renderer without claiming that any rendering has completed.
-- Width/Height, auto sizing through NaN, inherited effective IsEnabled, and content measurement/arrangement. `Control.Padding` stores a validated `Thickness` value and offsets the content measure/arrange rectangle. These are deliberately a subset of full XAML layout.
+- Width/Height, MinWidth/MaxWidth, MinHeight/MaxHeight, margin, Visibility (Collapsed), auto sizing through NaN, inherited effective IsEnabled, and content measurement/arrangement. `Control.Padding` stores a validated `Thickness` value and offsets the content measure/arrange rectangle. These are deliberately a subset of full XAML layout.
 - `StackPanel` measures children without a constraint along its stacking axis, positions them in order with nonnegative spacing, and supports horizontal/vertical layout. Collection changes and orientation/spacing changes invalidate the containing tree. Child enumeration for layout uses strong snapshots so removal during an override cannot destroy an active participant.
 - Button release/press/hover modes, pointer identity, pointer-over/pressed/disabled state, and Space/Enter activation. Disabling, focus loss, detaching an ancestor, cancellation, or capture-loss notification cancels pending activation. Direct parent changes and ancestor connection changes are distinct notifications; reordering retained siblings sends neither.
 - Native Click subscriptions. Removing a handler during dispatch suppresses its later invocation; additions participate on the next dispatch. The sender stays alive through callbacks, including callbacks that remove it from its parent and release the last external reference. Release/key-up state commits before Click.
@@ -22,7 +22,7 @@ Input facts are already targeted to the element. `SetFocused` records a host not
 
 Property and event callbacks run synchronously without graph locks. If a callback throws after a mutation, the mutation remains committed. Native callbacks can form application-owned cycles; there is no managed cycle collection in this slice.
 
-The weak visual-parent edge resolves through the canonical Object weak source and converts back only to the known native UIElement that created the edge. It never casts an arbitrary external WinRT object, recreates a peer, or uses a global identity map.
+The weak visual-parent edge resolves through the canonical DependencyObject weak source and converts back only to the known native UIElement that created the edge. It never casts an arbitrary external WinRT object, recreates a peer, or uses a global identity map.
 
 ## Reference behavior
 
@@ -52,4 +52,4 @@ Before implementing rendering, re-investigate the upstream GPU render walk, Comp
 3. Connect content roots, actual input focus/capture/routing, and Composition realization.
 4. Expand layout, resources/templates, commands, Flyout, accessibility, binding, and animation with explicit compatibility tests.
 
-There is no style/binding/animation property precedence, general object Content, routed event system, full layout policy (margin/alignment/min-max/clipping/DPI), template/VSM rendering, ICommand, Flyout, UI Automation, or public WinMD activation in this slice. No existing Microsoft.UI.Xaml DLL supplies those behaviors behind the new types.
+There is no style/binding/animation property precedence, general object Content, routed event system, complete layout policy (alignment/clipping/DPI and other behaviors), template/VSM rendering, ICommand, Flyout, UI Automation, or public WinMD activation in this slice. No existing Microsoft.UI.Xaml DLL supplies those behaviors behind the new types.

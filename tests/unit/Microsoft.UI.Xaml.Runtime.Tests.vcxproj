@@ -31,7 +31,7 @@
     <ProjectReference Include="..\..\src\controls\Microsoft.UI.Xaml.Controls.vcxproj">
       <Project>{62AD9CF9-9CE4-45C3-AD63-52136E9853F5}</Project>
     </ProjectReference>
-    <ClCompile Include="ObjectTests.cpp" />
+    <ClCompile Include="DependencyObjectTests.cpp" />
     <ClCompile Include="ControlTests.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

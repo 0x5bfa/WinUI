@@ -18,21 +18,32 @@
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <CppWinRTBuildModule>true</CppWinRTBuildModule>
-    <CppWinRTModuleInclude>Windows.Foundation</CppWinRTModuleInclude>
+    <CppWinRTModuleInclude>Windows.Foundation;Microsoft.UI.Dispatching</CppWinRTModuleInclude>
     <CppWinRTModuleExclude>Windows.Foundation.Diagnostics;Windows.Foundation.Metadata;Windows.Foundation.Numerics</CppWinRTModuleExclude>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ItemGroup>
     <PackageReference Include="Microsoft.Windows.CppWinRT" Version="$(CppWinRTVersion)" />
+    <PackageReference Include="Microsoft.WindowsAppSDK.InteractiveExperiences" Version="2.1.9" />
     <ClCompile Include="Runtime.ixx" />
-    <ClCompile Include="primitives\Object\Object.ixx" />
-    <ClCompile Include="primitives\Object\Object.cpp" />
     <ClCompile Include="primitives\DependencyProperty\DependencyProperty.ixx" />
     <ClCompile Include="primitives\DependencyObject\DependencyObject.ixx" />
+    <ClCompile Include="primitives\DependencyObject\DependencyObject.cpp" />
     <ClCompile Include="primitives\UIElement\UIElement.ixx" />
     <ClCompile Include="primitives\UIElement\UIElement.cpp" />
     <ClCompile Include="primitives\FrameworkElement\FrameworkElement.ixx" />
     <ClCompile Include="primitives\FrameworkElement\FrameworkElement.cpp" />
+    <ClCompile Include="ContentRoot.ixx" />
+    <ClCompile Include="ContentRoot.cpp" />
+    <ClCompile Include="DesktopWindowHost.ixx" />
+    <ClCompile Include="DesktopWindowHost.cpp" />
+    <ClCompile Include="input\InputManager.ixx" />
+    <ClCompile Include="input\InputManager.cpp" />
+    <ClCompile Include="input\ElementInput.cpp" />
+    <ClCompile Include="rendering\CompositionRenderer.ixx" />
+    <ClCompile Include="rendering\CompositionRenderer.cpp" />
+    <ClCompile Include="rendering\CompositionBackend.cpp" />
+    <ClInclude Include="rendering\CompositionBackend.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
