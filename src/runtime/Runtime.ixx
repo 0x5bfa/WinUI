@@ -4,6 +4,8 @@ export import winrt.Microsoft.UI.Dispatching;
 export import :Properties;
 export import :DependencyObject;
 export import :Binding;
+export import :ModelBinding;
+export import :Animation;
 export import :Styling;
 export import :Drawing;
 export import :Primitives;

@@ -44,6 +44,24 @@ namespace xaml::controls
             });
 
     controls::ClickMode ButtonBase::ClickMode() const { return GetValue(ClickModeProperty); }
+    winrt::hstring ButtonBase::AutomationLabel() const
+    {
+        auto name = AutomationName();
+        if (!name.empty()) { return name; }
+        if (auto content = Content())
+        {
+            return content->AutomationLabel();
+        }
+        return {};
+    }
+    bool ButtonBase::AutomationInvoke()
+    {
+        VerifyAccess();
+        if (!IsEnabled()) { return false; }
+        auto lifetime = get_strong();
+        OnClick();
+        return true;
+    }
     void ButtonBase::ClickMode(controls::ClickMode value) { SetValue(ClickModeProperty, value); }
 
     bool ButtonBase::IsPressed() const

@@ -3,6 +3,7 @@
 #include <dxgi.h>
 #include <d2d1_1.h>
 #include <dwrite.h>
+#include <wincodec.h>
 #include <windows.ui.composition.interop.h>
 #include <winrt/Windows.Graphics.DirectX.h>
 #include <winrt/Windows.Foundation.Collections.h>
@@ -14,6 +15,7 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "d2d1.lib")
 #pragma comment(lib, "dwrite.lib")
+#pragma comment(lib, "windowscodecs.lib")
 
 namespace
 {
@@ -62,6 +64,19 @@ namespace
     }
     winrt::Windows::UI::Color CompositionColor(Color value) { return { value.a, value.r, value.g, value.b }; }
     D2D1_COLOR_F D2DColor(Color value) { return { value.r / 255.0f, value.g / 255.0f, value.b / 255.0f, value.a / 255.0f }; }
+    winrt::com_ptr<IWICBitmapFrameDecode> DecodeFrame(std::wstring const& filePath)
+    {
+        if (filePath.empty()) { throw winrt::hresult_invalid_argument(); }
+        winrt::com_ptr<IWICImagingFactory> factory;
+        winrt::check_hresult(CoCreateInstance(CLSID_WICImagingFactory, nullptr,
+            CLSCTX_INPROC_SERVER, IID_PPV_ARGS(factory.put())));
+        winrt::com_ptr<IWICBitmapDecoder> decoder;
+        winrt::check_hresult(factory->CreateDecoderFromFilename(filePath.c_str(),
+            nullptr, GENERIC_READ, WICDecodeMetadataCacheOnLoad, decoder.put()));
+        winrt::com_ptr<IWICBitmapFrameDecode> frame;
+        winrt::check_hresult(decoder->GetFrame(0, frame.put()));
+        return frame;
+    }
     void ValidateBounds(double x, double y, double width, double height)
     {
         if (!std::isfinite(x) || !std::isfinite(y) || !std::isfinite(width) || !std::isfinite(height) ||
@@ -92,6 +107,15 @@ namespace xaml::drawing
         m_commands.push_back({ .kind = CommandKind::Text, .x = x, .y = y, .width = width, .height = height,
             .fill = foreground, .text = std::move(text), .format = std::move(format) });
     }
+    void Context::Image(double x, double y, double width, double height,
+        std::wstring filePath, ImageStretch stretch)
+    {
+        ValidateBounds(x, y, width, height);
+        if (filePath.empty() || stretch < ImageStretch::None || stretch > ImageStretch::UniformToFill)
+        { throw winrt::hresult_invalid_argument(); }
+        m_commands.push_back({ .kind = CommandKind::Image, .x = x, .y = y,
+            .width = width, .height = height, .imagePath = std::move(filePath), .imageStretch = stretch });
+    }
 }
 
 xaml::drawing::TextMetrics XamlMeasureText(std::wstring const& text, xaml::drawing::TextFormat const& format,
@@ -102,6 +126,14 @@ xaml::drawing::TextMetrics XamlMeasureText(std::wstring const& text, xaml::drawi
     DWRITE_TEXT_METRICS metrics{};
     winrt::check_hresult(layout->GetMetrics(&metrics));
     return { metrics.widthIncludingTrailingWhitespace, metrics.height };
+}
+
+xaml::drawing::ImageMetrics XamlMeasureImage(std::wstring const& filePath)
+{
+    auto frame = DecodeFrame(filePath);
+    UINT width{}, height{};
+    winrt::check_hresult(frame->GetSize(&width, &height));
+    return { static_cast<double>(width), static_cast<double>(height) };
 }
 
 namespace xaml::runtime::platform
@@ -173,6 +205,71 @@ namespace xaml::runtime::platform
             visual.Offset({ static_cast<float>(rightToLeft ? command.x + command.width : command.x), static_cast<float>(command.y), 0 });
             return visual;
         }
+        composition::Visual ImageVisual(drawing::Command const& command, float scale)
+        {
+            EnsureDevice();
+            auto const pixelWidth = std::ceil(command.width * scale);
+            auto const pixelHeight = std::ceil(command.height * scale);
+            if (pixelWidth > D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION ||
+                pixelHeight > D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION)
+            {
+                throw winrt::hresult_out_of_bounds();
+            }
+
+            winrt::com_ptr<IWICImagingFactory> factory;
+            winrt::check_hresult(CoCreateInstance(CLSID_WICImagingFactory, nullptr,
+                CLSCTX_INPROC_SERVER, IID_PPV_ARGS(factory.put())));
+            auto frame = DecodeFrame(command.imagePath);
+            winrt::com_ptr<IWICFormatConverter> converter;
+            winrt::check_hresult(factory->CreateFormatConverter(converter.put()));
+            winrt::check_hresult(converter->Initialize(frame.get(), GUID_WICPixelFormat32bppPBGRA,
+                WICBitmapDitherTypeNone, nullptr, 0, WICBitmapPaletteTypeCustom));
+
+            auto surface = graphics.CreateDrawingSurface({ static_cast<float>(pixelWidth), static_cast<float>(pixelHeight) },
+                winrt::Windows::Graphics::DirectX::DirectXPixelFormat::B8G8R8A8UIntNormalized,
+                winrt::Windows::Graphics::DirectX::DirectXAlphaMode::Premultiplied);
+            auto interop = surface.as<ABI::Windows::UI::Composition::ICompositionDrawingSurfaceInterop>();
+            winrt::com_ptr<ID2D1DeviceContext> context;
+            POINT offset{};
+            winrt::check_hresult(interop->BeginDraw(nullptr, __uuidof(ID2D1DeviceContext), context.put_void(), &offset));
+            try
+            {
+                context->SetDpi(96 * scale, 96 * scale);
+                context->SetTransform(D2D1::Matrix3x2F::Translation(offset.x / scale, offset.y / scale));
+                context->Clear(D2D1::ColorF(0, 0));
+                winrt::com_ptr<ID2D1Bitmap1> bitmap;
+                winrt::check_hresult(context->CreateBitmapFromWicBitmap(converter.get(), nullptr, bitmap.put()));
+                auto const natural = bitmap->GetSize();
+                float const width = static_cast<float>(command.width);
+                float const height = static_cast<float>(command.height);
+                float drawWidth = width, drawHeight = height;
+                if (command.imageStretch != drawing::ImageStretch::Fill && natural.width > 0 && natural.height > 0)
+                {
+                    float const factor = command.imageStretch == drawing::ImageStretch::None ? 1.0f :
+                        command.imageStretch == drawing::ImageStretch::Uniform ?
+                        std::min(width / natural.width, height / natural.height) :
+                        std::max(width / natural.width, height / natural.height);
+                    drawWidth = natural.width * factor;
+                    drawHeight = natural.height * factor;
+                }
+                auto const left = (width - drawWidth) / 2;
+                auto const top = (height - drawHeight) / 2;
+                context->DrawBitmap(bitmap.get(), D2D1::RectF(left, top, left + drawWidth, top + drawHeight));
+            }
+            catch (...)
+            {
+                (void)interop->EndDraw();
+                throw;
+            }
+            winrt::check_hresult(interop->EndDraw());
+            auto visual = compositor.CreateSpriteVisual();
+            visual.Size({ static_cast<float>(command.width), static_cast<float>(command.height) });
+            visual.Offset({ static_cast<float>(command.x), static_cast<float>(command.y), 0 });
+            auto brush = compositor.CreateSurfaceBrush(surface);
+            brush.Stretch(composition::CompositionStretch::Fill);
+            visual.Brush(brush);
+            return visual;
+        }
     };
 
     DrawingBackend::DrawingBackend(composition::Compositor const& compositor) : m_impl(std::make_unique<Impl>(compositor)) {}
@@ -197,6 +294,11 @@ namespace xaml::runtime::platform
             if (command.kind == drawing::CommandKind::Text)
             {
                 if (!command.text.empty()) { visuals.push_back(m_impl->TextVisual(command, scale, rightToLeft)); }
+                continue;
+            }
+            if (command.kind == drawing::CommandKind::Image)
+            {
+                visuals.push_back(m_impl->ImageVisual(command, scale));
                 continue;
             }
             auto geometry = m_impl->compositor.CreateRoundedRectangleGeometry();

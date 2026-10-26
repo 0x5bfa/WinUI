@@ -13,7 +13,8 @@ extern "C"
     void XamlRenderingSetRasterizationScale(void* backend, float scale);
     void XamlRenderingBegin(void* backend);
     void XamlRenderingNode(void* backend, std::uintptr_t element, std::uintptr_t parent,
-        float x, float y, float width, float height, float opacity, bool drawable, bool flipRTL,
+        float m11, float m12, float m21, float m22, float dx, float dy,
+        float width, float height, float opacity, bool drawable,
         bool hasClip, float clipX, float clipY, float clipWidth, float clipHeight);
     void XamlRenderingEnd(void* backend);
     void XamlRenderingDestroy(void* backend);
@@ -79,11 +80,13 @@ namespace xaml::runtime
         auto const id = static_cast<std::uintptr_t>(element.RenderIdentity());
         auto const clip = element.ClipBounds();
         auto const ancestor = element.Parent();
-        bool const parentRTL = ancestor && ancestor->IsRightToLeft();
-        XamlRenderingNode(m_backend, id, parent, static_cast<float>(bounds.x),
-            static_cast<float>(bounds.y), static_cast<float>(bounds.width),
+        auto const transform = element.TransformToParent();
+        XamlRenderingNode(m_backend, id, parent, static_cast<float>(transform.m11),
+            static_cast<float>(transform.m12), static_cast<float>(transform.m21),
+            static_cast<float>(transform.m22), static_cast<float>(transform.m31),
+            static_cast<float>(transform.m32), static_cast<float>(bounds.width),
             static_cast<float>(bounds.height), static_cast<float>(element.Opacity()),
-            element.VisualChildrenCount() == 0, element.IsRightToLeft() != parentRTL, clip.has_value(),
+            element.VisualChildrenCount() == 0, clip.has_value(),
             static_cast<float>(clip ? clip->x : 0), static_cast<float>(clip ? clip->y : 0),
             static_cast<float>(clip ? clip->width : 0), static_cast<float>(clip ? clip->height : 0));
         auto const version = element.RenderVersion();

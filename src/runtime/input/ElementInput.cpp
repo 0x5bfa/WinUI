@@ -42,14 +42,9 @@ namespace xaml::runtime
         }
         for (auto it = path.rbegin(); it != path.rend(); ++it)
         {
-            auto const bounds = (*it)->LayoutBounds();
-            position.x -= bounds.x;
-            position.y -= bounds.y;
-            auto parent = (*it)->Parent();
-            if ((*it)->IsRightToLeft() != (parent && parent->IsRightToLeft()))
-            {
-                position.x = bounds.width - position.x;
-            }
+            auto const inverse = (*it)->TransformToParent().TryInvert();
+            if (!inverse) { throw winrt::hresult_invalid_argument(); }
+            position = inverse->Transform(position);
         }
         return position;
     }

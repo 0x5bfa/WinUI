@@ -26,6 +26,7 @@ export namespace xaml::runtime
         bool Focus(UIElement* element);
         [[nodiscard]] TextInputSession& TextInput();
         bool PreTranslateMessage(std::uint32_t message, std::uintptr_t wparam, std::intptr_t lparam);
+        [[nodiscard]] std::intptr_t GetAutomationObject(std::uintptr_t wparam, std::intptr_t lparam);
         void Shutdown();
         [[nodiscard]] bool IsActive() const noexcept { return m_active; }
 
@@ -38,6 +39,8 @@ export namespace xaml::runtime
         std::shared_ptr<ContentRoot> m_root;
         std::shared_ptr<CompositionRenderer> m_renderer;
         std::shared_ptr<TextInputSession> m_textInput;
+        winrt::weak_ref<DependencyObject> m_automationRoot;
+        std::uintptr_t m_automationWindow{};
         bool m_active{ true };
     };
 }

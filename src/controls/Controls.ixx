@@ -146,6 +146,20 @@ export namespace xaml::controls
         void OnRender(runtime::DrawingContext& context) const override;
     };
 
+    struct Image : winrt::implements<Image, runtime::FrameworkElement>
+    {
+        static runtime::DependencyProperty<winrt::hstring> const SourceProperty;
+        static runtime::DependencyProperty<runtime::ImageStretch> const StretchProperty;
+        [[nodiscard]] winrt::hstring Source() const;
+        void Source(winrt::hstring value);
+        [[nodiscard]] runtime::ImageStretch Stretch() const;
+        void Stretch(runtime::ImageStretch value);
+        [[nodiscard]] runtime::AutomationRole AutomationControlRole() const override { return runtime::AutomationRole::Image; }
+    protected:
+        runtime::Size MeasureOverride(runtime::Size available) override;
+        void OnRender(runtime::DrawingContext& context) const override;
+    };
+
     struct TextBlock : winrt::implements<TextBlock, runtime::FrameworkElement>
     {
         static runtime::DependencyProperty<winrt::hstring> const TextProperty;
@@ -157,6 +171,8 @@ export namespace xaml::controls
         static runtime::DependencyProperty<runtime::Color> const ForegroundProperty;
         void Text(winrt::hstring const& value);
         [[nodiscard]] winrt::hstring Text() const;
+        [[nodiscard]] runtime::AutomationRole AutomationControlRole() const override { return runtime::AutomationRole::Text; }
+        [[nodiscard]] winrt::hstring AutomationLabel() const override;
     protected:
         runtime::Size MeasureOverride(runtime::Size available) override;
         void OnRender(runtime::DrawingContext& context) const override;
@@ -228,6 +244,9 @@ export namespace xaml::controls
         bool ProcessPointer(PointerInput const& input);
         bool ProcessKey(ActivationKey key, bool isDown);
         void CancelInteraction();
+        [[nodiscard]] runtime::AutomationRole AutomationControlRole() const override { return runtime::AutomationRole::Button; }
+        [[nodiscard]] winrt::hstring AutomationLabel() const override;
+        bool AutomationInvoke() override;
 
     protected:
         void OnIsEnabledChanged() override;

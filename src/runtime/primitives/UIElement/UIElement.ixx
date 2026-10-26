@@ -22,6 +22,47 @@ export namespace xaml::runtime
         bool operator==(Point const&) const = default;
     };
 
+    // Row-vector affine transform in DIPs. Composition and hit testing use
+    // the same local-to-parent matrix and inverse.
+    struct Matrix3x2
+    {
+        double m11{ 1 }, m12{}, m21{}, m22{ 1 }, m31{}, m32{};
+        bool operator==(Matrix3x2 const&) const = default;
+
+        [[nodiscard]] static constexpr Matrix3x2 Translation(double x, double y) noexcept
+        {
+            return { 1, 0, 0, 1, x, y };
+        }
+        [[nodiscard]] static constexpr Matrix3x2 Scale(double x, double y) noexcept
+        {
+            return { x, 0, 0, y, 0, 0 };
+        }
+        [[nodiscard]] static constexpr Matrix3x2 Multiply(Matrix3x2 a, Matrix3x2 b) noexcept
+        {
+            return { a.m11 * b.m11 + a.m12 * b.m21, a.m11 * b.m12 + a.m12 * b.m22,
+                a.m21 * b.m11 + a.m22 * b.m21, a.m21 * b.m12 + a.m22 * b.m22,
+                a.m31 * b.m11 + a.m32 * b.m21 + b.m31,
+                a.m31 * b.m12 + a.m32 * b.m22 + b.m32 };
+        }
+        [[nodiscard]] constexpr Point Transform(Point p) const noexcept
+        {
+            return { p.x * m11 + p.y * m21 + m31, p.x * m12 + p.y * m22 + m32 };
+        }
+        [[nodiscard]] std::optional<Matrix3x2> TryInvert() const noexcept
+        {
+            auto const determinant = m11 * m22 - m12 * m21;
+            if (!std::isfinite(determinant) || determinant == 0) { return std::nullopt; }
+            Matrix3x2 inverse{ m22 / determinant, -m12 / determinant,
+                -m21 / determinant, m11 / determinant,
+                (m21 * m32 - m31 * m22) / determinant,
+                (m31 * m12 - m11 * m32) / determinant };
+            if (!std::isfinite(inverse.m11) || !std::isfinite(inverse.m12) ||
+                !std::isfinite(inverse.m21) || !std::isfinite(inverse.m22) ||
+                !std::isfinite(inverse.m31) || !std::isfinite(inverse.m32)) { return std::nullopt; }
+            return inverse;
+        }
+    };
+
     struct Rect
     {
         double x{};
@@ -84,6 +125,7 @@ export namespace xaml::runtime
     class InputManager;
     enum class FocusNavigationDirection { Next, Previous, First, Last };
     enum class KeyboardNavigationMode { Local, Cycle, Once };
+    enum class AutomationRole { Custom, Group, Button, Text, Image };
 
     enum class InputEvent
     {
@@ -122,6 +164,9 @@ export namespace xaml::runtime
         static DependencyProperty<bool> const IsHitTestVisibleProperty;
         static DependencyProperty<Visibility> const VisibilityProperty;
         static DependencyProperty<double> const OpacityProperty;
+        static DependencyProperty<Matrix3x2> const RenderTransformProperty;
+        static DependencyProperty<Point> const RenderTransformOriginProperty;
+        static DependencyProperty<winrt::hstring> const AutomationNameProperty;
         static DependencyProperty<bool> const UseLayoutRoundingProperty;
         static DependencyProperty<KeyboardNavigationMode> const TabFocusNavigationProperty;
 
@@ -133,6 +178,16 @@ export namespace xaml::runtime
         void VisibilityState(Visibility value);
         [[nodiscard]] double Opacity() const;
         void Opacity(double value);
+        [[nodiscard]] Matrix3x2 RenderTransform() const;
+        void RenderTransform(Matrix3x2 value);
+        [[nodiscard]] Point RenderTransformOrigin() const;
+        void RenderTransformOrigin(Point value);
+        [[nodiscard]] Matrix3x2 TransformToParent() const;
+        [[nodiscard]] winrt::hstring AutomationName() const;
+        void AutomationName(winrt::hstring value);
+        [[nodiscard]] virtual AutomationRole AutomationControlRole() const { return AutomationRole::Custom; }
+        [[nodiscard]] virtual winrt::hstring AutomationLabel() const { return AutomationName(); }
+        virtual bool AutomationInvoke() { return false; }
         [[nodiscard]] bool UseLayoutRounding() const;
         void UseLayoutRounding(bool value);
         // Defaults to the visual parent's effective direction. FrameworkElement

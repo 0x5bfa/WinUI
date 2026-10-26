@@ -28,6 +28,11 @@ namespace xaml::controls
 
     void TextBlock::Text(winrt::hstring const& value) { SetValue(TextProperty, value); }
     winrt::hstring TextBlock::Text() const { return GetValue(TextProperty); }
+    winrt::hstring TextBlock::AutomationLabel() const
+    {
+        auto name = AutomationName();
+        return name.empty() ? Text() : name;
+    }
     runtime::TextFormat TextBlock::Format() const
     {
         return { .family = std::wstring(GetValue(FontFamilyProperty)), .locale = std::wstring(GetValue(LanguageProperty)),

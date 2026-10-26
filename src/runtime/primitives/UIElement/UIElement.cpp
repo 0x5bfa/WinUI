@@ -19,6 +19,8 @@ namespace xaml::runtime
         }
     }
     UIElement::UIElement() : m_renderIdentity(AllocateRenderIdentity()) {}
+    DependencyProperty<winrt::hstring> const UIElement::AutomationNameProperty =
+        DependencyProperty<winrt::hstring>::Register<UIElement>("AutomationName", L"", PropertyEffects::None);
     DependencyProperty<KeyboardNavigationMode> const UIElement::TabFocusNavigationProperty =
         DependencyProperty<KeyboardNavigationMode>::Register<UIElement>("TabFocusNavigation", KeyboardNavigationMode::Local,
             PropertyEffects::None, +[](KeyboardNavigationMode value)
@@ -74,6 +76,19 @@ namespace xaml::runtime
         DependencyProperty<double>::Register<UIElement>("Opacity", 1.0, PropertyEffects::Render,
             +[](double value) { return std::isfinite(value) && value >= 0.0 && value <= 1.0; });
 
+    DependencyProperty<Matrix3x2> const UIElement::RenderTransformProperty =
+        DependencyProperty<Matrix3x2>::Register<UIElement>("RenderTransform", {}, PropertyEffects::Render,
+            +[](Matrix3x2 value)
+            {
+                return std::isfinite(value.m11) && std::isfinite(value.m12) &&
+                    std::isfinite(value.m21) && std::isfinite(value.m22) &&
+                    std::isfinite(value.m31) && std::isfinite(value.m32);
+            });
+
+    DependencyProperty<Point> const UIElement::RenderTransformOriginProperty =
+        DependencyProperty<Point>::Register<UIElement>("RenderTransformOrigin", {}, PropertyEffects::Render,
+            +[](Point value) { return std::isfinite(value.x) && std::isfinite(value.y); });
+
     DependencyProperty<bool> const UIElement::UseLayoutRoundingProperty =
         DependencyProperty<bool>::Register<UIElement>("UseLayoutRounding", true,
             PropertyEffects::Arrange | PropertyEffects::Render);
@@ -101,6 +116,28 @@ namespace xaml::runtime
     void UIElement::VisibilityState(Visibility value) { SetValue(VisibilityProperty, value); }
     double UIElement::Opacity() const { return GetValue(OpacityProperty); }
     void UIElement::Opacity(double value) { SetValue(OpacityProperty, value); }
+    Matrix3x2 UIElement::RenderTransform() const { return GetValue(RenderTransformProperty); }
+    winrt::hstring UIElement::AutomationName() const { return GetValue(AutomationNameProperty); }
+    void UIElement::AutomationName(winrt::hstring value) { SetValue(AutomationNameProperty, std::move(value)); }
+    void UIElement::RenderTransform(Matrix3x2 value) { SetValue(RenderTransformProperty, value); }
+    Point UIElement::RenderTransformOrigin() const { return GetValue(RenderTransformOriginProperty); }
+    void UIElement::RenderTransformOrigin(Point value) { SetValue(RenderTransformOriginProperty, value); }
+    Matrix3x2 UIElement::TransformToParent() const
+    {
+        VerifyAccess();
+        auto const bounds = LayoutBounds();
+        auto const origin = RenderTransformOrigin();
+        auto const pivot = Point{ bounds.width * origin.x, bounds.height * origin.y };
+        auto transform = Matrix3x2::Multiply(Matrix3x2::Translation(-pivot.x, -pivot.y), RenderTransform());
+        transform = Matrix3x2::Multiply(transform, Matrix3x2::Translation(pivot.x, pivot.y));
+        auto const parent = Parent();
+        if (IsRightToLeft() != (parent && parent->IsRightToLeft()))
+        {
+            transform = Matrix3x2::Multiply(transform,
+                Matrix3x2{ -1, 0, 0, 1, bounds.width, 0 });
+        }
+        return Matrix3x2::Multiply(transform, Matrix3x2::Translation(bounds.x, bounds.y));
+    }
     bool UIElement::UseLayoutRounding() const
     {
         auto const property = UseLayoutRoundingProperty.Erase();
@@ -586,14 +623,10 @@ namespace xaml::runtime
         }
 
         auto lifetime = const_cast<UIElement*>(this)->get_strong();
+        auto const inverse = TransformToParent().TryInvert();
+        if (!inverse) { return nullptr; }
+        auto const local = inverse->Transform(position);
         auto const bounds = LayoutBounds();
-        Point local{ position.x - bounds.x, position.y - bounds.y };
-        auto const parent = Parent();
-        bool const parentRTL = parent && parent->IsRightToLeft();
-        if (IsRightToLeft() != parentRTL)
-        {
-            local.x = bounds.width - local.x;
-        }
         auto contains = [](Rect area, Point point)
         {
             return point.x >= area.x && point.y >= area.y &&

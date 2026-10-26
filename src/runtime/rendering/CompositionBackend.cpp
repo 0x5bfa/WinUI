@@ -4,6 +4,7 @@
 #include <winrt/Microsoft.UI.Input.h>
 #include <winrt/Microsoft.UI.Interop.h>
 #include <winrt/Windows.Foundation.h>
+#include <winrt/Windows.Foundation.Numerics.h>
 #include <winrt/Windows.System.h>
 #include <winrt/Windows.UI.h>
 #include <winrt/Windows.UI.Composition.h>
@@ -236,7 +237,8 @@ namespace
         }
 
         void Realize(std::uintptr_t id, std::uintptr_t parent,
-            float x, float y, float width, float height, float opacity, bool, bool flipRTL,
+            float m11, float m12, float m21, float m22, float dx, float dy,
+            float width, float height, float opacity, bool,
             bool hasClip, float clipX, float clipY, float clipWidth, float clipHeight)
         {
             VerifyAccess();
@@ -249,10 +251,12 @@ namespace
                 node.container.Children().InsertAtBottom(node.fill);
             }
             node.visited = generation;
-            // Mirror only at a direction boundary. The parent already
-            // transforms descendants that inherit its flow direction.
-            node.container.Scale({ flipRTL ? -1.0f : 1.0f, 1, 1 });
-            node.container.Offset({ flipRTL ? x + width : x, y, 0 });
+            // Match the framework's local-to-parent matrix for hit testing,
+            // including RTL boundaries, origins, and arbitrary 2D transforms.
+            node.container.Scale({ 1, 1, 1 });
+            node.container.Offset({ 0, 0, 0 });
+            node.container.TransformMatrix({ m11, m12, 0, 0,
+                m21, m22, 0, 0, 0, 0, 1, 0, dx, dy, 0, 1 });
             node.container.Size({ width, height });
             node.container.Opacity(opacity);
             node.fill.Size({ width, height });
@@ -373,10 +377,12 @@ extern "C" void XamlRenderingBegin(void* backend)
     GetBackend(backend)->Begin();
 }
 extern "C" void XamlRenderingNode(void* backend, std::uintptr_t element, std::uintptr_t parent,
-    float x, float y, float width, float height, float opacity, bool drawable, bool flipRTL,
+    float m11, float m12, float m21, float m22, float dx, float dy,
+    float width, float height, float opacity, bool drawable,
     bool hasClip, float clipX, float clipY, float clipWidth, float clipHeight)
 {
-    GetBackend(backend)->Realize(element, parent, x, y, width, height, opacity, drawable, flipRTL,
+    GetBackend(backend)->Realize(element, parent, m11, m12, m21, m22, dx, dy,
+        width, height, opacity, drawable,
         hasClip, clipX, clipY, clipWidth, clipHeight);
 }
 extern "C" void XamlRenderingEnd(void* backend)

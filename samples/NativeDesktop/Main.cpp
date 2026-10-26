@@ -104,6 +104,12 @@ namespace
             {
                 switch (message)
                 {
+                case WM_GETOBJECT:
+                    if (app && app->host && app->host->IsActive())
+                    {
+                        if (auto result = app->host->GetAutomationObject(wparam, lparam)) { return result; }
+                    }
+                    break;
                 case WM_SIZE:
                     if (app) { app->Resize(); }
                     return 0;

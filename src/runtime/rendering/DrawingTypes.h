@@ -28,13 +28,17 @@ namespace xaml::drawing
         bool operator==(TextFormat const&) const = default;
     };
     struct TextMetrics { double width{}, height{}; };
-    enum class CommandKind { Rectangle, Text };
+    struct ImageMetrics { double width{}, height{}; };
+    enum class ImageStretch { None, Fill, Uniform, UniformToFill };
+    enum class CommandKind { Rectangle, Text, Image };
     struct Command
     {
         CommandKind kind{};
         double x{}, y{}, width{}, height{}, radius{}, strokeWidth{};
         Color fill{}, stroke{};
         std::wstring text;
+        std::wstring imagePath;
+        ImageStretch imageStretch{ ImageStretch::Uniform };
         TextFormat format;
     };
     class Context
@@ -44,6 +48,9 @@ namespace xaml::drawing
             double radius = 0, Color stroke = {}, double strokeWidth = 0);
         void Text(double x, double y, double width, double height, std::wstring text,
             TextFormat format, Color foreground);
+        // Decodes an image on demand from a local file into a WUC drawing surface.
+        void Image(double x, double y, double width, double height, std::wstring filePath,
+            ImageStretch stretch = ImageStretch::Uniform);
         [[nodiscard]] std::vector<Command> const& Commands() const noexcept { return m_commands; }
     private:
         std::vector<Command> m_commands;
@@ -52,3 +59,4 @@ namespace xaml::drawing
 
 xaml::drawing::TextMetrics XamlMeasureText(std::wstring const& text,
     xaml::drawing::TextFormat const& format, double width, double height);
+xaml::drawing::ImageMetrics XamlMeasureImage(std::wstring const& filePath);

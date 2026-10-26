@@ -12,6 +12,10 @@ namespace xaml::runtime
     {
         return XamlMeasureText(text, format, width, height);
     }
+    ImageMetrics MeasureImage(std::wstring const& filePath)
+    {
+        return XamlMeasureImage(filePath);
+    }
     DrawingContext UIElement::CollectDrawingContent() const
     {
         VerifyAccess();

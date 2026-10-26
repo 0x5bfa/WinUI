@@ -28,6 +28,10 @@
     <ClCompile Include="Runtime.ixx" />
     <ClCompile Include="binding\PropertyBinding.ixx" />
     <ClCompile Include="binding\PropertyBinding.cpp" />
+    <ClCompile Include="binding\ModelBinding.ixx" />
+    <ClCompile Include="binding\ModelBinding.cpp" />
+    <ClCompile Include="animation\Animation.ixx" />
+    <ClCompile Include="animation\Animation.cpp" />
     <ClCompile Include="styling\Styling.ixx" />
     <ClCompile Include="styling\Styling.cpp" />
     <ClCompile Include="styling\ElementResources.cpp" />
@@ -44,6 +48,7 @@
     <ClCompile Include="DesktopWindowHost.cpp" />
     <ClCompile Include="input\InputManager.ixx" />
     <ClCompile Include="input\InputManager.cpp" />
+    <ClCompile Include="input\AutomationBridge.cpp" />
     <ClCompile Include="input\ElementInput.cpp" />
     <ClCompile Include="input\Command.ixx" />
     <ClCompile Include="input\Command.cpp" />

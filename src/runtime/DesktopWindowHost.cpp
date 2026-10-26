@@ -3,6 +3,9 @@ module Xaml.Runtime;
 import std;
 import winrt_base;
 
+extern "C" std::intptr_t XamlGetAutomationObject(std::uintptr_t window,
+    std::uintptr_t wparam, std::intptr_t lparam, xaml::runtime::UIElement* root);
+
 namespace xaml::runtime
 {
     DesktopWindowHost::DesktopWindowHost() : m_thread(std::this_thread::get_id()) {}
@@ -29,6 +32,8 @@ namespace xaml::runtime
         if (!element) { throw winrt::hresult_invalid_argument(); }
         element->VerifyAccess();
         auto host = std::shared_ptr<DesktopWindowHost>(new DesktopWindowHost());
+        host->m_automationRoot = static_cast<DependencyObject&>(*element).get_weak();
+        host->m_automationWindow = static_cast<std::uintptr_t>(windowId);
         host->m_renderer = CompositionRenderer::CreateForWindow(windowId, widthPixels, heightPixels);
         host->m_renderer->SetRasterizationScale(rasterizationScale);
         host->m_textInput = std::make_shared<TextInputSession>(host->m_renderer->InputWindow());
@@ -109,12 +114,21 @@ namespace xaml::runtime
     {
         VerifyAccess(); auto text = m_textInput; return text->PreTranslateMessage(message, wparam, lparam);
     }
+    std::intptr_t DesktopWindowHost::GetAutomationObject(std::uintptr_t wparam, std::intptr_t lparam)
+    {
+        VerifyAccess();
+        auto root = m_automationRoot.get();
+        return root ? XamlGetAutomationObject(m_automationWindow, wparam, lparam,
+            static_cast<UIElement*>(root.get())) : 0;
+    }
 
     void DesktopWindowHost::Shutdown()
     {
         if (m_thread != std::this_thread::get_id()) { throw winrt::hresult_wrong_thread(); }
         if (!m_active) { return; }
         m_active = false;
+        m_automationRoot = nullptr;
+        m_automationWindow = 0;
         auto root = std::exchange(m_root, {});
         auto renderer = std::exchange(m_renderer, {});
         auto text = std::exchange(m_textInput, {});
